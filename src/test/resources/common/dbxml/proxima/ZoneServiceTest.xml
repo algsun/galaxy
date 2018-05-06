@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+
+	<t_zone zoneId="002" siteId="31010101" parentId="001" zoneName="测试区域2"
+		planImage="区域实景图2" dataVersion="17" />
+	<t_zone zoneId="003" siteId="31010101" parentId="001" zoneName="测试区域3"
+		planImage="区域实景图3" dataVersion="22" />
+	<t_zone zoneId="001" siteId="31010101" zoneName="测试区域1"
+		planImage="区域实景图1" dataVersion="32" />
+
+	<p_dv_place id="1111" dvType="1" placeCode="222" placeName="点位1"
+		createTime="2013-02-25 12:01:01" imageRealWidth="55" imageWidth="55"
+		imageHeight="30" enable="1" remark="备注" dvIp="192.168.0.211" zoneId="002" />
+	<p_dv_place_optics dvPlaceId="1111" dvPort="65535"
+		ioIp="192.168.0.222" ioPort="65534" lightOnTime="1000" lightOffTime="1000"
+		photographTime="500" isIoOn="1" isLightOn="0" />
+
+	<p_dv_place id="1112" dvType="2" placeCode="223" placeName="点位2"
+		createTime="2013-02-25 12:01:01" imageRealWidth="55" imageWidth="55"
+		imageHeight="30" enable="1" remark="备注" dvIp="192.168.0.212" zoneId="002" />
+	
+</dataset>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+        "http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+
+    <package name="proxima:common" extends="proxima" namespace="/proxima">
+        <!--测试页面布局-->
+        <action name="home" class="proxima:HomeAction">
+            <result type="redirect">/proxima/viewOpticsImageDefault.action</result>
+        </action>
+        <action name="">
+            <result type="redirect">/proxima/viewOpticsImageDefault.action</result>
+        </action>
+    </package>
+</struts>

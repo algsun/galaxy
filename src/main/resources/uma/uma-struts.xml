@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="uma" extends="json-default" namespace="/uma">
+    </package>
+    <!-- 行为规则 -->
+    <include file="uma/struts/rule-struts.xml"></include>
+
+    <!--公共-->
+    <include file="uma/struts/common-struts.xml"></include>
+
+    <!--设备管理-->
+    <include file="uma/struts/device-struts.xml"></include>
+
+    <!--发放电子卡-->
+    <include file="uma/struts/allotcard-struts.xml"></include>
+
+    <!--实时定位-->
+    <include file="uma/struts/realtime-struts.xml"></include>
+
+    <!--统计-->
+    <include file="uma/struts/userrule-struts.xml"></include>
+
+    <!--平面图-->
+    <include file="uma/struts/planview-struts.xml"></include>
+</struts>

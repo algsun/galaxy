@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+        "http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+	<package name="orion-pda-api" extends="orion" namespace="/orion/pdahttpServer">
+		<action name="getSystemTime" class="orion:PDAHttpServer" method="getSystemTime">
+			<result type="json">
+				<param name="excludeNullProperties">true</param>
+				<param name="includeProperties">success,message,sysTime</param>
+			</result>
+		</action>
+
+		<action name="getZoneInfo" class="orion:PDAHttpServer" method="getZoneInfo">
+			<result type="json">
+				<param name="excludeNullProperties">true</param>
+				<param name="includeProperties">success,message,data.*</param>
+			</result>
+		</action>
+
+		<action name="getRelicInfo" class="orion:PDAHttpServer" method="getRelicInfo">
+			<result type="json">
+				<param name="excludeNullProperties">true</param>
+				<param name="includeProperties">success,message,data.*</param>
+			</result>
+		</action>
+		
+		<action name="getOutEvent" class="orion:PDAHttpServer" method="getOutEvent">
+			<result type="json">
+				<param name="excludeNullProperties">true</param>
+				<param name="includeProperties">success,message,data.*</param>
+			</result>
+		</action>
+
+		<action name="uploadRelicTag" class="orion:PDAHttpServer" method="uploadRelicTag">
+			<result type="json">
+				<param name="excludeNullProperties">true</param>
+				<param name="includeProperties">success,message</param>
+			</result>
+		</action>
+
+		<action name="uploadStockoutInfo" class="orion:PDAHttpServer" method="uploadStockOutInfo">
+			<result type="json">
+				<param name="excludeNullProperties">true</param>
+				<param name="includeProperties">success,message</param>
+			</result>
+		</action>
+
+        <action name="uploadDoneStockOut" class="orion:PDAHttpServer" method="uploadDoneStockOut">
+            <result type="json">
+                <param name="excludeNullProperties">true</param>
+                <param name="includeProperties">success,message</param>
+            </result>
+        </action>
+
+		<action name="uploadStockInInfo" class="orion:PDAHttpServer" method="uploadStockInInfo">
+			<result type="json">
+				<param name="excludeNullProperties">true</param>
+				<param name="includeProperties">success,message</param>
+			</result>
+		</action>
+
+		<action name="updateInventoryTagInfo" class="orion:PDAHttpServer" method="updateInventoryTagInfo">
+			<result type="json">
+				<param name="excludeNullProperties">true</param>
+				<param name="includeProperties">success,message</param>
+			</result>
+		</action>
+	</package>
+</struts>

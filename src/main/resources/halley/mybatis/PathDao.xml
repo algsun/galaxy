@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="halley.mybatis.PathDao">
+
+    <!-- 根据外展ID查询经纬度 -->
+    <select id="findPathByExhibitionId" parameterType="java.lang.Integer"
+            resultType="PathPO">
+            <![CDATA[
+                SELECT
+                    path.id            as id,
+                    path.exhibitionId  as exhibitionId,
+                    path.longitude   as longitude,
+                    path.latitude      as latitude,
+                    path.dataType as dataType,
+                    path.destinationName,
+                    path.pathType as pathType
+                FROM
+                    h_path AS path
+                WHERE
+                    path.exhibitionId = #{value}
+                ORDER BY path.id
+        ]]>
+    </select>
+    <!-- 根据车辆ID查询经纬度 -->
+    <select id="findRouteHistorysByCarId" parameterType="java.util.Map"
+            resultType="RouteHistoryPO">
+            <![CDATA[
+                SELECT
+                    route.id            as id,
+                    route.carId      as carId,
+                    route.longitude   as longitude,
+                    route.latitude      as latitude,
+                    route.time     as routeTime
+                FROM
+                   h_route_history AS route
+                WHERE
+                    route.carId = #{carId}
+                AND
+                  route.time BETWEEN  #{startDate}
+                AND #{endDate}
+                ORDER BY route.time DESC
+        ]]>
+    </select>
+
+    <select id="findRouteHistoryByCarId" parameterType="java.util.Map"
+            resultType="RouteHistoryPO">
+            <![CDATA[
+                SELECT
+                    route.id            as id,
+                    route.carId      as carId,
+                    route.longitude   as longitude,
+                    route.latitude      as latitude,
+                    route.time     as routeTime
+                FROM
+                h_route_history AS route
+                WHERE
+                    route.carId = #{carId}
+                ORDER BY route.time DESC LIMIT 1
+        ]]>
+    </select>
+    <!-- 保存路径信息 -->
+    <insert id="savePath" parameterType="PathPO"  useGeneratedKeys="true">
+        <selectKey keyProperty="id" resultType="java.lang.Integer"
+                   order="AFTER">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO
+        h_path(exhibitionId,longitude,latitude,dataType,destinationName,pathType)
+        VALUES
+        (#{exhibitionId},#{longitude},#{latitude},#{dataType},#{destinationName},#{pathType})
+
+    </insert>
+
+    <!-- 保存GPS点 -->
+    <insert id="savePathPoints" parameterType="java.util.List" useGeneratedKeys="true">
+        <selectKey keyProperty="id" resultType="java.lang.Integer"
+                   order="AFTER">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO
+        h_path_points(exhibitionId,longitude,latitude)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.exhibitionId},#{item.longitude},#{item.latitude})
+        </foreach>
+    </insert>
+    <!-- 根据exhibitionId删除路径信息 -->
+    <delete id="deleteByExhibitionId" parameterType="java.lang.Integer">
+        <![CDATA[
+
+			DELETE FROM
+				h_path
+			WHERE
+				exhibitionId = #{value}
+
+        ]]>
+    </delete>
+    <!-- 根据exhibitionId删除GPS点集 -->
+    <delete id="deletePathPointsByExhibitionId" parameterType="java.lang.Integer">
+        <![CDATA[
+
+			DELETE FROM
+				h_path_points
+			WHERE
+				exhibitionId = #{value}
+
+        ]]>
+    </delete>
+</mapper>

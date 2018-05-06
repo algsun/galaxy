@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="saturn.mybatis.AffairDao">
+
+    <insert id="save" parameterType="Affair"  useGeneratedKeys="true">
+        <selectKey keyProperty="id" resultType="java.lang.Integer"
+                   order="AFTER">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO s_affair (
+        `type`,
+        title,
+        incharge,
+        magazine,
+        publicDate,
+        magazineSrc,
+        projectType,
+        projectLevel,
+        progress,
+        prize,
+        remark,
+        createTime,
+        createBy,
+        siteId
+        )
+        VALUES
+        (
+        #{type},
+        #{title},
+        #{incharge},
+        #{magazine},
+        #{publicDate},
+        #{magazineSrc},
+        #{projectType},
+        #{projectLevel},
+        #{progress},
+        #{prize},
+        #{remark},
+        #{createTime},
+        #{createBy},
+        #{siteId}
+        ) ;
+    </insert>
+
+    <update id="update" parameterType="Affair">
+        <![CDATA[
+		UPDATE s_affair
+        SET
+          `type` = #{type},
+          title = #{title},
+          incharge = #{incharge},
+          magazine = #{magazine},
+          publicDate = #{publicDate},
+          magazineSrc = #{magazineSrc},
+          projectType = #{projectType},
+          projectLevel = #{projectLevel},
+          progress = #{progress},
+          prize = #{prize},
+          remark = #{remark},
+          createTime = #{createTime},
+          createBy = #{createBy},
+          siteId = #{siteId}
+        WHERE id = #{id};
+		]]>
+    </update>
+
+    <select id="findAll" resultType="Affair">
+        <![CDATA[
+        SELECT
+          `id`,
+          `type`,
+          `title`,
+          `incharge`,
+          `magazine`,
+          `publicDate`,
+          `magazineSrc`,
+          `projectType`,
+          `projectLevel`,
+          `progress`,
+          `prize`,
+          `remark`,
+          `createTime`,
+          `createBy`,
+          `siteId`
+        FROM
+          `s_affair`
+        WHERE siteId = #{siteId}
+        ]]>
+    </select>
+
+    <!-- 查询所有文献资料 -->
+    <select id="findById" parameterType="java.lang.Integer" resultType="Affair">
+        <![CDATA[
+        SELECT
+          `id`,
+          `type`,
+          `title`,
+          `incharge`,
+          `magazine`,
+          `publicDate`,
+          `magazineSrc`,
+          `projectType`,
+          `projectLevel`,
+          `progress`,
+          `prize`,
+          `remark`,
+          `createTime`,
+          `createBy`,
+          `siteId`
+        FROM
+          `s_affair`
+        WHERE id = #{affairId}
+        ]]>
+    </select>
+
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        <![CDATA[
+			DELETE FROM
+				s_affair
+			WHERE
+				id = #{affairId}
+        ]]>
+    </delete>
+
+    <select id="findAllByYear" resultType="Affair" parameterType="java.util.Map">
+        <![CDATA[
+        SELECT
+          `id`,
+          `type`,
+          `title`,
+          `incharge`,
+          `magazine`,
+          `publicDate`,
+          `magazineSrc`,
+          `projectType`,
+          `projectLevel`,
+          `progress`,
+          `prize`,
+          `remark`,
+          `createTime`,
+          `createBy`,
+          `siteId`
+        FROM
+          `s_affair`
+        WHERE `type` = #{type}
+        ]]>
+        <if test="year != null">
+            AND YEAR(publicDate) = #{year}
+        </if>
+
+        <if test="quarterNum != null">
+            AND QUARTER(publicDate) = #{quarterNum}
+        </if>
+    </select>
+
+    <select id="findAffairType" resultType="Affair" parameterType="java.util.Map">
+        <![CDATA[
+        SELECT
+          `type`
+        FROM
+          `s_affair`
+        WHERE siteId = #{siteId}
+        ]]>
+        <if test="year != null">
+            AND YEAR(publicDate) = #{year}
+        </if>
+
+        <if test="quarterNum != null">
+            AND QUARTER(publicDate) = #{quarterNum}
+        </if>
+
+        <![CDATA[
+			group by `type`
+        ]]>
+
+    </select>
+
+    <select id="findAffairTypeCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+        <![CDATA[
+       SELECT
+        COUNT(id) AS totalCount
+       FROM
+        `s_affair`
+       WHERE siteId = #{siteId} AND `type` = #{type}
+        ]]>
+        <if test="year != null">
+            AND YEAR(publicDate) = #{year}
+        </if>
+
+        <if test="quarterNum != null">
+            AND QUARTER(publicDate) = #{quarterNum}
+        </if>
+    </select>
+
+
+
+    <select id="findMaxSizeType" resultType="java.lang.Integer" parameterType="java.util.Map">
+        <![CDATA[
+        SELECT
+          temp.type
+        FROM
+        (SELECT
+          `type`,
+           COUNT(`type`) AS size
+          FROM
+          `s_affair`
+          WHERE siteId = #{siteId}
+            ]]>
+        <if test="year != null">
+            AND YEAR(publicDate) = #{year}
+        </if>
+
+        <if test="quarterNum != null">
+            AND QUARTER(publicDate) = #{quarterNum}
+        </if>
+        <![CDATA[
+          GROUP BY `type`) AS temp
+          WHERE temp.size =
+            (SELECT
+              MAX(temp.size)
+              FROM
+              (SELECT
+                `type`,
+                COUNT(`type`) AS size
+                FROM
+                `s_affair`
+                WHERE siteId = #{siteId}
+                  ]]>
+                 <if test="year != null">
+                  AND YEAR(publicDate) = #{year}
+                 </if>
+
+                <if test="quarterNum != null">
+                  AND QUARTER(publicDate) = #{quarterNum}
+                </if>
+                 <![CDATA[
+              GROUP BY `type`) AS temp) LIMIT 1
+          ]]>
+    </select>
+
+</mapper>

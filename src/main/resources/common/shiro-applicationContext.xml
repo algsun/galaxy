@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <!-- shiro 权限框架配置-->
+
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/blackhole/login.action"/>
+        <property name="successUrl" value="/index.jsp"/>
+        <property name="unauthorizedUrl" value="/unauthorized_zhangpeng.jsp"/>
+        <property name="filterChainDefinitions">
+            <value>
+                # 对请求进行过滤，拦截(anon 为不拦截， authc 需要认证)
+                /blackhole/verifyCode.action = anon
+                /blackhole/login.action = anon
+                /blackhole/setting.action = anon
+                /blackhole/doLogin.action = anon
+                /blackhole/logout.action = anon
+                /blackhole/forgetPassword.action = anon
+                /blackhole/doForgetPassword.action = anon
+                /blackhole/resetPassword.action = anon
+                /blackhole/doResetPassword.action = anon
+                /blackhole/activeUser.action = anon
+                /blackhole/doActiveUser.action = anon
+                /blackhole/publicPost.action = anon
+                /blackhole/listPosts.action = anon
+                /blackhole/viewPost.action = anon
+                /assets/** = anon
+                /common/** = anon
+                /blackhole/favicon.ico = anon
+                /blackhole/css/** = anon
+                /blackhole/images/** = anon
+                /blackhole/js/** = anon
+                /blackhole/upload/images/** = anon
+                /blueplanet/dataCenter/** = anon
+                /blueplanet/dateCenter/refreshSlideShow/** = anon
+                /blueplanet/dataCenter/charts/** = anon
+                /blueplanet/dataCenter/charts/shortcutlogin/** = anon
+                /blueplanet/css/** = anon
+                /blueplanet/js/** = anon
+                /blueplanet/images/** = anon
+                /blueplanet/pages/dataCenter/** = anon
+                /galaxy-resources/blueplanet/images/** = anon
+                /orion/pdahttpServer/** = anon
+                /api/** = anon
+                /status.json = anon
+                /blueplanet/zone/scalar-field2 = anon
+                /blueplanet/zone/scalar-field2.json = anon
+                /** = authc
+            </value>
+        </property>
+    </bean>
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="cacheManager" ref="cacheManager"/>
+        <!-- Single realm app.  If you have multiple realms, use the 'realms' property instead. -->
+        <property name="realm" ref="customRealm"/>
+    </bean>
+
+    <bean name="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager"/>
+
+    <bean name="customRealm" class="com.microwise.common.sys.shiro.CustomRealm">
+        <!--自定义密码校验-->
+        <property name="credentialsMatcher">
+            <bean class="org.apache.shiro.authc.credential.PasswordMatcher">
+                <property name="passwordService">
+                    <bean class="com.microwise.common.sys.shiro.BcryptPasswordService"/>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <!-- Enable Shiro Annotations for Spring-configured beans.  Only run after
+    the lifecycleBeanProcessor has run: -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+</beans>

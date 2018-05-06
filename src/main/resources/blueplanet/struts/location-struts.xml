@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+    <!-- 位置点 -->
+    <package name="blueplanet-location" extends="blueplanet" namespace="/blueplanet">
+        <interceptors>
+            <interceptor name="locationInterceptor" class="blueplanet:locationInterceptor"/>
+            <interceptor-stack name="locationStack">
+                <interceptor-ref name="defaultStack"/>
+                <interceptor-ref name="locationInterceptor"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <!-- 图表导出 -->
+        <action name="export-highchart-image" class="blueplanet:checkoutGraphImageAction"></action>
+
+        <!-- 历史数据导出 -->
+        <action name="location-history-data-export" class="blueplanet:locationHistoryDataExportAction" method="export"></action>
+        <!-- 均峰值数据导出 -->
+        <action name="avgpeak-data-export" class="blueplanet:locationAverageAdnPeakAction" method="export"></action>
+    </package>
+</struts>

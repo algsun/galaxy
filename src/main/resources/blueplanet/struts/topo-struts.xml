@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+    <!-- 网络拓扑图 -->
+    <package name="blueplanet-topo" extends="blueplanet" namespace="/blueplanet">
+
+        <action name="topo" class="blueplanet:topoAction" method="view"></action>
+
+        <action name="timeoutDevice" class="blueplanet:timeoutDeviceAction" method="view"></action>
+
+        <action name="deviceAnalyse" class="blueplanet:deviceAnalyseAction" method="view"></action>
+
+        <action name="lossPackage" class="blueplanet:lossPackageAction" method="view"></action>
+
+        <action name="deviceLink" class="blueplanet:deviceLinkAction" method="view"></action>
+
+        <action name="getDeviceInfoById" class="blueplanet:topoAction" method="getDeviceInfoById">
+            <result name="success" type="json">
+                <param name="root">topoViewVO</param>
+            </result>
+        </action>
+        <action name="refreshShowData" class="blueplanet:topoAction" method="refreshShowData">
+            <result name="success" type="json">
+                <param name="includeProperties">deviceCountMap.*,allDeviceCount,topoData,topoReferencesData</param>
+            </result>
+        </action>
+    </package>
+</struts>

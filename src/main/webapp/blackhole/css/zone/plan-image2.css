@@ -1,0 +1,83 @@
+/**
+* 平面图样式
+*
+* @author gaohui
+* @date 2013-10-09
+*/
+
+/* 平面图 */
+.zone-image {
+    /*background-image: url('../../images/world.png');*/
+    position: relative;
+    cursor: default;
+}
+
+/* 节点 */
+.zone-image .node {
+    position: absolute;
+    padding: 1px;
+    background-color: #fff;
+    border-radius: 5px;
+    cursor: default;
+    color: black;
+    z-index: auto;
+
+    opacity: 0.85;
+    filter: alpha(opacity=85);
+}
+
+/* 节点是否选中 */
+.zone-image .node.selected {
+    color: white;
+    background-color: #3b6ac5;
+}
+
+/* 节点图标 */
+.zone-image .node .node-icon, .node-icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+}
+
+/* 节点名称 */
+.zone-image .node .name-label {
+    display: inline-block;
+    margin-left: -2px;
+}
+
+/* 提示 */
+.zone-image .node .node-tooltip {
+    position: absolute;
+    top: 26px;
+    left: 0;
+
+    padding-top: 10px;
+
+    z-index: 1000;
+}
+
+/* 提示内容 */
+.node-tooltip .content {
+    padding: 2px;
+    background-color: #fff;
+    border-radius: 2px;
+    border: 1px solid gray;
+    cursor: default;
+    color: black;
+    white-space: nowrap;
+    font-size: 13px;
+}
+
+/* 未部署节点，拖拽 */
+.node-drag{
+    display: inline-block;
+    padding: 1px;
+    background-color: #fff;
+    border-radius: 5px;
+    cursor: default;
+    color: black;
+
+    opacity: 0.85;
+    filter: alpha(opacity=85);
+}

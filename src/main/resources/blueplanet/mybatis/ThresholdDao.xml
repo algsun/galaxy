@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blueplanet.mybatis.ThresholdDao">
+
+	<!-- 删除 区域下监测指标阈值信息 -->
+	<delete id="deleteThreshold" parameterType="java.util.HashMap" >
+	    <![CDATA[
+		    DELETE 
+			FROM m_threshold
+			WHERE locationId = #{locationId}
+			AND thresholdType = #{thresholdType};
+		]]>
+	</delete>
+
+    <!-- 删除 区域下监测指标阈值信息 -->
+    <delete id="delete" parameterType="java.lang.String" >
+        <![CDATA[
+		    DELETE
+			FROM m_threshold
+			WHERE locationId = #{locationId};
+		]]>
+    </delete>
+
+    <!-- 根据位置点ID和监测指标ID删除 -->
+    <delete id="deleteBy" parameterType="java.util.HashMap" >
+        <![CDATA[
+		    DELETE
+			FROM m_threshold
+			WHERE locationId = #{locationId}
+			AND sensorPhysicalId = #{sensorId};
+		]]>
+    </delete>
+
+	<!-- 添加监测指标阈值 -->
+	<insert id="saveThreshold" parameterType="ThresholdVO">
+	    INSERT INTO
+        m_threshold
+	    (`locationId`,`sensorPhysicalId`,
+        <if test=" conditionType != null ">
+            `conditionType`,
+        </if>
+        <if test=" target != null ">
+            `target`,
+        </if>
+        <if test=" floating != null ">
+            `floating`,
+        </if>
+	    `thresholdType`)
+	    VALUES
+	    (
+	    #{locationId},#{sensorPhysicalId},
+        <if test=" conditionType != null ">
+            #{conditionType},
+        </if>
+        <if test=" target != null">
+            #{target},
+        </if>
+        <if test=" floating != null">
+            #{floating},
+	    </if>
+	        #{thresholdType}
+	    )
+	</insert>
+
+    <!-- 查询区域下要设置阈值的监测指标 -->
+    <select id="findThresholdLocationData" parameterType="java.util.HashMap"
+            resultType="SensorinfoVO">
+        <![CDATA[
+			SELECT DISTINCT
+				s.sensorPhysicalid	AS sensorPhysicalid,
+				s.en_name			AS enName,
+        ]]>
+        <if test="language=='en_US'">
+            s.en_name AS cnName,
+        </if>
+        <if test="language=='zh_CN'">
+            s.cn_name AS cnName,
+        </if>
+        <![CDATA[
+				s.sensorPrecision	AS sensorPrecision,
+				s.units				AS units,
+				s.positions			AS positions
+			FROM
+				m_sensorinfo AS s
+			LEFT JOIN
+				m_location_sensor AS mls ON s.sensorPhysicalid = mls.sensorPhysicalid
+			INNER JOIN
+				m_location AS n ON n.id = mls.locationId
+			WHERE
+				s.isActive = 1
+			AND
+				n.zoneId = #{zoneId}
+			AND  s.sensorPhysicalid NOT IN
+			(
+			SELECT
+			sensorPhysicalId
+			FROM
+			m_zone_threshold
+			WHERE zoneId = #{zoneId}
+			)
+				ORDER BY
+					s.positions
+			]]>
+    </select>
+
+    <!-- 根据区域id，查父区域id-->
+    <select id="findParentIdByZoneId" parameterType="java.lang.String" resultType="java.lang.String">
+		<![CDATA[
+            SELECT
+              parentId
+            FROM
+              `t_zone`
+            WHERE zoneId = #{value}
+		]]>
+	</select>
+
+	<select id="findNoZoneThresholdLocationIds" parameterType="java.lang.String" resultType="java.lang.String">
+		<![CDATA[
+			SELECT DISTINCT
+			  t.locationId
+			FROM
+			  m_threshold t
+			  LEFT JOIN m_location l
+			  ON t.locationId = l.id
+			WHERE l.zoneId = #{zoneId}
+			  AND t.thresholdType != 1 ;
+		]]>
+	</select>
+
+	<select id="findZoneThresholds" parameterType="java.util.List" resultType="ZoneThresholdVO">
+		<![CDATA[
+			SELECT DISTINCT
+			    t.`id`,
+			    t.`sensorPhysicalId`,
+			    s.`cn_name` AS `cnName`,
+			    s.`units`,
+                t.target,
+                t.conditionType,
+                t.floating
+			FROM
+			    m_zone_threshold  t
+			LEFT JOIN
+			    m_sensorinfo s
+			ON  t.`sensorPhysicalid` = s.`sensorPhysicalid`
+			WHERE t.zoneId = #{zoneId}
+		]]>
+	</select>
+
+	<insert id="saveZoneThreshold" parameterType="ZoneThresholdVO">
+		<![CDATA[
+			INSERT INTO m_zone_threshold (
+			  zoneId,
+			  sensorPhysicalId,
+			  conditionType,
+			  target,
+			  floating
+			)
+			VALUES
+			  (
+				#{zoneId},
+				#{sensorPhysicalId},
+				#{conditionType},
+				#{target}
+		]]>
+				<if test=" floating != null ">
+					,#{floating}
+				</if>
+		<![CDATA[
+			  ) ;
+		]]>
+	</insert>
+
+	<delete id="deleteZoneThreshold" parameterType="java.lang.String">
+		<![CDATA[
+			DELETE
+			FROM
+			  m_zone_threshold
+			WHERE zoneId = #{zoneId} ;
+		]]>
+	</delete>
+
+	<select id="findThresholdsByLocationIdAndType" parameterType="java.util.HashMap" resultType="ThresholdVO">
+		<![CDATA[
+			SELECT
+			    t.id,
+			    t.sensorPhysicalId,
+                t.target,
+                t.conditionType,
+                t.floating
+			FROM
+			    m_threshold  t
+			WHERE t.locationId = #{locationId}
+			AND thresholdType = #{thresholdType};
+		]]>
+	</select>
+
+	<!--<select id="findThresholdsByLocationId" parameterType="java.lang.String" resultType="ThresholdVO">-->
+		<!--<![CDATA[-->
+			<!--SELECT-->
+			    <!--t.id,-->
+			    <!--t.sensorPhysicalId,-->
+                <!--t.target,-->
+                <!--t.conditionType,-->
+                <!--t.floating-->
+			<!--FROM-->
+			    <!--m_threshold  t-->
+			<!--WHERE t.locationId = #{locationId};-->
+		<!--]]>-->
+	<!--</select>-->
+
+	<select id="findThresholds" parameterType="java.lang.String" resultType="ThresholdVO">
+		<![CDATA[
+			SELECT
+              t.`id`,
+              t.`sensorPhysicalId`,
+              s.`cn_name` sensorName,
+              s.`units` sensorUnit,
+              t.target,
+              t.conditionType,
+              t.floating
+            FROM
+              m_threshold t
+              INNER JOIN m_location_sensor ls
+                ON t.locationId = ls.locationId
+                   AND t.sensorPhysicalId = ls.sensorPhysicalId
+              INNER JOIN
+              m_sensorinfo s
+                ON t.`sensorPhysicalid` = s.`sensorPhysicalid`
+            WHERE t.locationId = #{locationId}
+            ORDER BY t.sensorPhysicalId;
+		]]>
+	</select>
+
+    <select id="findThreshold" parameterType="java.util.Map" resultType="ThresholdVO">
+        <![CDATA[
+			SELECT
+			    t.`id`,
+			    t.`sensorPhysicalId`,
+			    s.`cn_name` `cnName`,
+			    s.`units`,
+                t.target,
+                t.conditionType,
+                t.floating
+			FROM
+			    m_threshold  t
+			LEFT JOIN
+			    m_sensorinfo s
+			ON  t.`sensorPhysicalid` = s.`sensorPhysicalid`
+			WHERE t.locationId = #{locationId}
+			AND t.sensorPhysicalId = #{sensorId}
+			AND t.thresholdType = 0;
+		]]>
+    </select>
+
+	<insert id="save" parameterType="ThresholdVO">
+		<![CDATA[
+            INSERT INTO `m_threshold` (
+              `locationId`,
+              `sensorPhysicalId`,
+              `conditionType`,
+              `target`,
+              `floating`,
+              `thresholdType`
+            )
+            VALUES
+              (
+                #{locationId},
+                #{sensorPhysicalId},
+                #{conditionType},
+                #{target},
+                #{floating},
+                #{thresholdType}
+              ) ;
+        ]]>
+	</insert>
+
+</mapper>

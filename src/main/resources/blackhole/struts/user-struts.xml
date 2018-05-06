@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="blackhole:user" extends="blackhole" namespace="/blackhole">
+        <!--查询用户信息-->
+        <action name="queryUser" class="blackhole:queryUserAction">
+            <result type="freemarker">/blackhole/pages/user/list-user.ftl</result>
+        </action>
+
+        <!--添加用户信息页面初始化-->
+        <action name="addUser" class="blackhole:addUserAction" method="view">
+            <result type="freemarker">/blackhole/pages/user/add-user.ftl</result>
+        </action>
+
+
+
+        <!--添加用户信息-->
+        <action name="doAddUser" class="blackhole:addUserAction" method="execute">
+            <!--<result type="freemarker">queryUser.action</result>-->
+            <result name="success" type="redirectAction">
+                <param name="actionName">queryUser</param>
+            </result>
+            <result name="error" type="freemarker">/blackhole/pages/user/add-user.ftl</result>
+        </action>
+
+        <!--修改用户信息页面初始化-->
+        <action name="toUpdateUser" class="blackhole:updateUserAction" method="view">
+            <result type="freemarker">/blackhole/pages/user/update-user.ftl</result>
+        </action>
+
+        <!--修改用户部门-->
+        <action name="doUpdateUser" class="blackhole:updateUserAction" >
+            <result name="success" type="redirectAction">
+                <param name="actionName">queryUser?index=${index}</param>
+            </result>
+        </action>
+        <!--删除用户-->
+        <action name="deleteUser" class="blackhole:editUserAction" method="delete">
+            <result name="success" type="redirectAction">
+                <param name="actionName">queryUser</param>
+            </result>
+        </action>
+
+        <!--禁用/启用用户-->
+        <action name="updateUserState" class="blackhole:editUserAction" method="execute">
+            <result name="success" type="redirectAction">
+                <param name="actionName">queryUser</param>
+            </result>
+        </action>
+
+        <!--分配角色页面初始化-->
+        <action name="assignRole" class="blackhole:assignRoleAction" method="view">
+            <result type="freemarker">/blackhole/pages/user/assignRole-user.ftl</result>
+        </action>
+
+        <!--分配角色-->
+        <action name="doAssignRole" class="blackhole:assignRoleAction" method="execute">
+            <result name="success" type="redirectAction">
+                <param name="actionName">queryUser</param>
+                <param name="userName">${name}</param>
+                <param name="index">${index}</param>
+            </result>
+            <result name="error" type="freemarker">/blackhole/pages/user/assignRole-user.ftl</result>
+        </action>
+
+        <!--分配站点组页面初始化-->
+        <action name="assignLogicGroup" class="blackhole:assignLogicGroupAction" method="view">
+            <result type="json">
+                <param name="root">logicGroupMap</param>
+            </result>
+        </action>
+
+        <!--分配站点-->
+        <action name="doAssignLogicGroup" class="blackhole:assignLogicGroupAction" method="execute">
+            <result type="json">
+                <param name="includeProperties">success, message</param>
+            </result>
+        </action>
+
+        <!--激活用户-->
+        <action name="activeUser" class="blackhole:activeUserAction" method="view">
+            <result name="error" type="freemarker">/blackhole/pages/user/active-user-feedback.ftl</result>
+            <result name="success" type="freemarker">/blackhole/pages/user/active-user.ftl</result>
+        </action>
+
+        <action name="doActiveUser" class="blackhole:activeUserAction" method="execute">
+            <result name="error" type="freemarker">/blackhole/pages/user/active-user-feedback.ftl</result>
+            <result name="input" type="freemarker">/blackhole/pages/user/active-user.ftl</result>
+            <result name="success" type="freemarker">/blackhole/pages/user/active-user-feedback.ftl</result>
+        </action>
+        <!--判断邮箱是否可用-->
+        <action name="emailEnable" class="blackhole:emailEnableAction">
+            <result type="json"/>
+        </action>
+    </package>
+
+</struts>

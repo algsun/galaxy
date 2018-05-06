@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="halley.mybatis.ExhibitionDao">
+
+
+    <!-- 从出库记录记录中同步外展记录 -->
+    <insert id="syncExhibitions" parameterType="java.lang.String"  useGeneratedKeys="true">
+        <selectKey keyProperty="id" resultType="java.lang.Integer"
+                   order="AFTER">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO h_exhibition (beginTime, endTime, outEventId)
+        SELECT
+            e.beginTime,
+            e.endTime,
+            oe.id
+        FROM
+            o_out_event oe
+            LEFT JOIN h_exhibition e
+                ON oe.id = e.outEventId
+        WHERE eventType = 1
+            AND state = 1
+            AND e.id IS NULL
+            AND oe.siteId = #{siteId}
+    </insert>
+
+    <!-- 分页查询外展列表 -->
+    <select id="findExhibitionList" parameterType="java.util.Map" resultType="ExhibitionVO">
+	    <![CDATA[
+            SELECT
+              e.id AS exhibitionId,
+              oe.id AS outEventId,
+              oe.useFor,
+              oe.beginDate AS estimatedBeginTime,
+              oe.endDate AS estimatedEndTime,
+              oe.applicant,
+              e.beginTime,
+              e.endTime,
+              es.state
+            FROM
+             o_out_event oe
+             INNER  JOIN
+             h_exhibition e
+                ON
+             oe.id = e.outEventId
+             LEFT  JOIN
+             (SELECT
+              exhibitionId,
+              state
+              FROM
+             (SELECT
+              exhibitionId,
+              state
+              FROM
+              h_exhibition_state hes
+              ORDER BY
+              beginTime
+              DESC) tmp
+              GROUP BY exhibitionId) es
+              ON e.id = es.exhibitionId
+              WHERE oe.eventType = 1
+              AND oe.state != 0
+              AND oe.siteId = #{siteId}
+        ]]>
+        <if test="state != 5">
+            <if test="state == 0">
+                AND es.state IS NULL
+            </if>
+            <if test="state !=0">
+                AND es.state = #{state}
+            </if>
+        </if>
+	</select>
+
+    <!-- 查询 外展列表 -->
+    <select id="findExhibitionListCount" parameterType="java.util.Map" resultType="ExhibitionVO">
+	    <![CDATA[
+              SELECT
+              e.id AS exhibitionId,
+              oe.id AS outEventId,
+              oe.useFor,
+              oe.beginDate AS estimatedBeginTime,
+              oe.endDate AS estimatedEndTime,
+              oe.applicant,
+              e.beginTime,
+              e.endTime,
+              es.state
+            FROM
+             o_out_event oe
+             INNER  JOIN
+             h_exhibition e
+                ON
+             oe.id = e.outEventId
+             LEFT  JOIN
+             (SELECT
+              exhibitionId,
+              state
+              FROM
+             (SELECT
+              exhibitionId,
+              state
+              FROM
+              h_exhibition_state hes
+              ORDER BY
+              beginTime
+              DESC) tmp
+              GROUP BY exhibitionId) es
+              ON e.id = es.exhibitionId
+              WHERE oe.eventType = 1
+              AND oe.state != 0
+              AND oe.siteId = #{siteId}
+        ]]>
+        <if test="state != 5">
+            <if test="state == 0">
+                AND es.state IS NULL
+            </if>
+            <if test="state !=0">
+                AND es.state = #{state}
+            </if>
+        </if>
+	</select>
+
+    <!-- 查询 外展记录 -->
+    <select id="findExhibitionListNotEnd" resultType="ExhibitionVO">
+        <![CDATA[
+            SELECT
+              *
+            FROM
+              (SELECT
+                e.id AS exhibitionId,
+                oe.id AS outEventId,
+                oe.useFor,
+                oe.beginDate AS estimatedBeginTime,
+                oe.endDate AS estimatedEndTime,
+                oe.applicant,
+                e.beginTime,
+                e.endTime,
+                es.state
+              FROM
+                o_out_event oe
+                INNER JOIN h_exhibition e
+                  ON oe.id = e.outEventId
+                LEFT JOIN
+                  (SELECT
+                    exhibitionId,
+                    state
+                  FROM
+                    (SELECT
+                      exhibitionId,
+                      state
+                    FROM
+                      h_exhibition_state hes
+                    ORDER BY beginTime DESC) tmp
+                  GROUP BY exhibitionId) es
+                  ON e.id = es.exhibitionId
+              WHERE oe.siteId =  #{siteId}) t
+            WHERE t.state <> 4
+              OR t.state IS NULL
+        ]]>
+    </select>
+
+    <!--更新结束时间-->
+    <update id="updateBeginTime" parameterType="java.util.Map">
+		<![CDATA[
+			UPDATE
+              h_exhibition
+            SET
+              beginTime = #{beginTime}
+            WHERE id = #{exhibitionId}
+        ]]>
+	</update>
+
+    <!--更新结束时间-->
+    <update id="updateEndTime" parameterType="java.util.Map">
+		<![CDATA[
+			UPDATE
+              h_exhibition
+            SET
+              endTime = #{endTime}
+            WHERE id = #{exhibitionId}
+        ]]>
+	</update>
+
+</mapper>

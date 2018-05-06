@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="phoenix.mybatis.UserDistributionDao">
+
+	<!-- 查询 区域信息 -->
+	<select id="getDistrictInfo" resultType="java.util.Map" parameterType="java.lang.String">
+	<![CDATA[
+			SELECT 
+			DISTINCT 
+				t.zoneId ,t.zoneName
+			FROM 
+				t_zone t 
+			INNER JOIN 
+				u_zone_exciter u 
+			ON 
+				t.zoneId = u.zoneId 
+			INNER JOIN 
+				u_location l 
+			ON 
+				l.deviceId = u.deviceId 
+		    WHERE 
+		        t.siteId = #{siteId}
+			ORDER BY 
+				t.zoneId
+	]]>
+	</select>
+
+	<!-- 查询 区域统计数据 -->
+	<select id="getUserDistriData" parameterType="java.util.Map"
+		resultType="java.util.Map">
+	<![CDATA[
+		    SELECT 
+		    	COUNT(d.deviceId) as count,
+		    	d.currentTime,
+		    	d.zoneId
+    	    FROM 
+				(SELECT 
+					u.deviceId,
+					FROM_UNIXTIME(u.currentTime/1000,'%H') AS currentTime,
+					z.zoneId 
+				FROM 
+					u_location u 
+				INNER JOIN 
+					u_zone_exciter z 
+				ON 
+					z.deviceId = u.deviceId 
+			    LEFT JOIN t_zone t
+			    ON  z.zoneId = t.zoneId
+				WHERE
+			    	u.currentTime >= #{startTime}
+		    	AND
+		        	u.currentTime < #{endTime} 
+		        AND t.siteId = #{siteId} ) 
+        	AS 
+        		d 
+        	GROUP BY 
+        		d.zoneId,d.currentTime 
+       		ORDER BY 
+       			d.currentTime,d.zoneID
+	]]>
+	</select>
+
+
+	<!-- 获取活动密度最高的区域及次数 -->
+	<select id="getMaxActiveAreaAndCount" parameterType="java.util.Map"
+		resultType="java.util.Map">
+	<![CDATA[
+			SELECT 
+				MAX(m.activeCount) 
+			AS  activeCount,
+				m.zoneId,
+				m.zoneName
+			FROM 
+				(SELECT 
+				 	COUNT(u.deviceId) 
+				 AS activeCount ,
+				 	z.zoneId ,
+				 	t.zoneName
+				 FROM 
+				 	u_location u 
+				 INNER JOIN 
+					u_zone_exciter z 
+				 ON 
+					z.deviceId = u.deviceId 
+				 LEFT JOIN 	
+					t_zone t
+				 ON 
+				 	t.zoneId = z.zoneId
+				 WHERE
+			    	u.currentTime >= #{startTime}
+		    	 AND
+		        	u.currentTime < #{endTime} 
+		         AND t.siteId = #{siteId}
+				 GROUP BY 
+					z.zoneId 
+				 ORDER BY 
+       			  	 activeCount DESC
+				) m
+	]]>
+	</select>
+	
+	<!-- 获取活动最频繁的时段 -->
+	<select id="getMaxActiveTimeAndCount" parameterType="java.util.Map"
+		resultType="java.util.Map">
+	<![CDATA[
+			SELECT 
+				MAX(c.activeCount) AS activeCount,
+				c.currentTime	
+			FROM   
+				( SELECT 
+		    		COUNT(d.deviceId) AS activeCount,
+		    		d.currentTime
+    	    	  FROM 
+					(SELECT 
+					 	u.deviceId,
+					 	FROM_UNIXTIME(u.currentTime/1000,'%H') AS currentTime
+					 FROM 
+					 	u_location u 
+					 INNER JOIN 
+					 	u_zone_exciter z 
+					 ON 
+					 	z.deviceId = u.deviceId 
+					 LEFT JOIN t_zone t
+			         ON  z.zoneId = t.zoneId
+				 	 WHERE
+			    		u.currentTime >= #{startTime}
+		    		 AND
+		        	    u.currentTime < #{endTime} 
+		        	 AND t.siteId = #{siteId}
+		            ) 
+		          AS d  
+        		  GROUP BY 
+       				 d.currentTime 
+       			  ORDER BY 
+       			  	 activeCount DESC
+      		    )
+    		AS c 
+     
+	]]>
+	</select>
+	
+	<!-- 获取活动最频繁的时段的区域 -->
+	<select id="getMaxActiveTimeAreaAndCount" parameterType="java.util.Map"
+		resultType="java.util.Map">
+	<![CDATA[
+           	SELECT 
+           		MAX(f.activeCount) AS activeCount,
+       			f.currentTime,
+       			f.zoneId,
+       			f.zoneName  
+     		FROM 
+     			( SELECT 
+		    		COUNT(d.deviceId) AS activeCount,
+    				d.currentTime,
+		    		d.zoneId,
+					d.zoneName
+    	    	  FROM 
+					(SELECT 
+					 	u.deviceId,
+					 	FROM_UNIXTIME(u.currentTime/1000,'%H') AS currentTime,
+					 	t.zoneId,
+					 	t.zoneName
+					 FROM 
+					 	u_location u 
+					 INNER JOIN 
+					 	u_zone_exciter z 
+					 ON 
+					 	z.deviceId = u.deviceId 
+					 LEFT JOIN 	
+						t_zone t
+				     ON 
+				 		t.zoneId = z.zoneId 
+				 	 WHERE
+			    		u.currentTime >= #{startTime}
+		    		 AND
+		        	    u.currentTime <  #{endTime}
+		        	 AND t.siteId = #{siteId}
+		             ) 
+		          AS d  
+        		  GROUP BY 
+       				 d.currentTime ,d.zoneId
+       			  ORDER BY 
+       			  	 activeCount DESC
+       			) f
+	]]>
+	</select>
+
+
+
+</mapper>

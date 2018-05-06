@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.blackhole.bean">
+
+    <class name="User" table="t_users">
+        <id name="id">
+            <generator class="identity"/>
+        </id>
+
+        <property name="email">
+            <column name="userEmail" length="8" unique="true">
+                <comment>Email</comment>
+            </column>
+        </property>
+
+        <property name="password" column="userPassword" length="60"/>
+        <property name="userName" length="50" />
+        <property name="mobile" length="11"/>
+        <property name="sex"/>
+        <property name="createTime" type="timestamp"/>
+        <property name="token" length="50"/>
+        <property name="disable"  column="isDisable" type="org.hibernate.type.NumericBooleanType"/>
+        <property name="active" column="isActive" type="org.hibernate.type.NumericBooleanType"/>
+        <property name="photo" length="50"/>
+
+        <many-to-one name="logicGroup" column="logicGroupId"/>
+        <many-to-one name="department" column="departmentId"/>
+
+        <set name="roles" table="t_user_role">
+            <key column="userId"/>
+            <many-to-many column="roleId" unique="true" class="Role"/>
+        </set>
+		<set name="logicGroups" table="t_user_logicgroup">
+            <key column="userId"/>
+            <many-to-many column="logicGroupId" unique="true" class="LogicGroup"/>
+        </set>
+    </class>
+
+</hibernate-mapping> 

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+        "http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+    <package name="proxima:opticsDVPlace" extends="proxima">
+        <action name="queryOpticsDVPlace" class="proxima:queryOpticsDVPlaceAction">
+            <result type="freemarker">/proxima/pages/opticsDVPlace/list-opticsDVPlace.ftl</result>
+        </action>
+
+        <!-- 跳转到添加页面 -->
+        <action name="toAddOpticsDVPlace" class="proxima:addOpticsDVPlaceAction" method="toAddOpticsDVPlace">
+            <result type="freemarker">/proxima/pages/opticsDVPlace/add-opticsDVPlace.ftl</result>
+        </action>
+
+        <!-- 添加光学摄像机 -->
+        <action name="addOpticsDVPlace" class="proxima:addOpticsDVPlaceAction" method="addOpticsDVPlace">
+            <result type="redirectAction">
+                <param name="actionName">queryDVPlaceDefault</param>
+            </result>
+        </action>
+
+        <!-- 更新是否启用状态 -->
+        <action name="updateDVPlaceEnable" class="proxima:dvPlaceAction" method="updateDVPlaceEnable">
+            <result name="success" type="redirectAction">
+                <param name="actionName">queryDVPlaceDefault</param>
+            </result>
+        </action>
+
+        <!--获取站点下所有区域-->
+        <action name="getZones" class="proxima:getZonesAction" method="execute">
+            <result name="success" type="json">
+                <param name="root">zones</param>
+            </result>
+        </action>
+        <!-- 跳转到更新页面 -->
+        <action name="toUpdateOpticsDVPlace" class="proxima:updateOpticsDVPlaceAction" method="toUpdateOpticsDVPlace">
+            <result type="freemarker">/proxima/pages/opticsDVPlace/update-opticsDVPlace.ftl</result>
+        </action>
+
+        <!-- 更新光学摄像机点位信息 -->
+        <action name="updateOpticsDVPlace" class="proxima:updateOpticsDVPlaceAction" method="updateOpticsDVPlace">
+            <result name="success" type="redirectAction">
+                <param name="actionName">queryDVPlaceDefault</param>
+            </result>
+        </action>
+
+        <!-- 更新图片实景宽度 -->
+        <action name="updateImageRealWidth" class="proxima:updateImageRealWidthAction">
+            <result type="json">
+                <param name="includeProperties">success</param>
+            </result>
+        </action>
+    </package>
+</struts>

@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+
+	<t_zone zoneId="001" siteId="31010101" zoneName="测试区域1" parentId="002"
+		planImage="区域实景图1" dataVersion="32" />
+	<t_zone zoneId="002" siteId="31010101" zoneName="测试区域2"
+		planImage="区域实景图2" dataVersion="32" />
+
+	<m_nodeinfo nodeid="3101010100256" nodeType="1"
+		createTime="2013-01-21 14:42:57.0" X="0" Y="0" Z="0"
+		siteId="31010101" dataVersion="0" />
+	<m_nodeinfo nodeid="3101010100257" nodeType="2"
+		createTime="2013-01-21 14:42:57.0" X="0" Y="0" Z="0"
+		siteId="31010101" dataVersion="0" />
+	<m_nodeinfo nodeid="3101010100258" nodeType="7"
+		createTime="2013-01-21 14:42:57.0" X="0" Y="0" Z="0"
+		siteId="31010101" dataVersion="0" />
+	<m_nodeinfo nodeid="3101010100259" nodeType="1"
+		createTime="2013-01-21 14:42:57.0" X="0" Y="0" Z="0"
+		siteId="31010101" dataVersion="55" />
+
+	<m_nodeinfo nodeid="3101010100260" nodeType="3"
+		createTime="2013-01-21 14:42:57.0" X="0" Y="0" Z="0" siteId="31010101"
+		dataVersion="0" />
+	<m_nodeinfo nodeid="3101010100261" nodeType="4"
+		createTime="2013-01-21 14:42:57.0" X="0" Y="0" Z="0" siteId="31010101"
+		dataVersion="0" />
+	<m_nodeinfo nodeid="3101010100262" nodeType="4"
+		createTime="2013-01-21 14:42:57.0" X="0" Y="0" Z="0" siteId="31010101"
+		dataVersion="0" />
+
+    <m_location id="3101010110251" nodeid="3101010100256" locationName="位置点1"
+                createTime="2013-01-21 14:42:57.0" zoneId="001"
+                siteId="31010101" />
+    <m_location id="3101010110252" nodeid="3101010100257" locationName="位置点2"
+                createTime="2013-01-21 14:42:57.0" zoneId="001"
+                siteId="31010101" />
+    <m_location id="3101010110253" nodeid="3101010100258" locationName="位置点3"
+                createTime="2013-01-21 14:42:57.0" zoneId="001"
+                siteId="31010101" />
+    <m_location id="3101010110254" nodeid="3101010100259" locationName="位置点4"
+                createTime="2013-01-21 14:42:57.0" zoneId="001"
+                siteId="31010101" />
+
+    <m_location id="3101010110255" nodeid="3101010100260" locationName="位置点5"
+                createTime="2013-01-21 14:42:57.0" siteId="31010101" zoneId="001"
+            />
+    <m_location id="3101010110256" nodeid="3101010100261" locationName="位置点6"
+                createTime="2013-01-21 14:42:57.0" siteId="31010101" zoneId="001"
+            />
+    <m_location id="3101010110257" nodeid="3101010100262" locationName="位置点7"
+                createTime="2013-01-21 14:42:57.0" siteId="31010101" zoneId="001"
+            />
+
+	<m_nodeinfomemory id="7bd72808-52c8-49f3-ab89-1338e6b36d93"
+		nodeid="3101010100256" nodeVersion="3" isControl="1" parentIP="257"
+		childIP="256" feedbackIP="0" sequence="171" stamp="2013-01-21 14:47:31.0"
+		interval_i="600" rssi="1" lqi="1" lowvoltage="0.0" anomaly="0"
+		deviceMode="0" remoteIp="127.0.0.1" remotePort="4296" dataVersion="0" />
+	<m_nodeinfomemory id="7bd72808-52c8-49f3-ab89-5485sadr4545"
+		nodeid="3101010100257" nodeVersion="3" isControl="1" parentIP="257"
+		childIP="256" feedbackIP="0" sequence="171" stamp="2013-01-21 14:47:31.0"
+		interval_i="600" rssi="1" lqi="1" lowvoltage="0.0" anomaly="0"
+		deviceMode="0" remoteIp="127.0.0.1" remotePort="4296" dataVersion="0" />
+	<m_nodeinfomemory id="7bd72808-52c8-49f3-ab89-1338earaww93"
+		nodeid="3101010100258" nodeVersion="3" isControl="1" parentIP="257"
+		childIP="256" feedbackIP="0" sequence="171" stamp="2013-01-21 14:47:31.0"
+		interval_i="600" rssi="1" lqi="1" lowvoltage="0.0" anomaly="0"
+		deviceMode="0" remoteIp="127.0.0.1" remotePort="4296" dataVersion="0" />
+	<m_nodeinfomemory id="7bd72808-52c8-49f3-ab89-133zsdzfzdz93"
+		nodeid="3101010100259" nodeVersion="3" isControl="1" parentIP="257"
+		childIP="256" feedbackIP="0" sequence="171" stamp="2013-01-21 14:47:31.0"
+		interval_i="600" rssi="1" lqi="1" lowvoltage="0.0" anomaly="0"
+		deviceMode="0" remoteIp="127.0.0.1" remotePort="4296" dataVersion="0" />
+	<m_nodeinfomemory id="7bd72808-52arwerw34asserteersdzfzdz93"
+		nodeid="3101010100260" nodeVersion="3" isControl="1" parentIP="1"
+		childIP="222" feedbackIP="0" sequence="171" stamp="2013-01-21 14:47:31.0"
+		interval_i="600" rssi="1" lqi="1" lowvoltage="0.0" anomaly="0"
+		deviceMode="0" remoteIp="127.0.0.1" remotePort="4296" dataVersion="0" />
+	<m_nodeinfomemory id="7bd72808ds52c8-49f3-dfsgsee5rteab8993"
+		nodeid="3101010100261" nodeVersion="3" isControl="1" parentIP="222"
+		childIP="223" feedbackIP="0" sequence="171" stamp="2013-01-21 14:47:31.0"
+		interval_i="600" rssi="1" lqi="1" lowvoltage="0.0" anomaly="0"
+		deviceMode="0" remoteIp="127.0.0.1" remotePort="4296" dataVersion="0" />
+	<m_nodeinfomemory id="7bd72808-52c8-49f3-ab89-133zsasrewe93"
+		nodeid="3101010100262" nodeVersion="3" isControl="1" parentIP="222"
+		childIP="224" feedbackIP="0" sequence="171" stamp="2013-01-21 14:47:31.0"
+		interval_i="600" rssi="1" lqi="1" lowvoltage="0.0" anomaly="0"
+		deviceMode="0" remoteIp="127.0.0.1" remotePort="4296" dataVersion="0" />
+
+	<m_nodesensor id="1a51c71f-77db-47e6-addd-c429c9541491"
+		nodeid="3101010100256" sensorPhysicalid="48" sensorPhysicalValue="0"
+		state="1" stamp="2013-01-21 14:47:31.0" dataVersion="0" />
+	<m_nodesensor id="2c013769-9fd6-4c5d-a3d6-fca1ac4913e4"
+		nodeid="3101010100256" sensorPhysicalid="32" sensorPhysicalValue="0"
+		state="1" stamp="2013-01-21 14:47:31.0" dataVersion="0" />
+	<m_nodesensor id="45fab2d1-6865-4c68-a663-55d59b3321c7"
+		nodeid="3101010100256" sensorPhysicalid="33" sensorPhysicalValue="-39.4"
+		state="1" stamp="2013-01-21 14:47:31.0" dataVersion="0" />
+	<m_nodesensor id="486afea8-298e-47c7-907c-b585f557d736"
+		nodeid="3101010100256" sensorPhysicalid="61" sensorPhysicalValue="148.2"
+		state="1" stamp="2013-01-21 14:47:31.0" dataVersion="0" />
+	<m_nodesensor id="4dbdf5f3-66fc-424e-bb81-ec73738fd65d"
+		nodeid="3101010100256" sensorPhysicalid="49" sensorPhysicalValue="0"
+		state="1" stamp="2013-01-21 14:47:31.0" dataVersion="0" />
+	<m_nodesensor id="a3f753fe-3096-464c-aef5-086e72e5b077"
+		nodeid="3101010100256" sensorPhysicalid="50" sensorPhysicalValue="12"
+		state="1" stamp="2013-01-21 14:47:31.0" dataVersion="0" />
+	<m_nodesensor id="abdfc2f7-9730-44e4-a7c0-9d2baf1a3dcd"
+		nodeid="3101010100256" sensorPhysicalid="41" sensorPhysicalValue="49687"
+		state="1" stamp="2013-01-21 14:47:31.0" dataVersion="0" />
+	<m_nodesensor id="b8b5cc6d-cd89-445b-8c43-c0567d17bfa0"
+		nodeid="3101010100256" sensorPhysicalid="42" sensorPhysicalValue="9"
+		state="1" stamp="2013-01-21 14:47:31.0" dataVersion="0" />
+	<m_nodesensor id="dcd35238-a021-4996-900f-ade8184a653b"
+		nodeid="3101010100256" sensorPhysicalid="47" sensorPhysicalValue="2"
+		state="1" stamp="2013-01-21 14:47:31.0" dataVersion="0" />
+	<m_nodesensor id="f46147e2-4ef4-41cc-a59c-93b8f3abfb95"
+		nodeid="3101010100256" sensorPhysicalid="43" sensorPhysicalValue="0"
+		state="1" stamp="2013-01-21 14:47:31.0" dataVersion="0" />
+
+</dataset>
+

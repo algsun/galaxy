@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+        "http://struts.apache.org/dtds/struts-2.1.dtd">
+
+
+<struts>
+    <constant name="struts.locale" value="en"/>
+    <constant name="struts.i18n.encoding" value="utf-8"/>
+    <constant name="struts.custom.i18n.resources" value="i18n/language"/>
+    <constant name="struts.multipart.maxSize" value="200000000"/>
+    <constant name="struts.ognl.allowStaticMethodAccess" value="true"/>
+    <constant name="struts.convention.classes.reload" value="true"/>
+    <constant name="struts.devMode" value="false"/>
+    <constant name="struts.freemarker.manager.classname"
+              value="com.microwise.common.sys.freemarker.GalaxyFreemarkerManager"/>
+
+    <constant name="struts.freeroute.controllerSuffixes" value="Action, Controller"/>
+    <constant name="struts.freeroute.controllerPackage" value="com.microwise"/>
+    <constant name="struts.freeroute.defaultParentPackage" value="json-default"/>
+    <constant name="struts.action.excludePattern" value="/api/.*,/saturn/.*,/saturn/,/webjars/.*"/>
+
+    <!-- blackhole -->
+    <include file="blackhole/blackhole-struts.xml"></include>
+
+    <!-- blueplanet -->
+    <include file="blueplanet/blueplanet-struts.xml"></include>
+
+    <!-- proxima -->
+    <include file="proxima/proxima-struts.xml"></include>
+
+    <!-- uma -->
+    <include file="uma/uma-struts.xml"></include>
+
+    <!-- orion -->
+    <include file="orion/orion-struts.xml"></include>
+
+    <!-- phoenix -->
+    <include file="phoenix/phoenix-struts.xml"></include>
+
+    <!-- halley -->
+    <include file="halley/halley-struts.xml"></include>
+
+    <!-- dataCenter -->
+    <include file="dataCenter/dataCenter-struts.xml"></include>
+
+    <!-- biela -->
+    <include file="biela/biela-struts.xml"></include>
+
+    <!-- cybertron -->
+    <include file="cybertron/cybertron-struts.xml"></include>
+</struts>

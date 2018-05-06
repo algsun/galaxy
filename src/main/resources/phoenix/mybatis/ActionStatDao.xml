@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="phoenix.mybatis.ActionStatDao">
+
+	<!-- 查询人员在区域活动时长统计 -->
+	<select id="findActionStat" parameterType="java.util.Map" resultType="Uma:ActionStat">
+		<![CDATA[
+			SELECT * FROM
+			(SELECT 
+			COUNT(act.`id`) AS `actionCount`,
+			act.`name` as actionName
+			FROM u_action_templet  act
+			INNER JOIN u_action_census ace
+			ON act.`id` = ace.`actionTempletId`
+			WHERE ace.`goTime` >= #{startDate}
+			AND   ace.`backTime` <=#{endDate}
+			AND   act.`siteId` = #{siteId}
+			GROUP BY act.id
+			UNION 
+			SELECT 
+			COUNT(act.`id`) AS `actionCount`,
+			act.`name` as actionName
+			FROM u_action_templet  act
+			INNER JOIN u_user_action uac
+			ON act.`id` = uac.actionTempletId
+			WHERE act.`type` = 1
+			AND uac.occurrenceTime >= #{startDate}
+			AND uac.occurrenceTime <= #{endDate}
+			AND act.`siteId` = #{siteId}
+			GROUP BY act.id) AS a 
+			ORDER BY `actionCount` DESC
+	  ]]>
+	</select>
+</mapper>

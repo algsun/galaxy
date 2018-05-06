@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.orion.bean">
+    <class name="Situation" table="o_repair_situation" >
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="repairRecord" class="com.microwise.orion.bean.RepairRecord" lazy="false">
+            <column name="repairRecordId" />
+        </many-to-one>
+        <property name="weight" type="java.lang.String">
+            <column name="weight" length="50" not-null="false">
+                <comment>质量</comment>
+            </column>
+        </property>
+        <property name="repairedWeight" type="java.lang.String">
+            <column name="repairedWeight" length="50" not-null="false">
+                <comment>修复后质量</comment>
+            </column>
+        </property>
+        <property name="size" type="java.lang.String">
+            <column name="size" length="50" not-null="false">
+                <comment>尺寸</comment>
+            </column>
+        </property>
+        <property name="repairedSize" type="java.lang.String">
+            <column name="repairedSize" length="50" not-null="false">
+                <comment>修复后尺寸</comment>
+            </column>
+        </property>
+        <property name="summarize" type="java.lang.String">
+            <column name="summarize" length="1000" not-null="false">
+                <comment>文物修复过程记录综述</comment>
+            </column>
+        </property>
+        <property name="techChange" type="java.lang.String">
+            <column name="techChange" length="200" not-null="false">
+                <comment>技术变更</comment>
+            </column>
+        </property>
+        <property name="craft" type="java.lang.String">
+            <column name="craft" length="200" not-null="false">
+                <comment>工艺</comment>
+            </column>
+        </property>
+        <property name="frameStyle" type="java.lang.String">
+            <column name="frameStyle" length="200" not-null="false">
+                <comment>装裱样式</comment>
+            </column>
+        </property>
+        <property name="frameMaterial" type="java.lang.String">
+            <column name="frameMaterial" length="200" not-null="false">
+                <comment>装裱用料</comment>
+            </column>
+        </property>
+        <property name="packHead" type="java.lang.String">
+            <column name="packHead" length="200" not-null="false">
+                <comment>包首</comment>
+            </column>
+        </property>
+        <property name="kakemono" type="java.lang.String">
+            <column name="kakemono" length="200" not-null="false">
+                <comment>画轴</comment>
+            </column>
+        </property>
+        <property name="spinningType" type="java.lang.String">
+            <column name="spinningType" length="200" not-null="false">
+                <comment>种类</comment>
+            </column>
+        </property>
+        <property name="craftsmanship" type="java.lang.String">
+            <column name="craftsmanship" length="200" not-null="false">
+                <comment>制作工艺</comment>
+            </column>
+        </property>
+        <property name="weavingProcess" type="java.lang.String">
+            <column name="weavingProcess" length="200" not-null="false">
+                <comment>织造工艺</comment>
+            </column>
+        </property>
+        <property name="fabricPart" type="java.lang.String">
+            <column name="fabricPart" length="200" not-null="false">
+                <comment>织物组织</comment>
+            </column>
+        </property>
+        <property name="densityLong" type="java.lang.String">
+            <column name="densityLong" length="200" not-null="false">
+                <comment>织物密度-经线</comment>
+            </column>
+        </property>
+        <property name="densityLat" type="java.lang.String">
+            <column name="densityLat" length="200" not-null="false">
+                <comment>织物密度-纬线</comment>
+            </column>
+        </property>
+        <property name="colorLong" type="java.lang.String">
+            <column name="colorLong" length="200" not-null="false">
+                <comment>丝线颜色-经线</comment>
+            </column>
+        </property>
+        <property name="colorLat" type="java.lang.String">
+            <column name="colorLat" length="200" not-null="false">
+                <comment>细线颜色-纬线</comment>
+            </column>
+        </property>
+        <property name="slender" type="java.lang.String">
+            <column name="slender" length="200" not-null="false">
+                <comment>丝线细度</comment>
+            </column>
+        </property>
+        <property name="twistDirection" type="java.lang.String">
+            <column name="twistDirection" length="200" not-null="false">
+                <comment>丝线捻向</comment>
+            </column>
+        </property>
+        <property name="twistDegree" type="java.lang.String">
+            <column name="twistDegree" length="200" not-null="false">
+                <comment>丝线捻度</comment>
+            </column>
+        </property>
+        <property name="position" type="java.lang.String">
+            <column name="position" length="200" not-null="false">
+                <comment>位置</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

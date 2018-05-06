@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <package name="uma:useractoin" extends="uma" namespace="/uma">
+        <!--add by weng.geng 20130425-->
+        <action name="userRule" class="uma:userRuleAction">
+            <result name="success" type="freemarker">/uma/pages/useraction/user-action-detail.ftl</result>
+        </action>
+        <action name="findAllUser" class="uma:userRuleAction">
+            <result type="json">
+                <param name="root">personList</param>
+            </result>
+        </action>
+    </package>
+</struts>

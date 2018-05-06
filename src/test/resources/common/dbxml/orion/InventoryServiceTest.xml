@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+
+	<t_zone zoneId="001" siteId="31010101" zoneName="测试区域1"
+		planImage="区域实景图1" dataVersion="32" />
+
+
+	<o_historical_relic id="1" totalCode="1230" era="1"
+		level="1" zoneId="001" siteId="31010101" texture="1" catalogCode="1"
+		typeCode="1" name="12" state="0" hasTag="1" count="2" />
+	<o_historical_relic id="2" totalCode="1231" era="1"
+		level="1" zoneId="001" siteId="31010101" texture="1" catalogCode="1"
+		typeCode="1" name="121" state="0" hasTag="1" count="2" />
+    <o_historical_relic id="5" totalCode="1233" era="1" level="1" zoneId="001" siteId="31010101"
+		texture="1" catalogCode="1" typeCode="1" name="123" state="2" hasTag="1" count="2" />
+	<o_inventory id="1" siteId="123" state="1" sumCount="2"
+		sumNumber="4" deadline="2013-12-21 14:47:31.0" />
+	<o_inventory id="2" siteId="123" state="1" sumCount="2"
+		sumNumber="4" deadline="2013-01-20 14:47:31.0" />
+	<o_inventory id="3" siteId="123" state="1" sumCount="2"
+		sumNumber="4" deadline="2013-08-22 14:47:31.0" />
+	<o_inventory id="4" siteId="123" state="0"
+		deadline="2013-12-23 14:47:31.0" />
+
+	<o_out_event id="1" siteId="31010101" 
+		eventType="1" useFor="vv" beginDate="2013-01-21 14:47:31.0" endDate="2013-01-21 14:47:31.0"
+		applicant="xx" userId="1"  remark="bb" />
+
+		<o_inventory_error id="1" inventoryId="1" relicId="1"
+			sysState="0" scanState="0" />
+		<o_inventory_error id="2" inventoryId="1" relicId="2"
+			sysState="0" scanState="0" />
+		<o_inventory_out id="1" inventoryId="1" relicId="1"
+			eventId="1" />
+		<o_inventory_out id="2" inventoryId="1" relicId="2"
+			eventId="1" />
+  <o_event_relic id="1"  relicId="5"  eventId="1"/>
+  
+  <o_inventory_zone id ="1" zoneId = "001"  statisticsType="1" inventoryId="1" countNo="2" sumNo="4"/>
+</dataset>

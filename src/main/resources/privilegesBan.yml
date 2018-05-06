@@ -1,0 +1,7 @@
+
+#关闭功能 黑名单
+privilegesBan:
+#  - blueplanet:datacenter
+#  - blueplanet:offline
+#  - blueplanet:zone:scalarFiled
+#  - blueplanet:zone:windFiled

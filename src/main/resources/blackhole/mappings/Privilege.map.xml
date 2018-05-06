@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.blackhole.bean">
+
+	<class name="Privilege" table="t_system_privilege">
+		<id name="privilegeId" length="50">
+			<generator class="assigned" />
+		</id>
+
+		<property name="subsystemId" />
+		<property name="privilegeCnName" column="privilegeName_zh_CN" length="50" />
+        <property name="privilegeEnName" column="privilegeName_en_US" length="50" />
+		<property name="url" length="200" />
+		<property name="sequence" />
+		<property name="state" />
+		<property name="navigation" column="isNavigation" type="org.hibernate.type.NumericBooleanType" />
+
+		<many-to-one name="parent" column="parentPrivilegeId" />
+		<set name="childPrivileges">
+			<key column="parentPrivilegeId" />
+			<one-to-many class="Privilege" />
+		</set>
+	</class>
+
+</hibernate-mapping> 

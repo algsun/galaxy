@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/tx
+           http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- 配置数据源 -->
+    <!--<bean id="activitiDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"-->
+          <!--destroy-method="close">-->
+        <!--&lt;!&ndash; 数据库驱动 &ndash;&gt;-->
+        <!--<property name="driverClass" value="${jdbc.driver}"/>-->
+        <!--&lt;!&ndash; 连接URL串 &ndash;&gt;-->
+        <!--<property name="jdbcUrl" value="${jdbc.url}"/>-->
+        <!--&lt;!&ndash; 连接用户名 &ndash;&gt;-->
+        <!--<property name="user" value="${jdbc.username}"/>-->
+        <!--&lt;!&ndash; 连接密码 &ndash;&gt;-->
+        <!--<property name="password" value="${jdbc.password}"/>-->
+        <!--&lt;!&ndash; 初始化连接池时连接数量为5个 &ndash;&gt;-->
+        <!--<property name="initialPoolSize" value="2"/>-->
+        <!--&lt;!&ndash; 允许最小连接数量为5个 &ndash;&gt;-->
+        <!--<property name="minPoolSize" value="2"/>-->
+        <!--&lt;!&ndash; 允许最大连接数量为20个 &ndash;&gt;-->
+        <!--<property name="maxPoolSize" value="5"/>-->
+        <!--&lt;!&ndash; 允许连接池最大生成100个PreparedStatement对象 &ndash;&gt;-->
+        <!--<property name="maxStatements" value="100"/>-->
+        <!--&lt;!&ndash; 连接有效时间，连接超过3600秒未使用，则该连接丢弃 &ndash;&gt;-->
+        <!--<property name="maxIdleTime" value="3600"/>-->
+        <!--&lt;!&ndash; 连接用完时，一次产生的新连接步进值为2 &ndash;&gt;-->
+        <!--<property name="acquireIncrement" value="2"/>-->
+        <!--&lt;!&ndash; 获取连接失败后再尝试10次，再失败则返回DAOException异常 &ndash;&gt;-->
+        <!--<property name="acquireRetryAttempts" value="10"/>-->
+        <!--&lt;!&ndash; 获取下一次连接时最短间隔600毫秒，有助于提高性能 &ndash;&gt;-->
+        <!--<property name="acquireRetryDelay" value="600"/>-->
+        <!--&lt;!&ndash; 检查连接的有效性，此处小弟不是很懂什么意思 &ndash;&gt;-->
+        <!--<property name="testConnectionOnCheckin" value="true"/>-->
+        <!--&lt;!&ndash; 每个1200秒检查连接对象状态 &ndash;&gt;-->
+        <!--<property name="idleConnectionTestPeriod" value="1200"/>-->
+        <!--&lt;!&ndash; 获取新连接的超时时间为10000毫秒 &ndash;&gt;-->
+        <!--<property name="checkoutTimeout" value="10000"/>-->
+    <!--</bean>-->
+
+
+    <bean id="activitiDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          init-method="init" destroy-method="close">
+        <!-- 数据库驱动 -->
+        <property name="DriverClassName" value="${jdbc.driver}"/>
+        <!-- 连接URL串 -->
+        <property name="url" value="${jdbc.url}"/>
+        <!-- 连接用户名 -->
+        <property name="username" value="${jdbc.username}"/>
+        <!-- 连接密码 -->
+        <property name="password" value="${jdbc.password}"/>
+        <!-- 初始化连接池时连接数量为5个 -->
+        <property name="initialSize" value="2"/>
+        <!-- 允许最大连接数量为20个 -->
+        <property name="maxActive" value="5"/>
+        <!-- 连接池最小空闲 -->
+        <property name="minIdle" value="2" />
+        <!-- 允许连接池最大生成100个PreparedStatement对象 -->
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="100"/>
+        <!-- 连接有效时间，连接超过3600秒未使用，则该连接丢弃 -->
+        <property name="timeBetweenEvictionRunsMillis" value="3600"/>
+        <!-- 最小逐出时间 -->
+        <property name="minEvictableIdleTimeMillis" value="300000" />
+        <!-- 连接空闲时测试是否有效 -->
+        <property name="testWhileIdle" value="true" />
+        <!-- 获取连接时测试是否有效 -->
+        <property name="testOnBorrow" value="false" />
+        <!-- 归还连接时是否测试有效 -->
+        <property name="testOnReturn" value="false" />
+
+
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="activitiDataSource" />
+    </bean>
+
+    <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+        <property name="dataSource" ref="activitiDataSource"/>
+        <property name="transactionManager" ref="transactionManager"/>
+
+        <property name="databaseSchemaUpdate" value="true"/>
+
+        <property name="jobExecutorActivate" value="false" />
+
+        <property name="deploymentResources">
+            <list>
+                <value>classpath*:/orion/bpmn/*</value>
+            </list>
+        </property>
+
+        <property name="beans">
+            <map>
+                <entry key="userService" value-ref="blackhole:userService"/>
+            </map>
+        </property>
+
+        <property name="activityFontName" value="宋体"/>
+    </bean>
+
+    <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean" lazy-init="false">
+        <property name="processEngineConfiguration" ref="processEngineConfiguration" />
+    </bean>
+
+    <bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />
+    <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />
+    <bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />
+    <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" />
+    <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" />
+    <bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService" />
+
+</beans>

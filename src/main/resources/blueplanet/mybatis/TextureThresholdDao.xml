@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blueplanet.textureThresholdDao">
+
+    <select id="findBindLocationId" parameterType="java.lang.Integer" resultType="string">
+        <![CDATA[
+            SELECT
+              locationId
+            FROM
+              `m_location_relic`
+            WHERE relicId IN
+              (SELECT
+                id
+              FROM
+                `o_historical_relic` r
+              WHERE r.`texture` = #{value})
+        ]]>
+    </select>
+
+    <insert id="insertTextureThreshold" parameterType="TextureThresholdVO">
+       <![CDATA[
+          INSERT INTO `m_texture_threshold`
+            (`textureId`, `sensorPhysicalId`, `conditionType`, `target`, `floating`)
+           VALUES ( #{textureId}, #{sensorPhysicalId}, #{conditionType}, #{target}, #{floating});
+        ]]>
+    </insert>
+
+    <select id="findTextureThreshold" parameterType="TextureThresholdVO" resultType="TextureThresholdVO">
+        <![CDATA[
+            SELECT
+              `id`,
+              `textureId`,
+              `sensorPhysicalId`,
+              `conditionType`,
+              `target`,
+              `floating`
+            FROM `m_texture_threshold` AS mtt WHERE mtt.`textureId`= #{textureId}  AND mtt.`sensorPhysicalId` = #{sensorPhysicalId}
+        ]]>
+    </select>
+
+    <select id="findTextureThresholds" parameterType="int" resultType="TextureThresholdVO">
+        <![CDATA[
+            SELECT
+              mtt.`id`,
+              mtt.`textureId`,
+              mtt.`sensorPhysicalId`,
+              ms.`cn_name` AS sensorName,
+              mtt.`conditionType`,
+              mtt.`target`,
+              mtt.`floating`
+            FROM `m_texture_threshold` AS mtt
+            INNER JOIN `m_sensorinfo` AS ms ON ms.`sensorPhysicalid`=mtt.`sensorPhysicalId`
+            WHERE mtt.`textureId`= #{textureId} ORDER BY mtt.id DESC
+        ]]>
+    </select>
+
+    <delete id="deleteTextureThreshold" parameterType="int">
+        <![CDATA[
+            DELETE FROM `m_texture_threshold` WHERE `id` = #{value} ;
+        ]]>
+    </delete>
+
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+        "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+
+    <package name="blackhole" extends="json-default" namespace="/blackhole">
+        <interceptors>
+            <interceptor name="shiroAuthorizationInterceptor" class="com.microwise.common.sys.shiro.ShiroAuthorizationInterceptor"/>
+            <interceptor-stack name="shiroStack">
+                <interceptor-ref name="defaultStack"/>
+                <interceptor-ref name="shiroAuthorizationInterceptor"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="shiroStack"/>
+
+        <global-results>
+            <result name="unauthorized" type="redirect">/blackhole/unauthorized.action</result>
+        </global-results>
+
+        <action name="unauthorized">
+            <result>/blackhole/pages/index/unauthorized.html</result>
+        </action>
+    </package>
+
+    <include file="blackhole/struts/app-struts.xml"/>
+    <include file="blackhole/struts/index-struts.xml"/>
+    <include file="blackhole/struts/role-struts.xml"/>
+    <include file="blackhole/struts/user-struts.xml"/>
+    <include file="blackhole/struts/profile-struts.xml"/>
+    <include file="blackhole/struts/sysLog-struts.xml"/>
+    <include file="blackhole/struts/file-struts.xml"/>
+    <include file="blackhole/struts/logicgroup-struts.xml"/>
+    <include file="blackhole/struts/post-struts.xml"/>
+    <include file="blackhole/struts/theme-struts.xml"/>
+</struts>

@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.orion.bean">
+    <class name="DetectionAnalysis" table="o_detection_analysis">
+        <id name="analysisNum" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="repairRecord" class="com.microwise.orion.bean.RepairRecord" lazy="false">
+            <column name="repairRecordId"/>
+        </many-to-one>
+        <property name="sampleName" type="java.lang.String">
+            <column name="sampleName" length="50" not-null="true">
+                <comment>样品名称</comment>
+            </column>
+        </property>
+        <property name="sampleDescription" type="java.lang.String">
+            <column name="sampleDescription" length="1000" not-null="false">
+                <comment>样品描述</comment>
+            </column>
+        </property>
+        <property name="analysisPurpose" type="java.lang.String">
+            <column name="analysisPurpose" length="200" not-null="false">
+                <comment>分析目的</comment>
+            </column>
+        </property>
+        <property name="analysisMethod" type="java.lang.String">
+            <column name="analysisMethod" length="200" not-null="false">
+                <comment>分析方法</comment>
+            </column>
+        </property>
+        <property name="analysisResult" type="java.lang.String">
+            <column name="analysisResult" length="200" not-null="false">
+                <comment>分析结果</comment>
+            </column>
+        </property>
+        <property name="reportCode" type="java.lang.String">
+            <column name="reportCode" length="200" not-null="false">
+                <comment>报告代码</comment>
+            </column>
+        </property>
+        <property name="analysisTime" type="java.util.Date">
+            <column name="analysisTime" length="19" not-null="false">
+                <comment>分析时间</comment>
+            </column>
+        </property>
+        <property name="remark" type="java.lang.String">
+            <column name="remark" length="200" not-null="false">
+                <comment>备注</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

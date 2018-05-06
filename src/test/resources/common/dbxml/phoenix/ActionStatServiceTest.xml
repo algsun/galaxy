@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+	<t_zone zoneId='1' siteId='31010101' zoneName='aa' />
+	<t_zone zoneId='2' siteId='31010101' zoneName='bb' />
+	<t_logicgroup id="1" logicGroupName="测试站点" activeState="3"
+		logicGroupType="1" />
+	<t_users id="1" userEmail="962097540@qq.com" logicGroupId="1"
+		userName="爷爷" userPassword="121212" sex="2" isDisable="0" token="token2"
+		isActive="0" />
+	<u_action_templet id='1' parentId='0' name='进出aa'
+		type='2' enable='1' siteId='31010101' zoneId='1' />
+	<u_action_templet id='2' parentId='0' name='进出bb'
+		type='2' enable='1' siteId='31010101' zoneId='2' />
+	<u_action_templet id='3' parentId='1' name='进a' type='3'
+		enable='1' siteId='31010101' zoneId='1' />
+	<u_action_templet id='4' parentId='1' name='出a' type='4'
+		enable='1' siteId='31010101' zoneId='1' />
+
+	<u_action_census id='1' userId='1' actionTempletId='1'
+		goActionTempId='3' backActionTempId='4' goTime='1367819607828'
+		backTime='1367820121084' />
+	<u_action_census id='2' userId='1' actionTempletId='1'
+		goActionTempId='3' backActionTempId='4' goTime='1367819607920'
+		backTime='1367820121999' />
+
+</dataset>

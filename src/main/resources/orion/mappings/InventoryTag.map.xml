@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.orion.bean">
+	<class name="InventoryTag" table="o_inventory_tag">
+		<id name="relicId" type="java.lang.Integer">
+			<column name="relicId" />
+			<generator class="assigned" />
+		</id>
+		<property name="inventoryId" column="inventoryId" type="java.lang.Integer" />
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,61 @@
+/**
+* 业务系统内基础样式, 主要包括布局相关样式
+*
+* @author gao.hui 2012-10-18
+*/
+
+#gcontent{
+    min-height: 500px;
+}
+
+/* 返回按钮 */
+a.go-back {
+    text-decoration: none;
+    color: black;
+}
+
+a.go-back:hover{
+    color: #0075ab;
+}
+
+/* 返回图标 */
+i.mw-icon-prev {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url("../images/br_prev_icon&16.png");
+}
+
+/* 单程图标 */
+i.mw-icon-one-way {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background-image: url("../images/icon/one-way.png");
+}
+
+/* 覆盖 bootstrap 样式 START */
+
+.table thead {
+    background-color: #ececec;
+}
+
+/* 表格灰白相间 */
+.table-striped tbody > tr:nth-child(odd) {
+    background-color: #fff;
+}
+.table-striped tbody > tr:nth-child(odd) > td, .table-striped tbody > tr:nth-child(odd) > th {
+    background-color: transparent;
+}
+
+/* 内容居中 */
+.table.table-center td {
+    text-align: center;
+    vertical-align: middle;
+}
+.table.table-center thead th {
+    text-align: center;
+    vertical-align: top;
+}
+
+/* 覆盖 END */

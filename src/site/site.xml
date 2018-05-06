@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="Galaxy-银河">
+
+    <skin>
+        <groupId>org.apache.maven.skins</groupId>
+        <artifactId>maven-fluido-skin</artifactId>
+        <version>1.3.0</version>
+    </skin>
+
+    <bannerLeft>
+        <name>Galaxy-银河</name>
+        <src>images/galaxy-logo-zh.png</src>
+        <width>150</width>
+        <height>70</height>
+    </bannerLeft>
+
+    <custom>
+        <fluidoSkin>
+            <leftColumnClass>span2</leftColumnClass>
+            <bodyColumnClass>span10</bodyColumnClass>
+            <sourceLineNumbersEnabled>true</sourceLineNumbersEnabled>
+        </fluidoSkin>
+    </custom>
+
+    <body>
+        <menu name="Galaxy文档">
+            <item name="目录说明" href="directory-note.html"/>
+            <item name="配置说明" href="app-config.html"/>
+            <item name="数据库说明" href="databases.html"/>
+            <item name="数据库迁移" href="db-migration.html"/>
+            <item name="技术" collapse="true" href="tech/index.html">
+                <item name="技术栈" href="tech/technology-stack.html"/>
+                <item name="freemarker layout" href="tech/freemarker-layout.html"/>
+                <item name="使用spring" href="tech/using-spring.html"/>
+                <item name="action之间传递消息" href="tech/message-between-action.html"/>
+                <item name="shiro介绍与使用" href="tech/shiro.html"/>
+                <item name="通过本地化定制界面" href="tech/custom-ui-through-localization.html"/>
+            </item>
+            <item name="web" collapse="true" href="web/tech-stack.html">
+                <item name="技术栈" href="web/tech-stack.html"/>
+                <item name="session" href="web/session-note.html"/>
+            </item>
+            <item name="javadoc" href="apidocs/index.html"/>
+            <item name="测试覆盖率" href="cobertura/index.html"/>
+            <item name="生产站点/添加内容" href="how-to-generate-site.html"/>
+        </menu>
+
+        <menu name="环境监控(BluePlanet)">
+            <item name="数据缓存" href="blueplanet/cache.html"/>
+            <item name="web" collapse="true" href="blueplanet/web/index.html">
+                <item name="web说明" href="blueplanet/web/note.html"/>
+                <item name="Action接口" href="blueplanet/action/API.html"/>
+            </item>
+        </menu>
+
+        <menu ref="reports"/>
+
+        <footer>
+            <img alt="microwise-system" src="images/logo-top-150x46.png"/>
+        </footer>
+    </body>
+</project>

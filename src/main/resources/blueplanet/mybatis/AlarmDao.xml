@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blueplanet.AlarmDao">
+
+    <select id="findMeasureList" parameterType="java.lang.String" resultType="MeasureVO">
+        <![CDATA[
+
+            SELECT
+              id AS id,
+              description AS description,
+              createTime AS createTime
+            FROM m_measure
+            WHERE siteId =#{value} order by id
+
+        ]]>
+    </select>
+
+    <insert id="addMeasure" parameterType="MeasureVO">
+        <![CDATA[
+
+           INSERT INTO
+				`m_measure`(id,description,siteId,createTime)
+			VALUES
+				(#{id},#{description},#{siteId},#{createTime})
+
+        ]]>
+    </insert>
+
+    <select id="findMeasureById" parameterType="java.lang.String" resultType="MeasureVO">
+          <![CDATA[
+
+            SELECT
+              id AS id,
+              description AS description,
+              createTime AS createTime
+            FROM m_measure
+            WHERE id = #{value}
+
+        ]]>
+    </select>
+
+    <update id="updateMeasure" parameterType="MeasureVO">
+          <![CDATA[
+
+            UPDATE
+              `m_measure`
+            SET
+              `description` = #{description}
+            WHERE id = #{id}
+
+        ]]>
+    </update>
+
+    <delete id="deleteMeasure" parameterType="java.lang.String">
+         <![CDATA[
+
+            DELETE
+            FROM
+              `m_measure`
+            WHERE id = #{value}
+
+        ]]>
+    </delete>
+
+    <!--<select id="findMeasureByZoneId" parameterType="java.lang.String" resultType="MeasureVO">-->
+          <!--<![CDATA[-->
+
+            <!--SELECT-->
+              <!--m.`id` AS id,-->
+              <!--m.`description` AS description-->
+            <!--FROM-->
+              <!--`m_zone_measure` AS z-->
+            <!--LEFT JOIN `m_measure` AS m-->
+            <!--ON z.`measureId` = m.`id` where z.`zoneId`= #{value}-->
+
+          <!--]]>-->
+    <!--</select>-->
+
+    <select id="findRecordBySiteId" parameterType="AlarmRecordVO" resultType="AlarmRecordVO">
+          <![CDATA[
+
+            SELECT
+              id AS id,
+              sensorId AS sensorId,
+              factor AS factor,
+              siteId AS siteId,
+              alarmTime AS alarmTime
+            FROM
+              `m_alarm_history`
+            WHERE siteId = #{siteId}
+
+          ]]>
+          <if test="sensorId != null">
+              AND sensorId = #{sensorId}
+          </if>
+
+          <if test="measureId != null">
+              AND measureId = #{measureId}
+          </if>
+
+          <if test="alarmTime !=null">
+              AND alarmTime between #{startTime} and #{endTime}
+          </if>
+
+    </select>
+
+    <select id="findRecordVOByPages" parameterType="java.util.Map" resultType="AlarmRecordVO">
+        <![CDATA[
+            SELECT
+              ar.id AS id,
+              ar.sensorId AS sensorId,
+              ml.locationName AS locationName,
+              ar.factor AS factor,
+              alarmTime AS alarmTime
+            FROM
+               `m_alarm_history` AS ar
+            LEFT JOIN `m_location` AS ml ON ar.`locationId` = ml.`id`
+            WHERE ar.siteId = #{siteId}
+          ]]>
+        <if test="sensorId != null">
+            AND sensorId = #{sensorId}
+        </if>
+
+        <if test="measureId != null">
+            AND measureId = #{measureId}
+        </if>
+        <![CDATA[
+            AND alarmTime between #{startTime} and #{endTime}
+            ORDER BY alarmTime DESC
+		    LIMIT #{index},#{size}
+		]]>
+    </select>
+
+    <select id="findRecordVOCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT
+        count(*)
+        FROM
+        `m_alarm_history`
+        WHERE siteId = #{siteId}
+        ]]>
+        <if test="sensorId != null">
+            AND sensorId = #{sensorId}
+        </if>
+
+        <if test="measureId != null">
+            AND measureId = #{measureId}
+        </if>
+        <![CDATA[
+            AND alarmTime between #{startTime} and #{endTime}
+		]]>
+    </select>
+
+    <select id="findMeasureByRecordId" parameterType="java.lang.String" resultType="MeasureVO">
+       <![CDATA[
+
+            SELECT
+                id AS id,
+                description AS description
+            FROM
+            `m_measure`
+            WHERE id IN
+              (SELECT
+              measureId
+              FROM
+              `m_history_measure`
+              WHERE alarmHistoryId = #{value})
+
+          ]]>
+    </select>
+
+    <!--<select id="hasZoneMeasureId" parameterType="java.lang.String" resultType="java.lang.Integer">-->
+        <!--<![CDATA[-->
+            <!--SELECT-->
+              <!--COUNT(*)-->
+            <!--FROM-->
+              <!--`m_zone_measure`-->
+            <!--WHERE measureId = #{value}-->
+          <!--]]>-->
+    <!--</select>-->
+
+    <select id="findAlarmRecordList" parameterType="java.lang.String" resultType="AlarmRecordVO">
+        <![CDATA[
+            SELECT
+              A.*,
+              ml.`locationName`
+            FROM
+              `m_alarm_history` AS A
+              INNER JOIN m_location AS ml
+                ON ml.`id` = A.`locationId`
+              INNER JOIN t_zone AS tz
+                ON tz.`zoneId` = ml.`zoneId`,
+              (SELECT
+                `locationId`,
+                MAX(alarmTime) max_day
+              FROM
+                m_alarm_history
+              GROUP BY locationId) AS B
+            WHERE A.`locationId` = B.locationId
+              AND A.`alarmTime` = B.`max_day`
+              AND A.`state` IN (1, 2)
+              AND ml.zoneId = #{value} ;
+          ]]>
+    </select>
+
+    <select id="findRecentAlarmRecord" parameterType="java.lang.String" resultType="AlarmRecordVO">
+        <![CDATA[
+            SELECT
+                id, locationId, sensorId, factor, siteId, alarmTime, state
+            FROM
+                m_alarm_history
+            WHERE
+                locationId = #{locationId}
+                    AND alarmTime > CURRENT_DATE
+            ORDER BY alarmTime DESC
+            LIMIT 1;
+          ]]>
+    </select>
+
+</mapper>

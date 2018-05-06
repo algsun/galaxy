@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="uma.mybatis.AllotcardDao">
+	
+	<!-- 查询人员 信息 列表 -->
+	<select id="findPerson" parameterType="java.util.Map" resultType="PersonBean">
+	
+		SELECT  DISTINCT
+		   a.id   AS  id ,
+		   a.userName  AS  personName,
+           a.userEmail AS email,
+           a.photo AS photo,
+		   a.sex   AS  sex
+		 <if test="isHasCard">
+		   ,b.sn    AS  cardSN ,
+		   b.voltage AS  voltage,
+           b.updateTime as lastTime
+		 </if>
+		   
+		FROM 
+		   t_users   AS  a  
+	    LEFT JOIN
+	       t_logicgroup   AS  d  ON a.logicgroupId= d.id
+		LEFT JOIN  
+		   u_user_card  AS  c   ON  a.id=c.userId
+		LEFT JOIN 
+		   u_device  AS  b     ON   c.sn= b.sn
+		WHERE 
+		   d.siteId = #{siteId}
+		 AND 
+		 <if test="isHasCard">
+		    b.sn  is  not NULL
+		 </if> 
+		 <if test="! isHasCard">
+		 	b.sn IS  NULL 
+		 AND
+		    a.isDisable = 0
+		 </if>
+		<if test="personName != null">   
+		AND 
+		    a.userName LIKE #{personName}	
+		</if> 
+		
+		<if test="isLowPower">
+		<![CDATA[
+		 AND b.voltage < 1.5
+		 ]]>
+		</if>
+		ORDER BY a.createTime DESC
+		
+
+        LIMIT  #{index}, #{pageSize}
+	
+	</select>	
+
+
+	<!-- 查询人员 数量 -->
+	<select id="findPersonCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT  DISTINCT
+           COUNT(a.id)
+        FROM
+           t_users   AS  a
+         LEFT JOIN
+           t_logicgroup   AS  d  ON a.logicgroupId= d.id
+        LEFT JOIN
+           u_user_card  AS  c   ON  a.id=c.userId
+        LEFT JOIN
+           u_device  AS  b     ON   c.sn= b.sn
+        WHERE
+            d.siteId = #{siteId}
+        AND
+         <if test="isHasCard">
+            b.sn  is  not NULL
+         </if>
+         <if test="! isHasCard">
+            b.sn IS  NULL
+         </if>
+         <if test="isLowPower">
+            <![CDATA[
+             AND b.voltage < 1.5
+             ]]>
+        </if>
+        <if test="personName != null">
+        AND
+            a.userName LIKE #{personName}
+        </if>
+	</select>
+
+    <!-- 查询有卡的所有人员 -->
+    <select id="findAllPersonsHasCard" parameterType="int" resultType="PersonBean">
+        <![CDATA[
+        SELECT
+            p.id AS id,
+            p.userName AS personName,
+            p.sex AS sex
+
+        FROM
+            t_users AS p
+            JOIN
+            u_user_card AS uc
+                ON p.id = uc.userId
+        WHERE p.logicGroupId = #{logicGroupId}
+        ]]>
+    </select>
+
+    <!-- 查询无卡的所有人员 -->
+    <select id="findAllPersonsHasNoCard" parameterType="int" resultType="PersonBean">
+        <![CDATA[
+        SELECT
+            p.id AS id,
+            p.userName AS personName,
+            p.sex AS sex
+
+        FROM
+            t_users AS p
+            LEFT JOIN
+            u_user_card AS uc ON p.id = uc.userId
+        WHERE
+            p.logicGroupId = #{logicGroupId} AND
+            uc.userId IS NULL
+        ]]>
+    </select>
+
+	<!-- 为人员发放电子卡 -->
+	<insert id="sendCardForPerson" parameterType="java.util.Map">
+		INSERT   u_user_card (userId,sn) VALUES(#{personId},#{sn})
+	</insert>
+	
+	<!-- 换卡 -->
+	<update id="exchangeCard" parameterType="java.util.Map">
+      UPDATE  u_user_card  SET sn= #{sn}  WHERE  userId=#{personId}
+	</update>
+	
+	<!-- 退卡 -->
+	<delete id="recedeCard" parameterType="java.lang.Integer">
+      delete from  u_user_card   WHERE  userId=#{personId}
+	</delete>
+	
+</mapper>

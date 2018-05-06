@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="phoenix.mybatis.RelicStatDao">
+
+   <!-- 查询站点下文物总数量 -->
+	<select id="findRelicSum" parameterType="java.lang.String" resultType="java.lang.Integer">
+	<![CDATA[
+	      SELECT 
+			count(hr.id)
+		  FROM
+		    o_historical_relic hr 
+		  WHERE 
+		     hr.siteId = #{siteId}
+		     and hr.is_canceled=0
+	]]>
+	</select>
+
+	<!-- 系统文物级别统计 -->
+	<select id="findLevelStat" parameterType="java.util.Map" resultType="java.util.Map">
+	<![CDATA[
+  		  SELECT 
+		    l.name  `key`  ,
+		    COUNT(hr.id)  `number`,
+		    ROUND((COUNT(hr.id)/#{relicSum})*100,2) AS `value`
+		  FROM
+		    o_historical_relic hr 
+		  INNER JOIN 
+		     o_level  l 
+		  ON hr.level = l.id
+		  WHERE 
+		     hr.siteId = #{siteId}
+		     and hr.is_canceled=0
+		  GROUP BY hr.level
+		  ORDER BY  `value` DESC ,l.id
+    ]]>
+	</select>
+	
+     <!-- 系统文物年代统计 -->
+	<select id="findEraStat" parameterType="java.util.Map" resultType="java.util.Map">
+	<![CDATA[
+		  SELECT 
+		    e.name  `key` ,
+		    COUNT(hr.id)  `number`,
+		    ROUND((COUNT(hr.id)/#{relicSum})*100,2) AS `value`
+		  FROM
+		    o_historical_relic hr 
+		  INNER JOIN 
+		     o_era e
+		  ON hr.era = e.id
+		  WHERE 
+		     hr.siteId = #{siteId}
+		     and hr.is_canceled=0
+		  GROUP BY hr.era
+		  ORDER BY  `value` DESC ,e.id
+    ]]>
+	</select>
+	
+	  <!-- 系统文物质地统计 -->
+	<select id="findTextureStat" parameterType="java.util.Map" resultType="java.util.Map">
+	<![CDATA[
+		  
+  		  SELECT 
+		    t.name `key`  ,
+		    COUNT(hr.id)  `number`,
+		    ROUND((COUNT(hr.id)/#{relicSum})*100,2) AS `value`
+		  FROM
+		    o_historical_relic hr 
+		  INNER JOIN 
+		     o_texture  t
+		  ON hr.texture = t.id
+		  WHERE 
+		     hr.siteId = #{siteId}
+		     and hr.is_canceled=0
+		  GROUP BY hr.texture
+		  ORDER BY  `value` DESC ,	t.id
+    ]]>
+	</select>
+	
+    <!-- 系统文物区域统计 -->
+	<select id="findZoneStat" parameterType="java.util.Map" resultType="java.util.Map">
+	<![CDATA[
+		 SELECT 
+		    z.`zoneName` `key`  ,
+		    COUNT(hr.id)  `number`,
+		    ROUND((COUNT(hr.id)/#{relicSum})*100,2) AS `value`
+		  FROM
+		    o_historical_relic hr 
+		  LEFT JOIN 
+		     t_zone z
+		  ON z.`zoneId` = hr.`zoneId`
+		  WHERE 
+		     hr.siteId = #{siteId}
+		     and hr.is_canceled=0
+		  GROUP BY hr.`zoneId`
+		  ORDER BY  `value` DESC ,z.zoneId
+    ]]>
+	</select>
+
+</mapper>

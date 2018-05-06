@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+	<package name="proxima:infraredImage" extends="proxima" namespace="/proxima">
+        <!-- 标记区域编辑 -->
+        <action name="toEditMarkRegion" class="proxima:editMarkRegionAction" method="view">
+            <result type="freemarker">/proxima/pages/infraredImage/editMarkRegion.ftl</result>
+        </action>
+
+		<!-- 加载监测点、红外摄像机点位、区域信息 -->
+		<action name="infraredTrendChartDefault" class="proxima:viewInfraredChartAction"
+			method="view">
+			<result type="freemarker">/proxima/pages/infraredChart/trendChart.ftl</result>
+		</action>
+
+		<!-- 加载温度变化趋势图 -->
+		<action name="infraredTrendChart" class="proxima:viewInfraredChartAction"
+			method="execute">
+			<result type="freemarker">/proxima/pages/infraredChart/trendChart.ftl</result>
+		</action>
+
+	</package>
+
+	<package name="proxima:infraredImage-markRegion" extends="proxima" namespace="/proxima">
+	    <action name="addMarkRegion" class="proxima:addMarkRegionAction">
+	        <result type="json">
+	            <param name="includeProperties">success, message, markRegionId</param>
+	        </result>
+	    </action>
+
+	    <action name="deleteMarkRegion" class="proxima:deleteMarkRegionAction">
+	        <result type="json">
+	            <param name="includeProperties">success, message</param>
+	        </result>
+	    </action>
+
+	    <action name="updateMarkRegion" class="proxima:updateMarkRegionAction">
+	        <result type="json">
+	            <param name="includeProperties">success</param>
+	        </result>
+	    </action>
+
+	    <action name="infraredImageTemperature" class="proxima:infraredImageTempuratureAction">
+	        <result type="json"></result>
+	    </action>
+
+        <action name="ajaxMarkRegion" class="proxima:viewInfraredChartAction" method="ajax">
+            <result type="json">
+                <param name="excludeProperties">infraredMarkRegionList.*\.dvPlace</param>
+            </result>
+        </action>
+	</package>
+</struts>

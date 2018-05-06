@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+  <t_logicgroup id="1" logicGroupName="测试站点" activeState="3" logicGroupType="1" />
+  <t_users id="100" userEmail="415201519@qq.com" logicGroupId="1" userName="大头" userPassword="121212" sex="1" isDisable="0" token="token1" isActive="1" />
+  <t_users id="101" userEmail="962097540@qq.com" logicGroupId="1" userName="爷爷" userPassword="121212" sex="2" isDisable="0" token="token2" isActive="0" />
+  <t_roles id="1" roleName="测试角色" isManager="1" />
+  <t_role_privilege id="1" roleId="1" privilegeId="blackhole:currentLogicGroup" />
+  <t_role_privilege id="2" roleId="1" privilegeId="blackhole:currentLogicGroup:changeStructure" />
+  <t_user_role id="1" userId="100" roleId="1" />
+  <t_roles id="2" roleName="测试角色2" isManager="0" />
+  <t_roles id="3" roleName="测试角色3" isManager="0" />
+</dataset>

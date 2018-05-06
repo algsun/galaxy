@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+        
+<hibernate-mapping package="com.microwise.orion.bean">
+    <class name="Appraisal" table="o_appraisal">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="relic" class="Relic">
+            <column name="relicId" />
+        </many-to-one>
+        <property name="expertOpinion" type="java.lang.String">
+            <column name="expertOpinion" length="1000" not-null="true">
+                <comment>鉴定意见</comment>
+            </column>
+        </property>
+        <property name="examiner" type="java.lang.String">
+            <column name="examiner" length="50" not-null="true">
+                <comment>鉴定组织/鉴定人</comment>
+            </column>
+        </property>
+        <property name="appraisalDate" type="java.util.Date">
+            <column name="appraisalDate" length="10" not-null="true">
+                <comment>鉴定日期</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

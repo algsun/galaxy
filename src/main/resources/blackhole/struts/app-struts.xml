@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+        "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+
+    <package name="blackhole:app" extends="blackhole">
+        <action name="login" class="blackhole:loginAction" method="view">
+            <result type="freemarker">/blackhole/pages/index/login.ftl</result>
+        </action>
+
+        <action name="setting" class="blackhole:loginAction" method="setting">
+            <result name="success" type="redirect">login.action</result>
+        </action>
+
+        <action name="doLogin" class="blackhole:loginAction">
+            <result name="login" type="freemarker">/blackhole/pages/index/login.ftl</result>
+            <result name="success" type="redirect">/blackhole/</result>
+            <result name="chooseLogicGroup" type="redirect">/blackhole/chooseLogicGroup.action</result>
+            <result name="anonymityLogin" type="redirect">chooseAnonymityLogicGroup.action</result>
+            <result name="redirectTo" type="redirect">${redirectTo}</result>
+            <result name="toSaturn" type="redirect">/saturn/</result>
+
+            <!-- 业务系统入口 -->
+            <result name="blackhole" type="redirect">/blackhole/</result>
+            <result name="blueplanet" type="redirect">/blueplanet/</result>
+            <result name="proxima" type="redirect">/proxima/</result>
+            <result name="orion" type="redirect">/orion/</result>
+            <result name="uma" type="redirect">/uma/</result>
+            <result name="phoenix" type="redirect">/phoenix</result>
+            <result name="saturn" type="redirect">/saturn</result>
+        </action>
+
+        <action name="logout" class="blackhole:logoutAction">
+            <result type="redirect">/</result>
+        </action>
+
+        <action name="verifyCode" class="blackhole:verifyCodeAction">
+            <result type="stream">
+                <param name="contentType">image/jpeg</param>
+                <param name="inputName">inputStream</param>
+            </result>
+        </action>
+
+        <action name="forgetPassword" class="blackhole:forgetPasswordAction" method="view">
+            <result type="freemarker">/blackhole/pages/index/forget-password.ftl</result>
+        </action>
+
+        <action name="doForgetPassword" class="blackhole:forgetPasswordAction">
+            <result type="freemarker">/blackhole/pages/index/forget-password.ftl</result>
+        </action>
+        <action name="resetPassword" class="blackhole:resetPasswordAction" method="view">
+            <result type="freemarker">/blackhole/pages/index/reset-password.ftl</result>
+        </action>
+        <action name="doResetPassword" class="blackhole:resetPasswordAction">
+            <result type="freemarker" name="success">/blackhole/pages/index/reset-password.ftl</result>
+        </action>
+
+    </package>
+
+</struts>

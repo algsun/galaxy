@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="halley.mybatis.OpticsDVPlaceForHalleyDao">
+    <!-- 根据外展ID查询车辆 -->
+    <select id="findDVBySiteId" parameterType="java.lang.String"
+            resultType="OpticsDVPlacePO">
+            <![CDATA[
+                SELECT
+                    dv.id            AS id,
+                    dv.placeName  AS placeName,
+                    dv.zoneId   AS zoneId,
+                    z.siteId      AS siteId
+                FROM
+                    p_dv_place AS dv,
+                    t_zone AS z
+                WHERE
+                    dv.dvType = 1
+                AND
+                    dv.zoneId = z.zoneId
+                AND
+                    z.siteId = #{value}
+                AND
+                    dv.id not in
+                    (SELECT
+                    deviceId
+                 FROM
+                    `h_device` device
+           INNER JOIN
+                    `h_car` car
+                   ON
+                     device.carId = car.id
+           INNER JOIN
+              (SELECT
+                     e.id AS exhibitionId
+                 FROM
+                     `o_out_event` oe
+           INNER JOIN
+                     `h_exhibition` e
+                   ON
+                     oe.id = e.outEventId
+           INNER JOIN
+              (SELECT
+                     exhibitionId,
+                     state
+                 FROM
+              (SELECT
+                     exhibitionId,
+                     state
+                 FROM
+                     h_exhibition_state hes
+             ORDER BY beginTime DESC) tmp
+             GROUP BY exhibitionId) es
+                   ON e.id = es.exhibitionId
+                  AND es.state != 4) o
+                   ON o.exhibitionId = car.exhibitionId
+                  AND device.deviceType = 1)
+            ]]>
+    </select>
+
+    <!-- 根据外展ID查询车辆 -->
+    <select id="findDVByZoneId" parameterType="java.util.Map"
+            resultType="OpticsDVPlacePO">
+            <![CDATA[
+                SELECT DISTINCT
+                    dv.id            AS id,
+                    dv.placeName  AS placeName,
+                    dv.zoneId   AS zoneId,
+                    z.siteId      AS siteId
+                FROM
+                    p_dv_place AS dv,
+                    t_zone AS z
+                WHERE
+                    dv.dvType = 1
+                AND
+                    dv.zoneId = #{zoneId}
+                AND
+                    z.siteId = #{siteId}
+                AND
+                    dv.id not in
+                    (SELECT
+                    deviceId
+                 FROM
+                    `h_device` device
+           INNER JOIN
+                    `h_car` car
+                   ON
+                     device.carId = car.id
+           INNER JOIN
+              (SELECT
+                     e.id AS exhibitionId
+                 FROM
+                     `o_out_event` oe
+           INNER JOIN
+                     `h_exhibition` e
+                   ON
+                     oe.id = e.outEventId
+           INNER JOIN
+              (SELECT
+                     exhibitionId,
+                     state
+                 FROM
+              (SELECT
+                     exhibitionId,
+                     state
+                 FROM
+                     h_exhibition_state hes
+             ORDER BY beginTime DESC) tmp
+             GROUP BY exhibitionId) es
+                   ON e.id = es.exhibitionId
+                  AND es.state != 4) o
+                   ON o.exhibitionId = car.exhibitionId
+                  AND device.deviceType = 1)
+            ]]>
+    </select>
+
+</mapper>

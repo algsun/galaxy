@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.orion.bean">
+    <class name="Scheme" table="o_scheme">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="schemeId" type="java.lang.String">
+            <column name="schemeId" length="50" not-null="false">
+                <comment>方案编号</comment>
+            </column>
+        </property>
+        <property name="name" type="java.lang.String">
+            <column name="name" length="120" not-null="true">
+                <comment>方案名称</comment>
+            </column>
+        </property>
+        <many-to-one name="institution" class="com.microwise.orion.bean.Institution" lazy="false">
+            <column name="institutionId" />
+        </many-to-one>
+        <property name="confirmTime" type="java.util.Date">
+            <column name="confirmTime" length="19" not-null="false">
+                <comment>批准时间</comment>
+            </column>
+        </property>
+        <property name="confirmNum" type="java.lang.String">
+            <column name="confirmNum" length="50" not-null="false">
+                <comment>批准文号</comment>
+            </column>
+        </property>
+        <property name="siteId" type="java.lang.String">
+            <column name="siteId" length="50" not-null="false">
+                <comment>站点编号</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

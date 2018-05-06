@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="biela.MapIndex">
+    <select id="findGeneralLocationInfoBySite" resultType="LocationInfoVO" parameterType="java.lang.String">
+       <![CDATA[
+          SELECT
+              ms.id AS id,
+              mls.sensorPhysicalid AS sensorPhysicalid,
+              ROUND( AVG(mls.sensorPhysicalValue), ms.`sensorPrecision` ) AS sensorPhysicalValue,
+              ms.units AS unit,
+              ms.en_name AS enName,
+              ms.cn_name AS cnName
+          FROM
+              `m_location` mni
+          INNER JOIN `m_location_sensor` mls ON mls.`locationId` = mni.`id`
+          LEFT JOIN `m_sensorinfo` ms ON ms.`sensorPhysicalid` = mls.`sensorPhysicalid`
+          WHERE mni.`siteId` = #{siteId} AND state = 1
+          GROUP BY mls.sensorPhysicalid
+        ]]>
+    </select>
+
+    <select id="findAreaCodeBySiteId" resultType="java.lang.Integer" parameterType="java.lang.String">
+       <![CDATA[
+            SELECT
+              areaCode    AS areaCode
+            FROM
+              t_site
+            WHERE siteId = #{siteId}
+        ]]>
+	</select>
+
+    <select id="findAreaCodePOByAreaCode" resultType="AreaCodePO" parameterType="java.lang.String">
+       <![CDATA[
+            SELECT
+              areaCode   AS areaCode,
+              areaName   AS areaName,
+              parentCode AS parentCode
+            FROM
+              t_areacode_cn
+            WHERE areaCode = #{areaCode}
+        ]]>
+	</select>
+
+    <select id="findLocationIdsBySite" parameterType="java.util.Map" resultType="String">
+        <![CDATA[
+            SELECT
+              n.id
+            FROM
+              `m_location` AS n
+              INNER JOIN `m_location_sensor` AS mls ON mls.`locationId` = n.`id`
+            WHERE n.siteId = #{siteId}
+            GROUP BY n.`id`
+        ]]>
+	</select>
+
+    <select id="findVariances" parameterType="java.util.Map" resultType="Float">
+        <![CDATA[
+            SELECT
+                VAR_POP(n.`sensorPhysicalvalue`)
+            FROM
+                `${locationId}` AS n
+            WHERE
+                n.`sensorPhysicalid` = #{sensorId}  AND n.`state` = 1   AND n.`createtime` BETWEEN #{startDate} AND #{endDate}
+        ]]>
+	</select>
+
+    <!-- 查询站点下设备所拥有的激活的监测指标 -->
+    <select id="findSensorInfo" parameterType="java.lang.String"
+            resultType="SensorInfoPO">
+		<![CDATA[
+			SELECT DISTINCT
+              s.sensorPhysicalid AS sensorPhysicalid,
+              s.en_name AS enName,
+              s.cn_name AS cnName,
+              s.sensorPrecision AS sensorPrecision,
+              s.units AS units,
+              s.positions AS positions,
+              s.showType AS showType
+            FROM
+              m_sensorinfo AS s
+              INNER JOIN m_location_sensor AS mls  ON s.sensorPhysicalid = mls.`sensorPhysicalId`
+              INNER JOIN m_location AS n  ON mls.locationId = n.id
+			WHERE
+				n.siteId = #{siteId}
+        ]]>
+	</select>
+
+    <!--根据站点id获取站点PO-->
+    <select id="findLogicGroupBySiteId" parameterType="java.lang.String" resultType="LoginGroupPO">
+        <![CDATA[
+            SELECT
+              tl.`id` AS id,
+              tl.`logicGroupName` AS logicGroupName
+            FROM
+              `t_logicgroup` AS tl
+            WHERE tl.siteId = #{siteId}
+        ]]>
+	</select>
+
+    <!--根据区域id获取区域VO-->
+    <select id="findZoneByZoneId" resultType="ZonePO" parameterType="java.lang.String">
+        <![CDATA[
+            SELECT
+              zoneId   AS zoneId,
+              zoneName AS zoneName,
+              parentId AS parentId
+            FROM
+              `t_zone`
+            WHERE zoneId = #{zoneId}
+        ]]>
+    </select>
+
+    <!--保存定制-->
+    <insert id="saveCustomize" parameterType="java.util.Map">
+        <![CDATA[
+            INSERT INTO b_map_customize (siteId, locationId, sensorId,customizeRemark)
+            VALUES (#{siteId}, #{locationId},#{sensorId},#{customizeRemark})
+        ]]>
+    </insert>
+
+    <!--根据logicGroupId站点信息-->
+    <select id="findCustomizeVOBySiteId" resultType="CustomizeVO" parameterType="java.lang.String">
+        <![CDATA[
+            SELECT
+              id AS id,
+              siteId AS siteId,
+              locationId AS locationId,
+              sensorId AS sensorId,
+              customizeRemark AS customizeRemark
+            FROM
+              `b_map_customize`
+            WHERE siteId = #{siteId} ORDER BY id
+        ]]>
+    </select>
+
+    <!--根据监测指标id，查监测指标name-->
+    <select id="findSensorNameBySensorId" resultType="java.lang.String" parameterType="java.lang.Integer">
+        <![CDATA[
+            SELECT
+              cn_name
+            FROM
+              `m_sensorinfo`
+            WHERE sensorPhysicalid = #{sensorId}
+        ]]>
+    </select>
+
+    <!--根据id删除一个定制信息-->
+    <delete id="deleteCustomizeById" parameterType="java.lang.Integer">
+      <![CDATA[
+            DELETE
+            FROM
+            `b_map_customize`
+            WHERE id = #{id}
+        ]]>
+    </delete>
+
+    <!--ajax验证该监测指标是否已经添加了验证-->
+    <select id="verifyCustomize" resultType="java.lang.Integer" parameterType="java.util.Map">
+        <![CDATA[
+            SELECT
+              COUNT(*)
+            FROM
+              `b_map_customize`
+            WHERE siteId = #{siteId}
+            AND locationId = #{locationId}
+            AND sensorId = #{sensorId}
+        ]]>
+    </select>
+
+    <!--ajax验证定制监测指标的数量-->
+    <select id="customizeCount" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        <![CDATA[
+            SELECT
+              COUNT(*)
+            FROM
+              `b_map_customize`
+            WHERE siteId = #{siteId}
+        ]]>
+    </select>
+
+    <select id="findNodeSensorInfoVOByDeviceSensorId" parameterType="java.util.Map" resultType="LocationInfoVO">
+            SELECT
+              mls.`sensorPhysicalid`,
+              mls.`sensorPhysicalValue`,
+              msi.`cn_name` AS cnName,
+              msi.`units` AS unit
+            FROM
+              `m_location_sensor` AS mls
+              INNER JOIN `m_sensorinfo` AS msi
+                ON mls.`sensorPhysicalid` = msi.`sensorPhysicalid`
+            WHERE mls.`locationId` = #{locationId}
+              AND mls.`sensorPhysicalId` = #{sensorId}
+              AND mls.`state` = 1
+    </select>
+    <select id="findZoneLocationByZoneIdSensorId" parameterType="java.util.Map" resultType="LocationVO">
+      <![CDATA[
+            SELECT
+              ml.*
+            FROM
+              `m_location` ml
+              INNER JOIN m_location_sensor mls
+                ON ml.`id` = mls.`locationId`
+            WHERE ml.`zoneId` = #{zoneId}
+              AND mls.`sensorPhysicalid` = #{sensorId}
+              AND ml.`siteId` = #{siteId}
+        ]]>
+    </select>
+
+    <!-- 各站点实时数据平局数据 -->
+    <select id="findSiteRealtimeAvg" parameterType="java.util.List"
+            resultType="NodeSensorInfoVO">
+        <![CDATA[
+
+        SELECT
+        areacode AS areaCode,
+        b.*
+        FROM
+        t_site s,
+        (SELECT
+          siteId,
+          sensorPhysicalId,
+          ROUND(AVG(ns.`sensorPhysicalValue`), 3) sensorPhysicalValue
+         FROM
+          m_nodesensor ns,
+          m_nodeinfo n
+         WHERE ns.`nodeid` = n.`nodeid`
+         AND ns.`state` = 1
+         AND sensorPhysicalId IN
+         ]]>
+        <foreach collection="list" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+        <![CDATA[
+         GROUP BY siteId,
+          sensorPhysicalId) b,
+          `t_logicgroup` tl
+        WHERE b.siteId = s.`siteId`
+         AND
+        b.siteId IN(SELECT siteId FROM `t_logicgroup` WHERE parentLogicGroupId = #{logicGroupId});
+        ]]>
+    </select>
+</mapper>

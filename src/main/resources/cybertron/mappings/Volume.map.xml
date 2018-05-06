@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.cybertron.bean">
+
+    <class name="Volume" table="cbt_volume">
+        <id name="volumeCode" column="volumeCode" length="11">
+            <generator class="assigned"/>
+        </id>
+        <property name="name" column="name" length="25"/>
+        <property name="parentCode" column="parentCode" length="11"/>
+    </class>
+</hibernate-mapping>

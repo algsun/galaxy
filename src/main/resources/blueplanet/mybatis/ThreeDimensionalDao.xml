@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blueplanet.mybatis.ThreeDimensionalDao">
+<insert id="insertDimensionalFile" parameterType="ThreeDimensionalPO" keyProperty="id">
+    <selectKey keyProperty="id" resultType="java.lang.Integer"
+               order="AFTER">
+        select LAST_INSERT_ID() AS id
+    </selectKey>
+         <![CDATA[
+			INSERT INTO
+				m_three_dimensional(siteId,path,uploadtime,remark)
+			VALUES
+				(#{siteId},#{path},#{uploadtime},#{remark})
+		]]>
+    </insert>
+
+    <insert id="saveDimensionalLocationRelation" parameterType="java.util.Map">
+        <![CDATA[
+           INSERT INTO
+              m_dimensional_location(siteId,dimensionalId,locationId)
+           VALUES
+        ]]>
+        <if test="locationIds !=null">
+
+            <foreach collection="locationIds" index="index"
+                     item="item" separator=",">
+                (${siteId},${dimensionalId},#{item})
+            </foreach>
+        </if>
+        <![CDATA[
+          ;
+        ]]>
+    </insert>
+
+    <select id="findDimensionalFiles" parameterType="java.lang.String" resultType="ThreeDimensionalPO">
+       <![CDATA[
+			SELECT
+			  id         AS id,
+              path       AS path,
+              remark     AS remark,
+              uploadtime AS uploadtime
+			FROM
+			  m_three_dimensional
+			WHERE
+              siteId = #{siteId}
+		]]>
+    </select>
+    <select id="findThreeDimenById" parameterType="java.lang.Integer" resultType="ThreeDimensionalPO">
+           <![CDATA[
+			SELECT
+			  id         AS id,
+              path       AS path,
+              remark     AS remark,
+              uploadtime AS uploadtime
+			FROM
+			  m_three_dimensional
+			WHERE
+              id = #{dimensionalId}
+		]]>
+    </select>
+
+    <select id="findThreeDimenByPath" parameterType="java.lang.String" resultType="ThreeDimensionalPO">
+          <![CDATA[
+			SELECT
+			  id         AS id,
+              path       AS path,
+              remark     AS remark,
+              uploadtime AS uploadtime
+			FROM
+			  m_three_dimensional
+			WHERE
+              path = #{path}
+		]]>
+    </select>
+
+    <delete id="deleteDimensionalById" parameterType="java.lang.Integer">
+        <![CDATA[
+			DELETE FROM m_three_dimensional WHERE id = #{dimensionalId}
+		]]>
+    </delete>
+
+    <update id="updateDimensionalRemark" parameterType="java.util.Map">
+         <![CDATA[
+			UPDATE
+			  m_three_dimensional
+			SET
+			  remark = #{remark}
+			WHERE id = #{dimensionalId}
+		]]>
+    </update>
+
+    <select id="findDimensionalLocationRelations" parameterType="java.util.Map" resultType="DimensionalLocationPO">
+        <![CDATA[
+            SELECT
+                id             AS id,
+                siteId         AS siteId,
+                dimensionalId  AS dimensionalId,
+                locationId     AS locationId,
+                coordinateX    AS coordinateX,
+                coordinateY    AS coordinateY,
+                coordinateZ    AS coordinateZ
+            FROM
+              m_dimensional_location md
+            WHERE
+              md.siteId = #{siteId}
+            AND
+              md.dimensionalId = #{dimensionalId}
+        ]]>
+    </select>
+
+    <delete id="deleteDimensionalLocationRelation" parameterType="java.lang.Integer">
+        <![CDATA[
+          DELETE FROM m_dimensional_location WHERE dimensionalId = #{dimensionalId}
+        ]]>
+    </delete>
+
+</mapper>

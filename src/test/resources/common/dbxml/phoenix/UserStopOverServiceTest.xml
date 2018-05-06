@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+	<t_zone zoneId='1' siteId='31010101' zoneName='aa' />
+	<t_zone zoneId='2' siteId='31010101' zoneName='bb' />
+
+    <u_user_stay_times  zoneId="1" stayTimes="120000" createTime="2012-04-11 00:00:00"/>
+    <u_user_stay_times  zoneId="2" stayTimes="120000" createTime="2012-04-11 00:00:00"/>
+
+</dataset>

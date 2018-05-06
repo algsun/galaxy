@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <h_exhibition id="1"/>
+    <h_car id="1" exhibitionId="1" plateNumber="陕A12345" director="abc" directorPhone="123"/>
+
+    <h_device id="1" carId="1" deviceType="1" deviceId="abc"/>
+    <h_device id="2" carId="1" deviceType="1" deviceId="cde"/>
+    <h_device id="3" carId="1" deviceType="2" deviceId="123"/>
+    <h_device id="4" carId="1" deviceType="2" deviceId="234"/>
+    <h_device id="5" carId="1" deviceType="2" deviceId="345"/>
+
+    <p_dv_place id="abc" dvType="1"/>
+    <p_dv_place id="cde" dvType="1"/>
+
+    <m_location id="123" locationName="位置点1" siteId="1" createTime="2013-10-16 14:42:57.0"/>
+    <m_location id="234" locationName="位置点2" siteId="1" createTime="2013-10-17 14:42:57.0"/>
+    <m_location id="345" locationName="位置点3" siteId="1" createTime="2013-10-18 14:42:57.0"/>
+</dataset>

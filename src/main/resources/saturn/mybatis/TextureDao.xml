@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="saturn.Texture">
+
+    <!-- insert texture -->
+    <insert id="save" parameterType="java.lang.String">
+		<![CDATA[
+          INSERT INTO `o_texture` (`name`)  VALUES (#{value})
+        ]]>
+	</insert>
+
+    <!-- insert texture -->
+    <select id="findAll" parameterType="java.lang.String" resultType="TextureVO">
+		<![CDATA[
+          SELECT
+            `id`,
+            `name`
+          FROM `o_texture` ORDER BY id DESC
+        ]]>
+	</select>
+
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        <![CDATA[
+          DELETE
+            FROM `o_texture`
+          WHERE `id` = #{value};
+        ]]>
+    </delete>
+
+    <update id="updateById" parameterType="java.util.Map">
+        <![CDATA[
+        UPDATE `o_texture`
+        SET
+         `name` = #{name}
+        WHERE `id` = #{id}
+        ]]>
+    </update>
+
+    <select id="isExits" parameterType="java.lang.String" resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT
+        COUNT(*)
+        FROM
+          `o_texture`
+        WHERE `name` = #{name}
+        ]]>
+    </select>
+
+</mapper>

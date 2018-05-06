@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+     
+<hibernate-mapping package="com.microwise.orion.bean">
+    <class name="HealthEvaluation" table="o_health_evaluation">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="relic" class="Relic">
+            <column name="relicId" />
+        </many-to-one>
+        <property name="evaluator" type="java.lang.String">
+            <column name="evaluator" length="20" not-null="true">
+                <comment>评测人员</comment>
+            </column>
+        </property>
+        <property name="sampleNumber" type="java.lang.String">
+            <column name="sample_number" length="50" not-null="true">
+                <comment>样品编号</comment>
+            </column>
+        </property>
+
+        <property name="sampleDesc" type="java.lang.String">
+            <column name="sample_desc" length="50" not-null="false">
+                <comment>样品描述</comment>
+            </column>
+        </property>
+        <property name="conclusion" type="java.lang.Short">
+            <column name="conclusion" length="1" not-null="true">
+                <comment>综合评测结论</comment>
+            </column>
+        </property>
+        <property name="suggestion" type="java.lang.Short">
+            <column name="suggestion" length="1" not-null="true">
+                <comment>保护建议</comment>
+            </column>
+        </property>
+        <property name="evaluationDate" type="java.util.Date">
+            <column name="evaluation_date"  not-null="true">
+                <comment>评测日期</comment>
+            </column>
+        </property>
+        <property name="statusQuoId" type="java.lang.Integer">
+            <column name="statusQuoId"  not-null="true">
+                <comment>文物现状记录信息id</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

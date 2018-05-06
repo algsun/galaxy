@@ -1,0 +1,22 @@
+body {
+    background-image: url(../../images/mode/mode6/background.jpg);
+    background-position: center top;
+    background-repeat:no-repeat;
+    background-size: 100% auto;
+}
+
+.login-div{
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: 100% 80%;
+    color: red;
+}
+
+.index-image {
+    margin: 0 auto;
+    width: 960px;
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+

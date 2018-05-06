@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+        "http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+
+    <!-- 摄像机点位公共的一些操作 -->
+    <package name="proxima:dvPlace" extends="proxima" namespace="/proxima">
+        <action name="isNameUnique" class="proxima:dvPlaceAction" method="isNameUnique">
+            <result type="json"/>
+        </action>
+
+        <action name="queryDVPlaceDefault" class="proxima:queryDVPlaceAction">
+            <result type="freemarker">/proxima/pages/dvPlace/list-dvPlace.ftl</result>
+        </action>
+
+        <action name="toUploadDVrealmapView" class="proxima:uploadDVrealmapAction" method="view">
+            <result type="freemarker">/proxima/pages/opticsDVPlace/uploadDVrealmap.ftl</result>
+        </action>
+        
+        <action name="uploadDVrealmap" class="proxima:uploadDVrealmapAction" method="upload">
+           <result type="json">
+                <param name="includeProperties">realmapUrl</param>
+                <param name="contentType">text/html</param>
+           </result>
+            <interceptor-ref name="fileUpload">
+                <!-- 文件过滤 -->
+                <param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg</param>
+                <!-- 文件大小, 以字节为单位 -->
+                <param name="maximumSize">1025956</param>
+            </interceptor-ref>
+            <!-- 默认拦截器必须放在fileUpload之后，否则无效 -->
+            <interceptor-ref name="defaultStack"/>
+        </action>
+    </package>
+
+</struts>

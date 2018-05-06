@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+
+	<t_zone zoneId="001" siteId="31010101" zoneName="测试区域1"
+		planImage="区域实景图1" dataVersion="32" />
+		
+	<t_zone zoneId="002" siteId="31010101" zoneName="测试区域1"
+		planImage="区域实景图1" dataVersion="32" />
+
+
+	<o_historical_relic id="1" totalCode="1230" era="1" level="1" zoneId="001" siteId="31010101" texture="1" catalogCode="1" typeCode="1" name="12" state="0" hasTag="1" count="2" />
+	<o_historical_relic id="2" totalCode="1231" era="1" level="1" zoneId="001" siteId="31010101" texture="1" catalogCode="1" typeCode="1" name="121" state="0" hasTag="1" count="2" />
+    <o_historical_relic id="3" totalCode="1233" era="1" level="1" zoneId="002" siteId="31010101" texture="1" catalogCode="1" typeCode="1" name="123" state="2" hasTag="1" count="2" />
+	
+	<o_inventory id="1" siteId="31010101" state="0" deadline="2013-01-23 14:47:31.0" />
+	
+
+
+</dataset>

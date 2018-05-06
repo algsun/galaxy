@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <t_logicgroup id="1" logicGroupName="测试站点" activeState="3" logicGroupType="1"/>
+    <t_users id="100" userEmail="no-reply-galaxy@microwise-system.com" logicGroupId="1" userName="大头"
+             userPassword="121212" sex="1" isDisable="0" token="token1" isActive="1"/>
+
+    <t_users id="2" userEmail="guest" userName="访客"
+             userPassword="$2a$11$kW5DVku2SCRxbTirh4xqFexQu//BwpKWy8sYFGiX9pbgYd8BsAkWC" sex="2" isDisable="0" token=""
+             isActive="1"/>
+    <t_roles id="1" roleName="访客角色" isManager="0" state="1"/>
+    <t_user_role userId="2" roleId="1"/>
+</dataset>

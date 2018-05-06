@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <t_users id="100" userEmail="415201519@qq.com" logicGroupId="1" userName="大头" userPassword="121212" sex="1"
+             isDisable="0" token="token1" isActive="1"/>
+    <t_users id="101" userEmail="962097540@qq.com" logicGroupId="1" userName="爷爷" userPassword="121212" sex="2"
+             isDisable="0" token="token2" isActive="0"/>
+
+    <u_action_templet id="1" parentId="0" name="规则1" type="1" enable="1" siteId="31010101"/>
+    <u_action_templet id="2" parentId="0" name="规则2" type="1" enable="1" siteId="31010101"/>
+    <u_action_templet id="3" parentId="0" name="规则3" type="1" enable="1" siteId="31010101"/>
+    <u_action_templet id="4" parentId="0" name="往返规则" type="2" enable="1" siteId="31010101"/>
+    <u_action_templet id="5" parentId="4" name="往规则" type="3" enable="1" siteId="31010101"/>
+    <u_action_templet id="6" parentId="4" name="返规则" type="4" enable="1" siteId="31010101"/>
+
+    <u_user_action id="1" userId="100" actionTempletId="1" type="1" occurrenceTime="1366954081646"/>
+    <u_user_action id="2" userId="100" actionTempletId="1" type="1" occurrenceTime="1366954081647"/>
+    <u_user_action id="3" userId="101" actionTempletId="2" type="1" occurrenceTime="1366954081646"/>
+    <u_user_action id="4" userId="101" actionTempletId="5" type="1" occurrenceTime="1366954081646"/>
+    <u_user_action id="5" userId="101" actionTempletId="6" type="1" occurrenceTime="1366954181647"/>
+
+
+    <u_action_census id="1" userId="101" actionTempletId="4" goActionTempId="5" backActionTempId="6"
+                     goTime="1366954081646"
+                     backTime="1366954081647"/>
+</dataset>

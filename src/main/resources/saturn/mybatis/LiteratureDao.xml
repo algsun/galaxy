@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="saturn.mybatis.LiteratureDao">
+
+    <!-- 保存文献资料信息 -->
+    <insert id="save" parameterType="Literature"  useGeneratedKeys="true">
+        <selectKey keyProperty="id" resultType="java.lang.Integer"
+                   order="AFTER">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO s_literature (
+        `catalog`,
+        title,
+        summary,
+        magazine,
+        periodical,
+        author,
+        publicDate,
+        keywords,
+        createTime,
+        createBy,
+        siteId
+        )
+        VALUES
+        (
+        #{catalog},
+        #{title},
+        #{summary},
+        #{magazine},
+        #{periodical},
+        #{author},
+        #{publicDate},
+        #{keywords},
+        #{createTime},
+        #{createBy},
+        #{siteId}
+        )
+
+    </insert>
+
+    <!-- 更新文献资料信息 -->
+    <update id="update" parameterType="Literature">
+        <![CDATA[
+		UPDATE
+          s_literature
+        SET
+          catalog = #{catalog},
+          title = #{title},
+          summary = #{summary},
+          magazine = #{magazine},
+          periodical = #{periodical},
+          author = #{author},
+          publicDate = #{publicDate},
+          keywords = #{keywords},
+          createTime = #{createTime},
+          createBy = #{createBy},
+          siteId = #{siteId}
+        WHERE id = #{id};
+		]]>
+    </update>
+
+    <!-- 查询所有文献资料 -->
+    <select id="findAll" resultType="Literature">
+        <![CDATA[
+        SELECT
+          id,
+          catalog,
+          title,
+          summary,
+          magazine,
+          periodical,
+          author,
+          publicDate,
+          keywords,
+          createTime,
+          createBy,
+          siteId
+        FROM
+          s_literature
+        WHERE
+          siteId = #{siteId}
+        ORDER BY
+          createTime DESC
+        ]]>
+    </select>
+
+    <!-- 查询所有文献资料 -->
+    <select id="findById" parameterType="java.lang.Integer" resultType="Literature">
+        <![CDATA[
+        SELECT
+          id,
+          catalog,
+          title,
+          summary,
+          magazine,
+          periodical,
+          author,
+          publicDate,
+          keywords,
+          createTime,
+          createBy,
+          siteId
+        FROM
+          s_literature
+        WHERE
+          id = #{literatureId}
+        ]]>
+    </select>
+
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        <![CDATA[
+			DELETE FROM
+				s_literature
+			WHERE
+				id = #{literatureId}
+        ]]>
+    </delete>
+
+    <select id="findLiteratures" parameterType="java.util.Map"
+            resultType="Literature">
+        <![CDATA[
+            SELECT
+              id,
+              catalog,
+              title,
+              summary,
+              magazine,
+              periodical,
+              author,
+              publicDate,
+              keywords,
+              createTime,
+              createBy,
+              siteId
+            FROM
+              s_literature
+            WHERE
+              siteId = #{siteId}
+        ]]>
+        <if test="title!=null and title!=''">
+            AND title like '%${title}%'
+        </if>
+        <if test="keywords!=null and keywords!=''">
+            AND keywords like '%${keywords}%'
+        </if>
+        <![CDATA[
+			ORDER BY
+		      createTime DESC
+			LIMIT
+				#{start},#{pageSize}
+		]]>
+    </select>
+
+    <select id="countLiteratures" parameterType="java.util.Map"
+            resultType="int">
+        <![CDATA[
+            SELECT
+              count(id)
+            FROM
+              s_literature
+            WHERE
+              siteId = #{siteId}
+		]]>
+        <if test="title!=null and title!=''">
+            AND title like '%${title}%'
+        </if>
+        <if test="keywords!=null and keywords!=''">
+            AND keywords like '%${keywords}%'
+        </if>
+    </select>
+
+</mapper>

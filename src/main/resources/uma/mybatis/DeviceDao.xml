@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="uma.mybatis.DeviceDao">
+
+
+    <!-- 查询已绑定设备 -->
+    <select id="findDeviceList" parameterType="java.util.Map"
+            resultType="DeviceBean">
+        <![CDATA[
+            SELECT
+                d.id AS id,
+                d.type AS TYPE,
+                d.deviceId AS deviceId,
+                d.name AS NAME,
+                z.zoneName AS zoneName,
+                d.sn AS sn,
+                d.ip AS ip,
+                d.port AS PORT,
+                d.voltage AS voltage,
+                d.version AS VERSION,
+                d.enable AS ENABLE,
+                d.state AS state,
+                d.createTime AS createTime,
+                d.updateTime AS updateTime
+            FROM
+                u_zone_exciter zd
+            INNER JOIN t_zone z
+                ON zd.zoneId = z.zoneId
+            RIGHT JOIN u_device d
+                ON zd.deviceId = d.id
+            WHERE d.type = #{type}
+        ]]>
+        <if test="!isAll">
+            AND  d.enable = 1
+        </if>
+        <if test="zoneId !=null and zoneId != ''">
+            AND zd.zoneId = #{zoneId}
+        </if>
+        <![CDATA[
+			ORDER BY
+				d.createTime DESC
+			LIMIT
+				#{start},#{pageSize}
+		]]>
+    </select>
+
+    <!-- 查询已绑定设备数量 -->
+    <select id="findDeviceListCount" parameterType="java.util.Map"
+            resultType="int">
+        <![CDATA[
+            SELECT
+              COUNT(d.id)
+            FROM
+              u_device d
+              LEFT JOIN u_zone_exciter zd
+                ON d.id = zd.deviceId
+            WHERE d.type = #{type}
+		]]>
+		 <if test="!isAll">
+            AND  d.enable = 1
+        </if>
+        <if test="zoneId !=null and zoneId != '' ">
+            AND zd.zoneId = #{zoneId}
+        </if>
+    </select>
+
+    <!--根据设备ID查找设备-->
+    <select id="findDeviceById" parameterType="int"
+            resultType="DeviceBean">
+        <![CDATA[
+
+            SELECT
+              d.id AS id,
+              d.type AS TYPE,
+              d.deviceId AS deviceId,
+              d.name AS NAME,
+              z.zoneId AS zoneId,
+              z.zoneName AS zoneName,
+              d.sn AS sn,
+              d.ip AS ip,
+              d.port AS PORT,
+              d.voltage AS voltage,
+              d.version AS VERSION,
+              d.state AS state,
+              d.createTime AS createTime
+            FROM
+                u_zone_exciter zd
+            INNER JOIN t_zone z
+                ON zd.zoneId = z.zoneId
+            RIGHT JOIN u_device d
+                ON zd.deviceId = d.id
+            WHERE d.id = #{id}
+
+        ]]>
+    </select>
+
+    <!--更改设备名称-->
+    <update id="updateDeviceName" parameterType="java.util.Map">
+		<![CDATA[
+
+			UPDATE
+				u_device
+			SET
+				name = #{name}
+		    WHERE
+		        id = #{id}
+
+        ]]>
+    </update>
+
+    <!--绑定区域-->
+    <insert id="updateDeviceZone" parameterType="java.util.Map">
+		<![CDATA[
+
+			INSERT INTO u_zone_exciter(deviceId, zoneId)
+            VALUES(#{id}, #{zoneId})
+            ON DUPLICATE KEY UPDATE zoneId = #{zoneId}
+
+        ]]>
+    </insert>
+
+    <!--更改设备启用状态-->
+    <update id="setEnable" parameterType="java.util.Map">
+		<![CDATA[
+
+			UPDATE
+				u_device
+			SET
+				enable = #{enable}
+		    WHERE
+		        id = #{id}
+
+        ]]>
+    </update>
+
+    <!-- 查询所有激发器设备 -->
+    <select id="findAllExciter" resultType="DeviceBean">
+    	<![CDATA[
+
+			SELECT 
+			 	a.id  AS  id,
+			 	a.name AS  name,
+			 	a.sn   AS  sn
+			FROM
+				u_device  AS  a 
+			WHERE 
+			    a.type = 2
+			AND   a.enable=1
+			 ]]>
+    </select>
+    
+    
+    <!-- 查询所有未绑定的电子卡设备 -->
+    <select id="findAllCard" resultType="DeviceBean">
+    	<![CDATA[
+			SELECT 
+			 	a.id  AS  id,
+			 	a.name AS  name,
+			 	a.sn   AS  sn
+			FROM  
+			  u_device AS  a
+			LEFT  JOIN  
+			  u_user_card  AS  b
+			ON   
+			  a.sn= b.sn
+			WHERE  
+			  a.type=3 
+			AND 
+			 b.sn IS NULL
+        ]]>
+    
+    </select>
+
+    <!-- 设备名称是否已被使用 -->
+    <select id="isNameUsed" parameterType="java.util.Map" resultType="int">
+    	<![CDATA[
+
+			SELECT
+                COUNT(id)
+			FROM
+				u_device
+			WHERE
+			    id <> #{id}
+			    AND name = #{name}
+
+        ]]>
+
+    </select>
+    
+    <!-- 根据设备id 查询当前激发器设备 在行为规则中使用的次数 -->
+    <select id="findExciterUseCount" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    	<![CDATA[
+			SELECT 
+              COUNT(a.id)
+            FROM 
+              u_action_exciter	AS  a 
+            WHERE 
+              a.deviceId=#{deviceId}
+        ]]>
+    
+    </select>
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="halley.mybatis.AlarmDao">
+
+    <!-- 查询报警记录集合 -->
+    <select id="findAlarmListCount" parameterType="java.util.Map" resultType="int">
+        <![CDATA[
+             SELECT
+            COUNT(id)
+            FROM
+              h_alarms ha
+            WHERE
+            exhibitionId = #{exhibitionId}
+        ]]>
+        <if test="beginTime != null">
+            AND sendTime BETWEEN #{beginTime} AND #{endTime}
+        </if>
+    </select>
+
+    <!-- 查询报警记录集合 -->
+    <select id="findAlarmListByPage" parameterType="java.util.Map" resultType="AlarmPO">
+        <![CDATA[
+            SELECT
+             ha.id,
+             ha.exhibitionId,
+             ha.content,
+             tu.userName as contact,
+             ha.sendTime
+            FROM
+              h_alarms ha,
+              t_users tu
+            WHERE
+            exhibitionId = #{exhibitionId}
+            AND
+             ha.contact=tu.id
+        ]]>
+        <if test="beginTime != null">
+            AND sendTime BETWEEN #{beginTime} AND #{endTime}
+        </if>
+        <![CDATA[
+            ORDER BY ha.sendTime DESC
+           limit #{startPage},#{pageSize}
+         ]]>
+    </select>
+
+</mapper>

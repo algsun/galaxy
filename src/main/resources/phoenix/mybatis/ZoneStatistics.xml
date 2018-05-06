@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+
+@check 2013-07-08 @gaohui #4390
+-->
+
+<mapper namespace="phoenix.mybatis.ZoneStatisticsDao">
+
+	<!-- 查询 区域统计 基本数据 -->
+	<select id="findBaseData" parameterType="java.util.Map" resultType="ZoneStats">
+	<![CDATA[
+		SELECT DISTINCT
+          s.sensorPhysicalid,
+          s.cn_name AS cnName,
+          s.units,
+          s.`target`,
+          s.`floating`
+        FROM
+          m_avgdata a
+        INNER JOIN m_location l ON a.nodeid = l.id
+        INNER JOIN m_sensorinfo s ON a.sensorPhysicalid = s.sensorPhysicalid
+		WHERE l.zoneId IN
+	]]>
+		<foreach collection="zoneIds" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<!-- 查询 一个监测指标的图表数据 -->
+	<select id="findZoneData" parameterType="java.util.Map"
+		resultType="ZoneData">
+	<![CDATA[
+		SELECT DISTINCT
+		  a.maxValue ,
+		  a.minValue,
+		  a.ms_date as `date` 
+		FROM
+		  m_avgdata a 
+          INNER JOIN m_location l ON a.`nodeid` = l.`id`
+		WHERE l.zoneId IN
+	]]>
+		<foreach collection="zoneIds" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	<![CDATA[
+		AND a.`sensorPhysicalid` = #{sensorPhysicalid} AND
+		 a.`ms_date` BETWEEN #{startDate} AND #{endDate}
+		ORDER BY a.ms_date
+	]]>
+	</select>
+
+	<!-- 查询 一个监测指标的图表数据 -->
+	<select id="findAvgData" parameterType="java.util.Map"
+		resultType="java.util.Map">
+	<![CDATA[
+		SELECT DISTINCT
+		a.`ms_date` as `date`,
+		ROUND(AVG(a.`avgValue`),1)AS avgValue
+		FROM
+		  m_avgdata a 
+		INNER JOIN m_nodeinfo b
+		ON a.nodeid = b.nodeid
+		INNER JOIN m_location l
+		ON b.nodeid = l.nodeId
+		WHERE l.zoneId IN
+	]]>
+		<foreach collection="zoneIds" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	<![CDATA[
+		AND a.`sensorPhysicalid` = #{sensorPhysicalid}
+		AND a.`ms_date` >= #{startDate}
+		AND a.`ms_date` <= #{endDate}
+	]]>
+		<if test="type == 1">
+			GROUP BY MONTH(a.`ms_date`)
+		</if>
+		<if test="type == 2">
+			GROUP BY a.`ms_date`
+		</if>
+		ORDER BY a.`ms_date`
+
+	</select>
+
+</mapper>

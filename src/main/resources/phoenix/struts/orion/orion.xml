@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+        "http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+
+    <package name="phoenix:orion" extends="phoenix" namespace="/phoenix/orion">
+        <!-- ====出库事件统计==== -->
+        <action name="outEvent" class="com.microwise.phoenix.action.orion.OutEventStatAction">
+            <result type="freemarker">/phoenix/pages/index/layout.ftl</result>
+        </action>
+    </package>
+</struts>

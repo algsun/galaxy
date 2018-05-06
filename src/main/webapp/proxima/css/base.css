@@ -1,0 +1,22 @@
+/**
+* 业务系统内基础样式, 主要包括布局相关样式
+*
+* @author gao.hui 2012-10-18
+*/
+
+#gcontent{
+    min-height: 500px;
+}
+
+/*
+界面左上角业务系统列表 小三角
+*/
+.brand > a > .caret{
+    border-top-color: #999;
+    border-bottom-color: #999;
+}
+
+.brand > a:hover > .caret{
+    border-top-color: #fff;
+    border-bottom-color: #fff;
+}

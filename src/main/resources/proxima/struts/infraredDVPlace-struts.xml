@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+	<package  name="proxima:infraredDVPlace" extends="proxima" namespace="/proxima">
+	
+		<!-- 跳转到添加页面 -->
+		<action name="toAddInfraredDVPlace" class="proxima:addInfraredDVPlaceAction"
+			method="toAddInfraredDVPlace">
+			<result type="freemarker">/proxima/pages/infraredDVPlace/addInfraredDVPlace.ftl</result>
+		</action>
+	
+		<!-- 添加红外热像仪点位信息 -->
+		<action name="addInfraredDVPlace" class="proxima:addInfraredDVPlaceAction" method="addInfraredDVPlace">
+			<result name="success" type="redirectAction">
+				<param name="actionName">queryDVPlaceDefault</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<!-- 更新红外热像仪工作状态，公共方法 -->
+		<action name="updateInfraredDVPlaceEnable" class="proxima:dvPlaceAction" method="updateDVPlaceEnable">
+			<result name="success" type="redirectAction">
+				<param name="actionName">queryDVPlaceDefault</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<!-- 跳转到更新页面 -->
+		<action name="toUpdateInfraredDVPlace" class="proxima:updateInfraredDVPlaceAction" method="toUpdateInfraredDVPlace">
+            <result type="freemarker">/proxima/pages/infraredDVPlace/updateInfraredDVPlace.ftl</result>
+		</action>
+		
+		<!-- 更新红外热像仪点位信息 -->
+		<action name="updateInfraredDVPlace" class="proxima:updateInfraredDVPlaceAction" method="updateInfraredDVPlace">
+			<result name="success" type="redirectAction">
+				<param name="actionName">queryDVPlaceDefault</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+	</package>
+</struts>

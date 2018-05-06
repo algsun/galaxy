@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.blackhole.bean">
+
+    <class name="Role" table="t_roles">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="roleName" column="roleName" length="50"/>
+        <property name="manager" column="isManager" type="org.hibernate.type.NumericBooleanType"/>
+        <property name="state" column="state"/>
+
+        <many-to-one name="logicGroup" column="logicGroupId"/>
+
+        <set name="privileges" table="t_role_privilege">
+            <key column="roleId"/>
+            <many-to-many column="privilegeId" unique="true" class="Privilege"/>
+        </set>
+        
+        <set name="users" table="t_user_role">
+            <key column="roleId"/>
+            <many-to-many column="userId" unique="true" class="User"/>
+        </set>
+        
+    </class>
+
+</hibernate-mapping> 

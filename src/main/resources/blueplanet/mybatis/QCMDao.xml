@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blueplanet.QCMDao">
+
+    <!-- 查询有机污染物 -->
+    <select id="findQCM" resultType="QCMVO" parameterType="java.util.Map">
+        <![CDATA[
+           SELECT
+            `id`,
+            `locationId`,
+                ]]>
+        <if test="sensorId == 3075">
+            `op` AS `value`,
+        </if>
+
+        <if test="sensorId == 3076">
+            `ip` AS `value`,
+        </if>
+
+        <if test="sensorId == 3077">
+            `sp` AS `value`,
+        </if>
+
+        <![CDATA[
+
+            `ms_datetime` AS DATETIME
+           FROM
+        ]]>
+        <if test="sensorId == 3075">
+            `m_tbl_op_hour_acc`
+        </if>
+
+        <if test="sensorId == 3076">
+            `m_tbl_ip_hour_acc`
+        </if>
+
+        <if test="sensorId == 3077">
+            `m_tbl_sp_hour_acc`
+        </if>
+
+        <![CDATA[
+           WHERE locationId = #{locationId} AND ms_datetime BETWEEN #{startDate} AND #{endDate} ORDER BY ms_datetime
+        ]]>
+    </select>
+
+    <select id="findReplaceSensorDate" resultType="java.util.Date" parameterType="java.lang.String">
+        <![CDATA[
+          select replaceDate from m_replace_sensor where locationId = #{locationId}
+        ]]>
+    </select>
+
+    <select id="findQCMMinMaxDate" resultType="java.util.Date" parameterType="java.lang.String">
+        <![CDATA[
+            (SELECT createtime FROM `${value}` WHERE sensorPhysicalId = 3072 ORDER BY createtime ASC LIMIT 1)
+             UNION
+            (SELECT createtime FROM `${value}` WHERE sensorPhysicalId = 3072 ORDER BY createtime DESC LIMIT 1)
+        ]]>
+    </select>
+
+    <select id="findSensorNum" resultType="java.lang.Float" parameterType="java.util.Map">
+        <![CDATA[
+          SELECT SUM(ABS(sensorPhysicalvalue)) FROM `${locationId}`
+          WHERE sensorPhysicalId = #{sensorId}
+          AND createtime BETWEEN #{startDate} AND #{endDate}
+        ]]>
+    </select>
+
+    <select id="findEvaluateCriterions" resultType="EvaluateCriterionPO" >
+        <![CDATA[
+        select * from m_evaluate_criterion limit 4
+        ]]>
+    </select>
+
+
+
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+
+    <o_out_event id="1" siteId="1" eventType="1" outBound="1" useFor="wz"
+                 beginDate="2013-01-20 14:42:57.0" endDate="2013-03-22 14:42:57.0" applicant="mw" userId="1" state="0" remark="备注"/>
+    <h_exhibition id="1" beginTime="2013-01-21 14:42:57.0" endTime="2013-03-21 14:42:57.0" outEventId="1"/>
+    <h_exhibition id="2" beginTime="2013-01-21 14:42:57.0" endTime="2013-03-21 14:42:57.0" outEventId="1"/>
+    <h_exhibition id="3" beginTime="2013-01-21 14:42:57.0" endTime="2013-03-21 14:42:57.0" outEventId="1"/>
+
+
+    <h_car id="1" exhibitionId="1" plateNumber="陕A 95Q09" director="gerik" directorPhone="12345678912"/>
+    <h_car id="2" exhibitionId="1" plateNumber="陕A 95Q10" director="gerik" directorPhone="12345678912"/>
+    <h_car id="3" exhibitionId="1" plateNumber="陕A 95Q11" director="gerik" directorPhone="12345678912"/>
+    <h_car id="4" exhibitionId="2" plateNumber="陕A 95Q09" director="gerik" directorPhone="12345678912"/>
+    <h_car id="5" exhibitionId="2" plateNumber="陕A 95Q09" director="gerik" directorPhone="12345678912"/>
+
+    <m_nodeinfo nodeid="3101010100256" nodeType="3"
+                createTime="2013-01-21 14:42:57.0" X="0" Y="0" Z="0"
+                siteId="31010101" dataVersion="0" />
+    <m_nodeinfo nodeid="3101010100257" nodeType="4"
+                createTime="2013-01-21 14:42:57.0" X="0" Y="0" Z="0"
+                siteId="31010101" dataVersion="0" />
+    <m_nodeinfo nodeid="3101010100258" nodeType="3"
+                createTime="2013-01-21 14:42:57.0" X="0" Y="0" Z="0"
+                siteId="31010101" dataVersion="0" />
+    <m_nodeinfo nodeid="3101010100259" nodeType="4"
+                createTime="2013-01-21 14:42:57.0" X="0" Y="0" Z="0"
+                siteId="31010101" dataVersion="0" />
+    <m_nodeinfo nodeid="3101010100260" nodeType="3"
+                createTime="2013-01-21 14:42:57.0" X="0" Y="0" Z="0"
+                siteId="31010101" dataVersion="0" />
+    <m_nodeinfo nodeid="3101010100261" nodeType="4"
+                createTime="2013-01-21 14:42:57.0" X="0" Y="0" Z="0"
+                siteId="31010101" dataVersion="0" />
+
+    <m_location id="2" locationName="b" nodeId="3101010100256" siteId="1"/>
+    <m_location id="3" locationName="c" nodeId="3101010100257" siteId="1"/>
+    <m_location id="4" locationName="d" nodeId="3101010100258" siteId="1"/>
+    <m_location id="5" locationName="e" nodeId="3101010100259" siteId="1"/>
+    <m_location id="6" locationName="f" nodeId="3101010100260" siteId="1"/>
+    <m_location id="7" locationName="a" nodeId="3101010100261" siteId="1"/>
+
+    <h_device id="1" carId="1" deviceType="2" deviceId="2"/>
+    <h_device id="2" carId="2" deviceType="1" deviceId="3"/>
+    <h_device id="3" carId="2" deviceType="2" deviceId="4"/>
+    <h_device id="4" carId="3" deviceType="2" deviceId="5"/>
+    <h_device id="5" carId="3" deviceType="1" deviceId="6"/>
+    <h_device id="6" carId="3" deviceType="2" deviceId="7"/>
+    <h_user id="1" exhibitionId="1"/>
+    <h_user id="2" exhibitionId="1"/>
+    <h_user id="3" exhibitionId="1"/>
+    <h_user id="4" exhibitionId="1"/>
+    <h_config id="1" exhibitionId="1" alarmRange="10"/>
+    <h_config id="2" exhibitionId="1" alarmRange="15"/>
+    <h_config id="3" exhibitionId="1" alarmRange="20"/>
+
+
+
+</dataset>

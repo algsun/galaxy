@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="blackhole:logicgroup" extends="blackhole" namespace="/blackhole">
+        <!--查询站点组-->
+        <action name="queryLogicGroup" class="blackhole:queryLogicGroupAction" method="view">
+            <result type="freemarker">
+                /blackhole/pages/logicgroup/list-logicGroup.ftl
+            </result>
+        </action>
+
+        <action name="addLogicGroup" class="blackhole:addLogicGroupAction" method="view">
+            <result type="freemarker">
+                /blackhole/pages/logicgroup/add-logicgroup.ftl
+            </result>
+        </action>
+        <action name="doAddLogicGroup" class="blackhole:addLogicGroupAction" method="execute">
+            <result name="success" type="redirectAction">
+                queryLogicGroup
+            </result>
+            <result name="error" type="freemarker">
+                /blackhole/pages/logicgroup/add-logicgroup.ftl
+            </result>
+        </action>
+
+        <action name="addTopLogicGroup" class="blackhole:addTopLogicGroupAction" method="view">
+            <result type="freemarker">/blackhole/pages/logicgroup/add-top-logicgroup.ftl</result>
+        </action>
+
+        <action name="doAddTopLogicGroup" class="blackhole:addTopLogicGroupAction" method="execute">
+            <result name="success" type="redirect">/blackhole/chooseLogicGroup.action</result>
+            <result name="error" type="freemarker">/blackhole/pages/logicgroup/add-top-logicgroup.ftl</result>
+        </action>
+
+        <action name="currentLogicGroupInfo" class="blackhole:currentLogicGroupInfoAction" method="view">
+            <result type="freemarker">
+                /blackhole/pages/logicgroup/current/current-logicgroup-info.ftl
+            </result>
+        </action>
+        <action name="updateCurrentLogicGroup" class="blackhole:currentLogicGroupInfoAction" method="view">
+            <result type="freemarker">
+                /blackhole/pages/logicgroup/current/update-current-logicgroup.ftl
+            </result>
+        </action>
+        <action name="doUpdateCurrentLogicGroup" class="blackhole:currentLogicGroupInfoAction" method="execute">
+            <result name="success" type="redirect">currentLogicGroupInfo.action</result>
+            <result name="error" type="freemarker">
+                /blackhole/pages/logicgroup/current/update-current-logicgroup.ftl
+            </result>
+        </action>
+        <action name="logicGroupInfo" class="blackhole:logicGroupInfoAction" method="view">
+            <result type="freemarker">
+                /blackhole/pages/logicgroup/logicgroup-info.ftl
+            </result>
+        </action>
+        <action name="changeLogicGroupSiteAndParent" class="blackhole:changeLogicGroupSiteAndParentAction">
+            <result name="success" type="freemarker">
+                /blackhole/pages/logicgroup/current/adjust-logicGroup.ftl
+            </result>
+        </action>
+
+        <!--初始化管理员-->
+        <action name="doInitAdmin" class="blackhole:initAdminAction" method="execute">
+            <result name="success" type="json">
+                <param name="includeProperties">success, message</param>
+            </result>
+        </action>
+
+        <!--删除站点组-->
+        <action name="deleteLogicGroup" class="blackhole:deleteLogicGroupAction" method="execute">
+            <result name="success" type="json">
+                <param name="includeProperties">success,message</param>
+            </result>
+        </action>
+
+        <!--调整站点结构页面初始化-->
+        <action name="adjustStructure" class="blackhole:changeLogicGroupSiteAndParentAction" method="view">
+            <result name="success" type="freemarker">
+                /blackhole/pages/logicgroup/current/adjust-logicGroup.ftl
+            </result>
+        </action>
+
+        <!--调整站点-获取站点组-->
+        <action name="logicGroups" class="blackhole:queryAdmimLogicGroupAction">
+            <result type="json">
+                <param name="root">logicGroupMap</param>
+            </result>
+        </action>
+
+        <action name="siteConfig" class="blackhole:logicGroupSubsystemDisableAction" method="siteConfig">
+            <result name="success" type="freemarker">
+                /blackhole/pages/logicgroup/current/site-config.ftl
+            </result>
+        </action>
+        
+        <action name="logicGroupSubsystem" class="blackhole:logicGroupSubsystemDisableAction">
+            <result name="success" type="freemarker">
+                /blackhole/pages/logicgroup/current/logicGroup-subsystem.ftl
+            </result>
+        </action>
+
+        <action name="changeState" class="blackhole:logicGroupSubsystemDisableAction" method="changeState">
+            <result name="success" type="chain">
+                siteConfig
+            </result>
+        </action>
+
+        <action name="able" class="blackhole:logicGroupSubsystemDisableAction" method="able">
+            <result name="success" type="chain">
+                logicGroupSubsystem
+            </result>
+        </action>
+
+        <action name="disable" class="blackhole:logicGroupSubsystemDisableAction" method="disable">
+            <result name="success" type="chain">
+                logicGroupSubsystem
+            </result>
+        </action>
+        
+        <action name="privilegeOperate" class="blackhole:privilegeOperateAction">
+            <result name="success" type="freemarker">
+                /blackhole/pages/logicgroup/current/privilege-operate.ftl
+            </result>
+        </action>
+
+        <action name="disablePrivilege" class="blackhole:privilegeOperateAction" method="disablePrivilege">
+            <result name="success" type="chain">
+                privilegeOperate
+            </result>
+        </action>
+
+
+    </package>
+    <package name="blackhole:areacode" extends="blackhole" namespace="/blackhole">
+        <action name="getArea" class="blackhole:findAreaAction" method="execute">
+            <result type="json">
+                <param name="root">areaCodeCNs</param>
+            </result>
+        </action>
+    </package>
+
+    <package name="blackhole:site" extends="blackhole" namespace="/blackhole">
+        <action name="getSite" class="blackhole:findSiteAction" method="execute">
+            <result type="json">
+                <param name="root">sites</param>
+            </result>
+        </action>
+    </package>
+</struts>

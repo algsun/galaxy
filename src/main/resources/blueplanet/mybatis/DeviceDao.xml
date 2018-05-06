@@ -1,0 +1,877 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blueplanet.mybatis.DeviceDao">
+
+    <sql id="excludeDevices">
+        <![CDATA[
+
+
+
+	        AND n.nodeId NOT IN ('1000020100001', '1000020100021', '1000020100022', '1000020108765')
+
+
+
+        ]]>
+    </sql>
+
+    <select id="findSensorPhysicalid" parameterType="java.util.Map"
+            resultType="java.lang.Integer">
+        <![CDATA[
+		SELECT DISTINCT
+			n.sensorPhysicalid
+		FROM
+			m_nodesensor AS n
+		LEFT JOIN
+			m_sensorinfo AS s ON n.sensorPhysicalid = s.sensorPhysicalid
+		WHERE
+			n.nodeid = #{nodeId}
+		]]>
+        <if test="activeState == 1">
+            AND
+            s.isActive = ${activeState}
+        </if>
+        <![CDATA[
+		ORDER BY
+			n.sensorPhysicalid
+		]]>
+    </select>
+
+    <!-- 查询一个设备已经激活的检测指标对应的实时数据值 -->
+    <select id="findNodesensor" resultType="DeviceDataVO"
+            parameterType="java.util.Map">
+        <![CDATA[
+			SELECT DISTINCT
+  				m.sensorPhysicalid		AS sensorPhysicalid ,
+  				m.sensorPhysicalValue	AS sensorPhysicalValue,
+				m.state					AS state,
+				n.showType              AS showType,
+				n.cn_name               AS cnName,
+				n.units                 AS units
+			FROM
+				m_nodesensor	AS m
+		    LEFT JOIN
+		        m_sensorinfo     AS n ON m.sensorPhysicalid=n.sensorPhysicalid
+	        WHERE
+	            n.isActive=1
+	        AND
+				m.nodeid=#{nodeId}
+		]]>
+        <if test="sensorPhysicalIdList !=null">
+            AND
+            m.sensorPhysicalid
+            IN
+            <foreach collection="sensorPhysicalIdList" index="index"
+                     item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <!--TODO做完位置点之后删除 liuzhu 2014-7-1-->
+    <!-- 查询最大和最小时间为查询设备历史数据表做查询条件 -->
+    <select id="findMaxAndMinTime" resultType="java.util.Map"
+            parameterType="java.util.Map">
+        <![CDATA[
+		  	SELECT 
+				 min(b.createtime) AS minTime,
+				 max(b.createtime) AS maxTime
+			FROM 
+			   (SELECT 
+			          a.createtime
+			        FROM 
+				 `${nodeId}`  AS a 
+		 ]]>
+        <if
+                test="endTime!=null and endTime!='' and startTime!=null and startTime!=''">
+            <![CDATA[
+		     WHERE 
+		         a.createtime <=#{endTime}
+		     AND a.createtime >=#{startTime}
+		 ]]>
+        </if>
+
+        <![CDATA[
+				GROUP BY 
+				  a.createtime
+				ORDER BY 
+				  a.createtime DESC 
+		 ]]>
+        <if test="start!=null and pageSize!=null">
+            LIMIT #{start},#{pageSize}
+        </if>
+        ) AS b
+
+    </select>
+
+    <!--TODO做完位置点之后删除 liuzhu 2014-7-1-->
+    <!-- 查询一个设备所有监测指标对应的历史数据值 -->
+    <select id="findHistoryNodesensor" resultType="DeviceDataVO"
+            parameterType="java.util.Map">
+       <![CDATA[
+
+
+
+
+		   SELECT 
+              a.sensorPhysicalid    AS sensorPhysicalid,
+              a.sensorPhysicalvalue As sensorPhysicalvalue,
+              a.createtime          AS stamp,
+              a.state               AS state,
+              s.`cn_name`           as cnName,
+              s.`units`             as units,
+              s.showType            AS showType
+           FROM 
+              `${nodeId}` AS a
+           LEFT JOIN
+              m_sensorinfo AS s ON s.sensorPhysicalid = a.sensorPhysicalid
+           WHERE 
+              a.createtime>=#{startTime}
+           AND
+              a.createtime<=#{endTime} 
+
+
+
+
+        ]]>
+	</select>
+
+    <!-- 查询时间段内历史数据的总数量 -->
+    <select id="findHistoryDataCount" resultType="java.lang.Integer"
+            parameterType="java.util.Map">
+	  <![CDATA[
+
+
+
+
+		SELECT 
+		  COUNT(b.id)   
+		FROM(  
+		    SELECT 
+			  a.id
+			FROM 
+			 `${nodeId}` AS a 		
+			WHERE 
+			  a.createtime>=#{startTime}
+			AND 
+			  a.createtime<=#{endTime}					
+			GROUP BY 
+			  a.createtime	) AS b	
+
+
+
+
+        ]]>
+	</select>
+
+    <!-- 查询一个时间段内设备历史数据的设备信息 -->
+    <select id="findHistoryData" resultType="HistoryDataVO"
+            parameterType="java.util.Map">
+	  <![CDATA[
+
+
+
+
+	    SELECT 
+		  a.lowvoltage    AS lowvoltage,
+		  a.createtime    AS stamp ,
+		  a.anomaly       AS anomaly
+		FROM 
+		  `${nodeId}` AS a
+		WHERE 
+		   a.`createtime`>=#{startTime}
+		AND 
+		   a.`createtime`<=#{endTime}
+		GROUP BY 
+		   a.`createtime`
+		ORDER BY 
+		   a.`createtime` DESC 
+
+
+
+
+        ]]>
+	</select>
+
+    <!-- 获取设备详细信息 -->
+    <select id="findDeviceById" parameterType="java.lang.String"
+            resultType="DeviceVO">
+		<![CDATA[
+
+
+
+
+			SELECT 
+				n.nodeid		as nodeId,
+				n.nodeType		as nodeType,
+				n.deviceImage	as deviceImage,
+				n.siteId        as siteId,
+				n.sn            as sn,
+				m.rssi			as rssi,
+				m.lqi			as lqi,
+				m.stamp			as stamp,
+				m.lowvoltage	as lowvoltage,
+				m.anomaly		as anomaly,
+				m.deviceMode	as deviceMode,
+				m.interval_i 	as `interval`,
+				m.isControl		as `notControl`,
+				m.parentIP      as parentIP,
+				m.childIP       as currentIP,
+                m.nodeVersion   as nodeVersion,
+                n.isHumCompensate as humCompensate,
+                n.voltageThreshold as voltageThreshold,
+                m.demarcate,
+                n.sn,
+                m.warmUp
+			FROM 
+				m_nodeinfo AS n
+			LEFT JOIN
+				m_nodeinfomemory AS m ON n.nodeid = m.nodeid
+			WHERE 
+				n.nodeid = #{value}
+
+
+
+
+        ]]>
+	</select>
+
+    <!-- 查询设备拥有的监测指标 -->
+    <select id="findSensorinfo" parameterType="java.util.Map"
+            resultType="SensorinfoVO">
+        <![CDATA[
+			SELECT
+				s.sensorPhysicalid	AS sensorPhysicalid,
+				s.en_name			AS enName,
+        ]]>
+        <if test="language=='en_US'">
+            s.en_name AS cnName,
+        </if>
+        <if test="language=='zh_CN'">
+            s.cn_name AS cnName,
+        </if>
+        <![CDATA[
+				s.sensorPrecision	AS sensorPrecision,
+				s.units				AS units,
+				s.positions			AS positions,
+				s.showType          AS showType,
+				mts.maxValue,
+                mts.minValue
+			FROM 
+				m_sensorinfo AS s
+              INNER JOIN m_nodesensor AS ns
+                ON s.sensorPhysicalid = ns.sensorPhysicalid
+              INNER JOIN m_nodeinfo AS n
+                ON ns.nodeid = n.nodeid
+              LEFT JOIN m_location AS ml
+                ON ml.nodeId = n.nodeId
+              LEFT JOIN `m_threshold` AS mts
+                ON s.sensorPhysicalid = mts.sensorPhysicalid
+                AND (ml.id = mts.locationId OR ml.nodeId = mts.nodeId)
+			WHERE
+				n.nodeid = #{deviceId}
+		]]>
+        <if test="activeState == 1">
+            AND
+            s.isActive = #{activeState}
+        </if>
+        <![CDATA[
+			ORDER BY
+				s.sensorPhysicalid
+		]]>
+    </select>
+
+    <!-- 查询已绑定设备 -->
+    <select id="findDeviceList" parameterType="java.util.Map" resultType="DeviceVO">
+        <![CDATA[
+			SELECT
+			    n.nodeid		AS nodeId, 
+			    n.nodeType		AS nodeType,
+			    n.sn            AS sn,
+			    n.deviceType AS deviceType,
+			    m.lowvoltage	AS lowvoltage,
+			    m.anomaly		AS anomaly,
+			    m.deviceMode	AS deviceMode,
+			    m.rssi			AS rssi,
+			    m.lqi			as lqi,
+				m.stamp			AS stamp
+			FROM
+				m_nodeinfo	AS n
+			INNER JOIN
+				m_nodeinfomemory AS m ON m.nodeid = n.nodeid
+			WHERE
+				n.siteId = #{siteId}
+			AND
+				n.nodeType NOT IN(4)
+		]]>
+        <include refid="excludeDevices"/>
+        <if test="deviceId !=null and deviceId != ''">
+            AND
+            n.nodeid LIKE '${siteId}%${deviceId}%'
+        </if>
+
+        <if test="deviceType ==2 || deviceType == 5 || deviceType ==7 || deviceType ==3">
+            AND
+            n.nodeType = #{deviceType}
+        </if>
+        <if test="deviceType ==1">
+            AND
+            n.nodeType IN(1,3)
+        </if>
+        <![CDATA[
+			LIMIT
+				#{start},#{pageSize}
+		]]>
+    </select>
+
+    <!-- 查询已绑定设备数量 -->
+    <select id="findDeviceListCount" parameterType="java.util.Map" resultType="int">
+        <![CDATA[
+			SELECT
+			    COUNT(n.nodeid) 
+			FROM
+				m_nodeinfo n
+			INNER JOIN
+				m_nodeinfomemory m ON m.nodeid = n.nodeid
+			WHERE
+				n.siteId = #{siteId}
+			AND
+				n.nodeType NOT IN(4)
+		]]>
+        <include refid="excludeDevices"/>
+        <if test="deviceId !=null and deviceId != ''">
+            AND
+            n.nodeid LIKE '${siteId}%${deviceId}%'
+        </if>
+
+        <if test="deviceType ==2 || deviceType == 5 || deviceType ==7 || deviceType ==3">
+            AND
+            n.nodeType = #{deviceType}
+        </if>
+        <if test="deviceType ==1">
+            AND
+            n.nodeType IN(1,3)
+        </if>
+    </select>
+
+    <!-- 查询未绑定位置点的设备 -->
+    <select id="findDevicesBySiteId" parameterType="java.lang.String" resultType="DeviceVO">
+        <![CDATA[
+            SELECT
+              n.nodeid AS nodeId,
+              n.nodeType AS nodeType,
+              m.lowvoltage AS lowvoltage,
+              m.lqi AS lqi,
+              m.stamp AS stamp,
+              m.anomaly AS anomaly,
+              m.deviceMode AS deviceMode,
+              m.rssi AS rssi,
+              m.parentIP AS parentIP,
+              m.childIP AS currentIP,
+              l.id AS locationId
+            FROM
+              m_nodeinfo n
+              INNER JOIN m_nodeinfomemory m
+                ON n.nodeid = m.nodeid
+              LEFT JOIN m_location l
+                ON n.nodeId = l.nodeId
+            WHERE n.siteId = #{siteId}
+        ]]>
+        <include refid="excludeDevices"/>
+    </select>
+
+    <!-- 查询未绑定位置点的设备 -->
+    <select id="findDevicesByZoneId" parameterType="java.lang.String" resultType="DeviceVO">
+        <![CDATA[
+            SELECT
+              n.nodeid AS nodeId,
+              n.nodeType AS nodeType,
+              m.lowvoltage AS lowvoltage,
+              m.lqi AS lqi,
+              m.stamp AS stamp,
+              m.anomaly AS anomaly,
+              m.deviceMode AS deviceMode,
+              m.rssi AS rssi,
+              m.parentIP AS parentIP,
+              m.childIP AS currentIP,
+              l.id AS locationId
+            FROM
+              m_nodeinfo n
+              INNER JOIN m_nodeinfomemory m
+                ON n.nodeid = m.nodeid
+              LEFT JOIN m_location l
+                ON n.nodeId = l.nodeId
+            WHERE l.zoneId =#{zoneId}
+        ]]>
+        <include refid="excludeDevices"/>
+    </select>
+
+    <!-- 根据主模块id查询从模块 -->
+    <select id="findSlaveModule" parameterType="java.lang.String"
+            resultType="DeviceVO">
+		<![CDATA[
+
+
+
+
+			SELECT
+			    n.nodeid		AS nodeId, 
+			    n.nodeType		AS nodeType,
+			    m.lowvoltage	AS lowvoltage,
+			    m.lqi			as lqi,
+				m.stamp			as stamp,
+			   	m.anomaly		AS anomaly,
+			    m.deviceMode	AS deviceMode,
+			    m.rssi			AS rssi
+			FROM
+				m_nodeinfo n
+			INNER JOIN
+				m_nodeinfomemory m ON m.nodeid = n.nodeid
+			WHERE 
+			    m.parentIP = (SELECT 
+			    				m.childIP
+							FROM 
+								m_nodeinfo AS n 
+							INNER JOIN 
+								m_nodeinfomemory AS m ON n.nodeid = m.nodeid
+							WHERE
+								n.nodeid = #{value})
+			AND n.siteId = (SELECT 
+			    				n.siteId
+							FROM 
+								m_nodeinfo AS n 
+							WHERE
+								n.nodeid = #{value})
+			AND n.nodeType = 4
+			ORDER BY 
+				n.nodeid ASC
+
+
+
+        ]]>
+	</select>
+
+    <!-- 根据id查询设备的数据版本号 -->
+    <select id="findDataVersion" parameterType="java.lang.String"
+            resultType="long">
+		<![CDATA[
+
+
+
+
+			SELECT
+				n.dataVersion
+			FROM
+				`m_nodeinfo` as n
+			WHERE
+				n.nodeid = #{value}
+
+
+
+
+        ]]>
+	</select>
+
+    <update id="updateDevices" parameterType="DeviceVO">
+        <![CDATA[
+			UPDATE 
+				`m_nodeinfo` AS n 
+			SET
+			    n.`dataVersion` = ${dataVersion},
+ 			    n.`voltageThreshold` = #{voltageThreshold}
+		]]>
+        <if test="deviceImage != null and deviceImage != ''">
+            ,n.`deviceImage` = #{deviceImage}
+        </if>
+        <![CDATA[
+			WHERE 
+				n.`nodeid` = #{nodeId}
+		]]>
+    </update>
+
+    <update id="updateDevicesInterval" parameterType="DeviceVO">
+        <![CDATA[
+
+
+
+
+			UPDATE
+              `m_nodeinfomemory` as mn
+            SET
+              mn.interval_i = #{interval}
+			WHERE
+				mn.`nodeid` = #{nodeId}
+
+
+
+
+        ]]>
+    </update>
+
+    <select id="findDevicesByType" parameterType="java.util.Map" resultType="DeviceVO">
+        <![CDATA[
+
+        SELECT
+            n.nodeid		AS nodeId,
+            n.nodeType		AS nodeType,
+            m.lowvoltage	AS lowvoltage,
+            m.anomaly		AS anomaly,
+            m.deviceMode	AS deviceMode,
+            m.rssi			AS rssi,
+            m.lqi			AS lqi,
+            m.stamp			AS stamp
+        FROM
+            m_nodeinfo	AS n
+        INNER JOIN
+            m_nodeinfomemory AS m ON m.nodeid = n.nodeid
+        WHERE
+            n.siteId = #{siteId}
+        AND n.nodeType = #{deviceType}
+        ]]>
+        <include refid="excludeDevices"/>
+        <![CDATA[
+        ORDER BY n.nodeid
+        ]]>
+    </select>
+
+    <select id="findDevicesByVersionAndParentIP" parameterType="java.util.Map" resultType="DeviceVO">
+        <![CDATA[
+        SELECT
+            n.nodeid		AS nodeId,
+            n.nodeType		AS nodeType,
+            m.lowvoltage	AS lowvoltage,
+            m.anomaly		AS anomaly,
+            m.deviceMode	AS deviceMode,
+            m.rssi			AS rssi,
+            m.lqi			AS lqi,
+            m.stamp			AS stamp
+        FROM
+            m_nodeinfo	AS n
+        INNER JOIN
+            m_nodeinfomemory AS m ON m.nodeid = n.nodeid
+        WHERE
+            n.siteId = #{siteId}
+        AND m.nodeVersion = #{nodeVersion}
+        AND m.parentIP = #{parentIP}
+        AND m.parentIP <> m.childIP
+        ]]>
+        <include refid="excludeDevices"/>
+    </select>
+
+    <select id="findDevicesBySubNetAndParentIP" parameterType="java.util.Map" resultType="DeviceVO">
+        <![CDATA[
+        SELECT
+            n.nodeid		AS nodeId,
+            n.nodeType		AS nodeType,
+            m.lowvoltage	AS lowvoltage,
+            m.anomaly		AS anomaly,
+            m.deviceMode	AS deviceMode,
+            m.rssi			AS rssi,
+            m.lqi			AS lqi,
+            m.stamp			AS stamp
+        FROM
+            m_nodeinfo	AS n
+        INNER JOIN
+            m_nodeinfomemory AS m ON m.nodeid = n.nodeid
+        WHERE
+            n.siteId = #{siteId}
+        AND SUBSTRING(n.nodeid, 9, 2) = #{subNet}
+        AND m.parentIP = #{parentIP}
+        AND m.parentIP <> m.childIP
+        ]]>
+        <include refid="excludeDevices"/>
+    </select>
+
+    <select id="findRainDeviceState" parameterType="java.util.Map" resultType="java.lang.String">
+        SELECT
+          content
+        FROM
+          `m_device_${deviceId}` t
+        WHERE t.`timestamp` = #{createTime}
+        LIMIT 0, 1
+    </select>
+
+    <select id="findHistoryLowVoltage" parameterType="java.util.Map" resultType="DeviceState">
+        SELECT
+        voltage AS lowVoltage,
+        rssi AS rssi,
+        lqi AS lqi,
+        `timestamp` AS stamp
+        FROM
+        `m_device_${deviceId}`  t
+        WHERE
+        t.`timestamp`
+        BETWEEN
+        #{startTime}
+        AND
+        #{endTime}
+        GROUP BY  t.`timestamp`
+        ORDER BY
+        t.`timestamp`
+    </select>
+
+    <select id="findProductState" resultType="ProductStateVO" parameterType="string">
+        <![CDATA[
+        SELECT
+          n.nodeid AS Id,
+          sn AS serialNumber,
+          interval_i AS 'interval',
+          rssi,
+          lqi,
+          lowvoltage AS voltage,
+          anomaly,
+          stamp
+        FROM
+          `m_nodeinfo` AS n
+          INNER JOIN `m_nodeinfomemory` AS mnm
+            ON n.`nodeid` = mnm.`nodeid`
+        WHERE n.`sn` != 0
+          AND n.siteId = #{value}
+        ]]>
+        <include refid="excludeDevices"/>
+    </select>
+
+    <select id="findProductStateNoSn" resultType="ProductStateVO" parameterType="string">
+        <![CDATA[
+        SELECT
+          nodeType AS nodeType,
+          sn AS serialNumber,
+          interval_i AS 'interval',
+          rssi,
+          lqi,
+          lowvoltage AS voltage,
+          anomaly,
+          stamp
+        FROM
+          `m_nodeinfo` AS n
+          INNER JOIN `m_nodeinfomemory` AS mnm
+            ON n.`nodeid` = mnm.`nodeid`
+        WHERE n.`sn` = 0
+          AND mnm.anomaly != - 1
+          AND n.siteId = #{value}
+        ]]>
+        <include refid="excludeDevices"/>
+    </select>
+
+    <select id="findDeviceId" resultType="string" parameterType="string">
+        SELECT
+          nodeid
+        FROM
+          `m_nodeinfo`
+        WHERE sn = #{sn}
+        LIMIT 1
+    </select>
+
+    <!-- 删除设备 -->
+    <delete id="deleteDeviceNodeSensor" parameterType="java.lang.String">
+		<![CDATA[
+
+
+
+
+			DELETE FROM m_nodesensor WHERE nodeid=#{nodeId};
+
+
+
+
+        ]]>
+	</delete>
+
+    <delete id="deleteDeviceNodeInfo" parameterType="java.lang.String">
+		<![CDATA[
+
+
+
+
+			DELETE FROM m_nodeinfomemory WHERE nodeid=#{nodeId};
+
+
+
+
+        ]]>
+	</delete>
+
+    <delete id="deleteDeviceNodeInfoMemory" parameterType="java.lang.String">
+		<![CDATA[
+
+
+
+			DELETE FROM m_nodeinfo WHERE nodeid=#{nodeId};
+
+
+
+        ]]>
+	</delete>
+
+    <delete id="deleteDeviceCustomFormula" parameterType="string">
+        <![CDATA[
+
+
+
+            DELETE FROM `m_formula_sensor` WHERE device_id = #{nodeId} AND device_id <> '0';
+
+
+
+        ]]>
+    </delete>
+
+    <delete id="deleteDeviceCustomFormulaParam" parameterType="string">
+        <![CDATA[
+
+
+
+            DELETE FROM `m_formula_param` WHERE device_id = #{nodeId} AND device_id <> '0';
+
+
+
+        ]]>
+    </delete>
+
+    <delete id="deleteControlModuleStatus" parameterType="string">
+        <![CDATA[
+
+
+
+            DELETE FROM `m_control_module_status` WHERE node_id = #{nodeId};
+
+
+
+        ]]>
+    </delete>
+
+    <delete id="deleteControlModuleConditionRefl" parameterType="string">
+        <![CDATA[
+
+
+
+            DELETE FROM `m_control_module_condition_rfl` WHERE node_id = #{nodeId};
+
+
+
+        ]]>
+    </delete>
+
+    <delete id="deleteControlModuleSwitch" parameterType="string">
+        <![CDATA[
+
+
+
+            DELETE FROM `m_control_module_switch` WHERE node_id = #{nodeId};
+
+
+
+        ]]>
+    </delete>
+
+    <delete id="deleteControlModuleSwitchChange" parameterType="string">
+        <![CDATA[
+
+
+
+            DELETE FROM `m_control_module_switch_change` WHERE node_id = #{nodeId};
+
+
+
+        ]]>
+    </delete>
+
+    <delete id="dropDeviceStatusTable" parameterType="java.util.Map">
+        <![CDATA[
+
+
+
+            DROP TABLE IF EXISTS `m_device_${nodeId}`;
+
+
+
+        ]]>
+    </delete>
+
+    <update id="updateLocationNodeIdToNull" parameterType="string">
+        <![CDATA[
+
+
+
+            UPDATE `m_location` SET  `nodeId` =  NULL WHERE `nodeId` = #{nodeId};
+
+
+
+        ]]>
+    </update>
+
+    <select id="findContent" parameterType="java.util.Map" resultType="java.lang.String">
+        SELECT
+          content
+        FROM
+          `m_device_${deviceId}` t
+        WHERE content LIKE '%humidityController%' OR content LIKE '%airConditionerController%'
+        ORDER BY  t.`timestamp` DESC
+        LIMIT 1
+    </select>
+
+    <select id="findLastFaultCode" parameterType="java.util.Map" resultType="java.lang.String">
+        SELECT
+        faultCode
+        FROM
+        `m_device_${deviceId}`
+        ORDER BY  `timestamp` DESC
+        LIMIT 1
+    </select>
+
+    <select id="findContents" parameterType="java.util.Map" resultType="java.lang.String">
+        SELECT content FROM (
+	      SELECT
+            *
+          FROM
+            `m_device_${deviceId}` t
+          WHERE content LIKE '%humidityController%'
+          ORDER BY  t.`timestamp` DESC
+          LIMIT #{count}) AS temp ORDER BY temp.`timestamp` ASC
+    </select>
+
+    <select id="findHumidities" parameterType="java.lang.String" resultType="java.lang.String">
+        <![CDATA[
+        SELECT
+          `nodeid`
+        FROM `m_nodeinfo` n
+        WHERE
+          deviceType = 1
+        and
+          siteId = #{siteId}
+        ]]>
+        <include refid="excludeDevices"/>
+    </select>
+
+    <select id="findAirConditioners" parameterType="java.lang.String" resultType="java.lang.String">
+        <![CDATA[
+        SELECT
+          `nodeid`
+        FROM `m_nodeinfo` n
+        WHERE
+          deviceType = 2
+        and
+          siteId = #{siteId}
+        ]]>
+        <include refid="excludeDevices"/>
+    </select>
+
+    <select id="findControlDevices" parameterType="java.util.Map" resultType="java.lang.String">
+        <![CDATA[
+        SELECT
+          `nodeid`
+        FROM `m_nodeinfo` n
+        WHERE
+          deviceType = #{deviceType}
+        and
+          siteId = #{siteId}
+        ]]>
+        <include refid="excludeDevices"/>
+    </select>
+
+    <update id="updateDeviceType" parameterType="java.util.Map">
+        UPDATE `m_nodeinfo` SET deviceType = #{deviceType} WHERE nodeId = #{deviceId}
+    </update>
+
+
+</mapper>

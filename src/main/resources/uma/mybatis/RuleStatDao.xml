@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="uma.mybatis.RuleStatDao">
+
+    <!-- （1）统计单程行为总数、往返行为总数
+         （2）统计往返下面的往行为总数、返行为总数
+     -->
+	<!-- 单程，往，返 行为规则统计 -->
+	<select id="findRuleStats2" parameterType="java.util.Map"
+		resultType="RuleStatBean">
+ 	<![CDATA[
+		SELECT * FROM
+		(
+		SELECT
+		SUM(ac.size) AS count,
+		t.id AS id,
+		t.parentId AS parentId,
+		t.name
+		AS ruleName,
+		t.type AS TYPE
+		FROM
+		u_action_templet AS t
+		LEFT JOIN
+		(SELECT
+		actionTempletId,
+		COUNT(id) AS size
+		FROM
+		u_user_action a
+		WHERE occurrenceTime >= #{startTime} 
+		AND occurrenceTime <= #{endTime}
+		GROUP
+		BY actionTempletId
+		UNION
+		ALL
+		SELECT
+		actionTempletId,
+		COUNT(id) AS size
+		FROM
+		u_action_census
+		 WHERE
+                  goTime >= #{startTime} AND
+                  goTime <= #{endTime}
+		GROUP BY actionTempletId) AS ac
+		ON t.id =
+		ac.actionTempletId
+		WHERE t.enable = 1
+		AND t.siteId =  #{siteId}
+		AND (
+		t.`type` = 3 OR t.`type` = 4 )
+		 ]]>
+		<if test="ruleName != null">
+			AND t.name like '%${ruleName}%'
+		</if>
+		<![CDATA[
+		GROUP BY t.parentId , t.`type`
+		ORDER BY
+		count DESC
+		) t1
+		UNION ALL
+		SELECT * FROM (
+		SELECT
+		ac.size AS count,
+		t.id AS
+		id,
+		t.parentId AS parentId,
+		t.name AS ruleName,
+		t.type AS TYPE
+		FROM
+		u_action_templet AS t
+		LEFT JOIN
+		(SELECT
+		actionTempletId,
+		COUNT(id) AS size
+		FROM
+		u_user_action a
+		WHERE occurrenceTime >= #{startTime} AND occurrenceTime <= #{endTime}
+		GROUP BY actionTempletId
+		UNION
+		ALL
+		SELECT
+		actionTempletId,
+		COUNT(id) AS size
+		FROM
+		u_action_census
+		 WHERE
+                  goTime >= #{startTime} AND
+                  goTime <= #{endTime}
+		GROUP BY
+		actionTempletId) AS ac
+		ON t.id = ac.actionTempletId
+		WHERE t.enable = 1
+		AND t.siteId = #{siteId}
+		AND (t.`parentId` = 0
+		OR t.`type` = 2
+		)
+		 ]]>
+		<if test="ruleName != null">
+			AND t.name like '%${ruleName}%'
+		</if>
+		<![CDATA[
+		ORDER BY
+		count DESC
+		) AS t2
+ 	]]>
+	</select>
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+
+	<t_zone zoneId="00002" siteId="11010101" zoneName="二区"
+		dataVersion="2" />
+
+	<p_dv_place id="1113" dvType="1" placeCode="224" placeName="点位3"
+		createTime="2013-02-25 12:01:01" imageRealWidth="55"
+		imageWidth="55" imageHeight="30" enable="1" remark="备注" dvIp="192.168.0.213"
+		zoneId="00002" />
+	<p_dv_place_optics dvPlaceId="1113" dvPort="65531"
+		ioIp="192.168.0.222" ioPort="65530" lightOnTime="1000" lightOffTime="1000"
+		photographTime="500" isIoOn="1" isLightOn="0" />
+
+	<p_photograph_time_interval id="123123123"
+		dayOfWeek="7" dvPlaceId="1113" startTime="12:05:25" endTime="19:30:12"
+		intervalTime="15" />
+	<p_photograph_time_interval id="123123124"
+		dayOfWeek="5" dvPlaceId="1113" startTime="12:05:20" endTime="19:30:11"
+		intervalTime="15" />
+
+</dataset>

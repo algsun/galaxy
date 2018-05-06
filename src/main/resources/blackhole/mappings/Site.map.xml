@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.blackhole.bean">
+
+    <class name="Site" table="t_site">
+        <id name="siteId" column="siteId" length="8">
+            <generator class="assigned"/>
+        </id>
+
+        <property name="siteName" length="50"/>
+        <property name="lngBaiDu"/>
+        <property name="latBaiDu"/>
+        <property name="lngGoogle"/>
+        <property name="latGoogle"/>
+        <property name="lngAmap"/>
+        <property name="latAmap"/>
+
+        <many-to-one name="areacodeCN" column="areaCode" lazy="false"/>
+    </class>
+
+</hibernate-mapping> 

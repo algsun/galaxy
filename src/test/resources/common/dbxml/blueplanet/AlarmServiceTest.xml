@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+
+    <m_measure id = "1" description="测试一" siteId = "31010101" createTime="2014-03-20 16:44:23.0"  />
+    <m_measure id = "2" description="测试二" siteId = "31010101" createTime="2014-03-20 16:44:23.0"  />
+    <m_measure id = "3" description="测试三" siteId = "31010101" createTime="2014-03-20 16:44:23.0"  />
+
+    <t_zone zoneId="001" siteId="31010101" zoneName="测试区域1" planImage="区域实景图1" dataVersion="32" />
+    <t_zone zoneId="002" siteId="31010101" zoneName="测试区域2" planImage="区域实景图2" dataVersion="32" />
+    <t_zone zoneId="003" siteId="31010101" zoneName="测试区域3" planImage="区域实景图3" dataVersion="32" />
+    <t_zone zoneId="004" siteId="31010101" zoneName="测试区域4" planImage="区域实景图4" dataVersion="32" />
+
+    <!--<m_zone_measure id = "1" zoneId = "001" measureId="1"/>-->
+    <!--<m_zone_measure id = "2" zoneId = "002" measureId="2"/>-->
+    <!--<m_zone_measure id = "3" zoneId = "003" measureId="3"/>-->
+
+    <t_logicgroup id="3" logicGroupName="测试数据" siteId="31010101" logicGroupType="1" />
+</dataset>

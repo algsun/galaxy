@@ -1,0 +1,32 @@
+/**
+* 实时数据小趋势图标
+* @author gaohui
+* @date 2013-01-05
+*/
+/*--实时数据 数据趋势 */
+/*<--上涨-->*/
+.trend-up {
+    background: url(../../images/_demo/trend-up-16x14.gif) no-repeat;
+    height: 14px;
+    cursor: pointer;
+    width: 16px;
+    display: inline-block;
+}
+
+/*<#--水平-->*/
+.trend-retain {
+    background: url(../../images/_demo/trend-retain-16x14.gif) no-repeat;
+    height: 14px;
+    cursor: pointer;
+    width: 16px;
+    display: inline-block;
+}
+
+/*<#--下降-->*/
+.trend-down {
+    background: url(../../images/_demo/trend-down-16x14.gif) no-repeat;
+    height: 14px;
+    cursor: pointer;
+    width: 16px;
+    display: inline-block;
+}

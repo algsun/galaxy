@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd   
+       http://www.springframework.org/schema/aop   
+       http://www.springframework.org/schema/aop/spring-aop-3.0.xsd   
+       http://www.springframework.org/schema/tx   
+       http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<!-- Quartz -->
+	<bean name="scheduleFactory" class="org.quartz.impl.StdSchedulerFactory"/>
+    <bean name="scheduler" factory-bean="scheduleFactory" factory-method="getScheduler" init-method="start"
+          destroy-method="shutdown"/>
+
+    <!--<bean name="blueplanet-uploadStateQuartz" class="com.microwise.blueplanet.quartz.UploadStateQuartz" init-method="initQuartz" lazy-init="false">-->
+        <!--<property name="interval_i"-->
+                  <!--value="${blueplanet.uploadState.interval}" />-->
+    <!--</bean>-->
+
+	<!-- 后台任务 -->
+    <!-- 这是例子
+    <bean name="common-initQuartz" class="com.microwise.common.service.quartz.QuartzDemo" init-method="initQuartz" lazy-init="false">
+        <constructor-arg index="0" ref="scheduler"/>
+    </bean>
+    -->
+
+</beans>

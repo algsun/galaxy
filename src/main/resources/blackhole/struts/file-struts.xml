@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <package name="blackhole:file" extends="blackhole" namespace="/blackhole">
+
+        <action name="upload" class="blackhole:fileUploadAction" method="execute">
+            <!-- 动态设置savePath的属性值 -->
+            <param name="savePath">/galaxy-resources/blackhole/images/user</param>
+            <result name="success" type="json">
+                <param name="includeProperties">filePath,imageFileName</param>
+                <param name="contentType">text/html</param>
+            </result>
+            <interceptor-ref name="fileUpload">
+                <!-- 文件过滤 -->
+                <param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg</param>
+                <!-- 文件大小, 以字节为单位 -->
+                <param name="maximumSize">1025956</param>
+            </interceptor-ref>
+            <!-- 默认拦截器必须放在fileUpload之后，否则无效 -->
+            <interceptor-ref name="defaultStack"/>
+        </action>
+
+        <action name="imageUpload" class="blackhole:imageUploadAction" method="execute">
+            <!-- 动态设置savePath的属性值 -->
+            <param name="savePath">/galaxy-resources/blackhole/images/logicGroup</param>
+            <result name="success" type="redirectAction">theme</result>
+
+            <interceptor-ref name="fileUpload">
+                <!-- 文件过滤 -->
+                <param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg</param>
+                <!-- 文件大小, 以字节为单位 -->
+                <param name="maximumSize">1025956</param>
+            </interceptor-ref>
+            <!-- 默认拦截器必须放在fileUpload之后，否则无效 -->
+            <interceptor-ref name="defaultStack"/>
+        </action>
+
+    </package>
+</struts>

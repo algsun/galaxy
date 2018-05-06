@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.orion.bean">
+    <class name="RepairPhoto" table="o_repair_photos">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="repairRecord" class="com.microwise.orion.bean.RepairRecord" lazy="false">
+            <column name="repairRecordId" />
+        </many-to-one>
+        <property name="description" type="java.lang.String">
+            <column name="description" length="100" not-null="false">
+                <comment>图片描述</comment>
+            </column>
+        </property>
+        <property name="path" type="java.lang.String">
+            <column name="path" length="100" not-null="true">
+                <comment>图片路径</comment>
+            </column>
+        </property>
+        <property name="type" type="java.lang.Integer">
+            <column name="type" length="2" not-null="true">
+                <comment>图片类型</comment>
+            </column>
+        </property>
+        <property name="stamp" type="java.util.Date">
+            <column name="stamp" length="50" not-null="false">
+                <comment>图片上传时间</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="phoenix.mybatis.UserOperateDao">
+
+	<!-- 查询用户操作功能模块统计 -->
+	<select id="findUserFunctions" parameterType="java.util.Map" resultType="blackhole:UserOperate">
+		<![CDATA[
+			SELECT 
+			   sl.`logName`  AS functionName,
+			   COUNT(sl.`id`) `count`
+			FROM 
+			   t_sys_logs  sl 
+			WHERE 
+			   sl.`userEmail` = #{email}
+			AND sl.`logTime` >= #{startDate}
+			AND sl.`logTime` <= #{endDate}
+			GROUP  BY sl.`logName`
+			ORDER  BY `count` DESC
+			LIMIT #{size}
+	  ]]>
+	</select>
+	
+	<!-- 查询用户 对功能模块内 具体操作 统计 -->
+	<select id="findUserOperate" parameterType="java.util.Map" resultType="java.util.Map">
+		<![CDATA[
+			SELECT 
+			   sl.`logContent`  AS operate,
+			   COUNT(sl.`id`) `count`
+			FROM 
+			   t_sys_logs  sl 
+			WHERE 
+			   sl.`userEmail` = #{email}
+			AND sl.`logName` = #{functionName}
+			AND sl.`logTime` >= #{startDate}
+			AND sl.`logTime` <= #{endDate}
+			GROUP  BY sl.`logContent`
+	  ]]>
+	</select>
+	
+	
+    <!-- 查询可用的业务系统 -->
+	<select id="findSubsystem"  resultType="Blackhole:SubsystemOperate">
+		<![CDATA[
+			SELECT  DISTINCT
+			  s.`subsystemId`,
+			  s.`subsystemName`,
+			  s.subsystemCode
+			FROM t_subsystem  s
+			WHERE s.`enable` = 1
+	  ]]>
+	</select>
+	
+    <!-- 查询可用的业务系统 -->
+	<select id="findSubsystemOperate"  resultType="java.util.Map" parameterType="java.util.Map">
+		<![CDATA[
+			SELECT 
+				u.userName,
+				COUNT(u.id) number
+			FROM 
+				t_sys_logs sl 
+			LEFT JOIN 
+			    t_users u
+			ON sl.`userEmail` = u.`userEmail`
+			WHERE sl.`logicGroupId` = #{logicGroupId}
+			AND   sl.`subsystemId` = #{subsystemId}
+			AND   u.`logicGroupId` = #{logicGroupId}
+			AND   sl.`logTime` >= #{startDate}
+            AND   sl.`logTime` <= #{endDate}
+			GROUP BY sl.`userEmail`
+			ORDER BY number DESC
+			LIMIT  #{size}
+	  ]]>
+	</select>
+	
+	
+</mapper>

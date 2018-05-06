@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="halley.mybatis.CarDao">
+
+    <!-- 根据外展ID查询车辆 -->
+    <select id="findCarsByExhibitionId" parameterType="java.lang.Integer"
+            resultType="CarVO">
+            <![CDATA[
+
+                SELECT
+                    car.id            as id,
+                    car.exhibitionId  as exhibitionId,
+                    car.plateNumber   as plateNumber,
+                    car.director      as director,
+                    car.directorPhone as directorPhone
+                FROM
+                    h_car AS car
+                WHERE
+                    car.exhibitionId = #{value}
+                ORDER BY car.id
+
+        ]]>
+    </select>
+
+    <!-- 查询所有车辆 -->
+    <select id="findAllCars"   resultType="CarPO">
+            <![CDATA[
+
+                SELECT
+                    car.id            as id,
+                    car.exhibitionId  as exhibitionId,
+                    car.plateNumber   as plateNumber,
+                    car.director      as director,
+                    car.directorPhone as directorPhone
+                FROM
+                    h_car AS car
+                ORDER BY car.id
+
+        ]]>
+    </select>
+
+    <!-- 根据车辆ID查询摄像设备 -->
+    <select id="findDevicesByCarId" parameterType="java.lang.Integer"
+            resultType="DevicePO">
+            <![CDATA[
+
+                SELECT
+                     device.id            AS id,
+                     device.deviceType    AS deviceType,
+                     device.carId         AS carId,
+                     device.deviceId      AS deviceId,
+                     dv.`placeName`       AS dvName
+                  FROM
+                     h_device AS device
+                 LEFT JOIN
+                     p_dv_place AS dv
+                    ON
+                     dv.`id`=device.`deviceId`
+                WHERE
+                    device.carId = #{value}
+                AND device.deviceType = 1
+        ]]>
+    </select>
+
+    <!-- 根据车辆ID查询位置点 -->
+    <select id="findLocationsByCarId" parameterType="java.lang.Integer"
+            resultType="LocationVO">
+        <![CDATA[
+
+              SELECT
+              ml.id            AS id,
+              ml.locationName    AS locationName,
+              ml.nodeId AS nodeId
+              FROM
+              h_device AS device
+              INNER JOIN
+              m_location AS ml
+              ON
+               ml.`id`=device.`deviceId`
+               WHERE
+              device.carId = #{value}
+              AND device.deviceType = 2
+        ]]>
+    </select>
+
+    <!-- 保存车辆信息 -->
+    <insert id="saveCarPO" parameterType="CarPO"  useGeneratedKeys="true">
+        <selectKey keyProperty="id" resultType="java.lang.Integer"
+                   order="AFTER">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO
+        h_car(exhibitionId,plateNumber,director,directorPhone)
+        VALUES
+        (#{exhibitionId},#{plateNumber},#{director},#{directorPhone})
+
+    </insert>
+
+    <!-- 更新车辆信息 -->
+    <update id="updateCarPO" parameterType="CarPO">
+        <![CDATA[
+			UPDATE
+              `h_car` AS car
+            SET
+              car.`plateNumber` = #{plateNumber},
+              car.`director` = #{director},
+              car.`directorPhone` = #{directorPhone}
+            WHERE
+              car.`id` = ${id}
+		]]>
+    </update>
+
+    <!-- 保存设备信息 -->
+    <insert id="saveDevicePO" parameterType="DevicePO">
+        <![CDATA[
+
+            INSERT INTO
+                h_device(carId,deviceType,deviceId)
+            VALUES
+                (#{carId},#{deviceType},#{deviceId})
+
+        ]]>
+    </insert>
+
+    <!-- 根据carId删除设备信息 -->
+    <delete id="deleteDevicePOByCarId" parameterType="java.lang.Integer">
+        <![CDATA[
+
+			DELETE FROM
+				h_device
+			WHERE
+				carId = #{value}
+
+        ]]>
+    </delete>
+
+    <!-- 保存报警人员信息 -->
+    <insert id="saveUserPO" parameterType="UserPO">
+        <![CDATA[
+
+            INSERT INTO
+                h_user(exhibitionId,userId)
+            VALUES
+                (#{exhibitionId},#{userId})
+
+        ]]>
+    </insert>
+
+    <!-- 根据外展ID查询报警用户 -->
+    <select id="findUserByExhibitionId" parameterType="java.lang.Integer"
+            resultType="UserPO">
+                <![CDATA[
+
+                SELECT
+                    u.id            as id,
+                    u.exhibitionId    as exhibitionId,
+                    u.userId         as userId
+                FROM
+                    h_user AS u
+                WHERE
+                    u.exhibitionId = #{value}
+
+        ]]>
+    </select>
+
+    <!-- 保存其它配置信息 -->
+    <insert id="saveConfigPO" parameterType="ConfigPO">
+        <![CDATA[
+
+            INSERT INTO
+                h_config(exhibitionId,alarmRange)
+            VALUES
+                (#{exhibitionId},#{alarmRange})
+
+        ]]>
+    </insert>
+
+    <!-- 根据外展ID查询配置 -->
+    <select id="findConfigByExhibitionId" parameterType="java.lang.Integer"
+            resultType="ConfigPO">
+            <![CDATA[
+
+                SELECT
+                    config.id            as id,
+                    config.exhibitionId    as exhibitionId,
+                    config.alarmRange         as alarmRange
+                FROM
+                    h_config AS config
+                WHERE
+                    config.exhibitionId = #{value}
+
+        ]]>
+    </select>
+
+    <!-- 根据外展ID查询配置 -->
+    <select id="findConfigExhibitionId" parameterType="java.lang.Integer"
+            resultType="java.lang.Integer">
+            <![CDATA[
+                SELECT
+                    config.alarmRange         as alarmRange
+                FROM
+                    h_config AS config
+                WHERE
+                    config.exhibitionId = #{value}
+        ]]>
+    </select>
+
+    <!-- 根据外展ID删除报警范围配置 -->
+    <delete id="deleteConfigPOByExhibitionId" parameterType="java.lang.Integer">
+        <![CDATA[
+
+			DELETE FROM
+				h_config
+			WHERE
+				exhibitionId = #{value}
+
+        ]]>
+    </delete>
+
+    <!-- 根据用户ID删除报警人员 -->
+    <delete id="deleteUserPOsByUserId" parameterType="java.lang.Integer">
+         <![CDATA[
+
+			DELETE FROM
+				h_user
+			WHERE
+				exhibitionId = #{value}
+
+        ]]>
+    </delete>
+
+    <!-- 根据车辆ID删除设备 -->
+    <delete id="deleteDeviceByCarId" parameterType="java.lang.Integer">
+      <![CDATA[
+
+			DELETE FROM
+				h_device
+			WHERE
+				carId = #{value}
+
+        ]]>
+    </delete>
+    <!-- 根据车辆ID删除车辆 -->
+    <delete id="deleteCarByCarId" parameterType="java.lang.Integer">
+      <![CDATA[
+
+			DELETE FROM
+				h_car
+			WHERE
+				id = #{value}
+
+        ]]>
+    </delete>
+
+    <select id="findLocationIdByCarId" resultType="java.lang.String" parameterType="java.lang.String">
+    <![CDATA[
+          SELECT
+          DISTINCT
+              ml.id
+          FROM
+          `h_device` hd
+          INNER JOIN m_location ml  ON hd.deviceid = ml.id
+          INNER JOIN m_nodeinfo mn  ON mn.nodeid = ml.nodeid
+          INNER JOIN m_location_sensor mls ON ml.`id`=mls.`locationId`
+          WHERE carId = #{value}
+          AND mn.nodeType = 1 AND mls.`sensorPhysicalId` IN (87,88,89)
+    ]]>
+    </select>
+</mapper>

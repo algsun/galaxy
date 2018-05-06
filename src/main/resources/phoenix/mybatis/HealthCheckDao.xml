@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="phoenix.mybatis.HealthCheckDao">
+
+	<!-- 查询系统要检测的系统 信息 -->
+	<select id="findHealthCheckItem"  resultType="HealthCheckItem">
+		<![CDATA[
+			SELECT  DISTINCT
+			  s.`subsystemId`,
+			  s.`subsystemName`
+			FROM t_subsystem  s
+			INNER JOIN 
+			     ph_check_item ci
+			ON s.`subsystemId` = ci.`subsystemId`
+			WHERE s.`enable` = 1
+	  ]]>
+	</select>
+	
+    <!-- 查询子系统检测项 -->
+	<select id="findCheckItem"  resultType="CheckItem" parameterType="java.lang.Integer">
+		<![CDATA[
+			SELECT 
+			* 
+			FROM 
+			  ph_check_item ci 
+			WHERE 
+			 ci.`subsystemId` = #{subsystemId}
+	  ]]>
+	</select>
+	
+	<!-- 查询检测项数量 -->
+	<select id="findHealthCheckItemCount"  resultType="java.lang.Integer" >
+		<![CDATA[
+			SELECT 
+			COUNT(id)
+			FROM 
+			  ph_check_item ci 
+			LEFT JOIN 
+			  t_subsystem  s
+			ON ci.`subsystemId` = s.`subsystemId`
+			WHERE  s.`enable` = 1
+	  ]]>
+	</select>
+	
+	<!-- 查询 环境监控 异常设备数量 -->
+	<select id="blueplanetFindErrorDeviceCount"  resultType="java.lang.Integer" parameterType="java.lang.String">
+		<![CDATA[
+			 SELECT 
+			 COUNT(nm.`nodeid`)
+			 FROM 
+			 m_nodeinfomemory nm
+			 INNER JOIN 
+			 m_nodeinfo  nf 
+			 ON nm.`nodeid` = nf.`nodeid`
+			 WHERE nf.`siteId`= #{siteId}
+			 AND  nm.`anomaly` != 0
+	  ]]>
+	</select>	
+	
+   <!-- 查询 环境监控 设备总数量 -->
+	<select id="blueplanetFindDeviceCount"  resultType="java.lang.Integer" parameterType="java.lang.String">
+		<![CDATA[
+			 SELECT  
+			 COUNT(nf.`nodeid`)
+			 FROM 
+			 m_nodeinfo nf 
+			 WHERE nf.`siteId` = #{siteId}
+	  ]]>
+	</select>	
+	
+	<!-- 查询 环境监控 设备总数量 -->
+	<select id="blueplanetFindErrorDevices"  resultType="Device" parameterType="java.lang.String">
+		<![CDATA[
+			 SELECT 
+			  nf.`nodeid` ,
+			  nf.`nodeType`,
+			  nf.`createTime`,
+			  z.zoneName as roomName,
+			  nm.`anomaly`
+			 FROM 
+			 m_nodeinfomemory nm 
+			 INNER JOIN 
+			 m_nodeinfo nf
+			 ON nm.`nodeid` = nf.`nodeid`
+			 LEFT JOIN
+			 m_location l
+			 ON nf.nodeid = l.nodeid
+			 LEFT JOIN 
+			 t_zone  z 
+			 ON l.zoneId = z.zoneId
+			 WHERE 
+			 nf.`siteId` = #{siteId}
+			 AND nm.`anomaly` != 0
+	  ]]>
+	</select>	
+	
+	<!-- 查询 人员管理电子卡总数量 -->
+	<select id="umaFindUserCardCount"  resultType="java.lang.Integer" parameterType="java.lang.String">
+		<![CDATA[
+        SELECT  DISTINCT
+           COUNT(a.id)
+        FROM
+           t_users   AS  a
+         LEFT JOIN
+           t_logicgroup   AS  d  ON a.logicgroupId= d.id
+        LEFT JOIN
+           u_user_card  AS  c   ON  a.id=c.userId
+        LEFT JOIN
+           u_device  AS  b     ON   c.sn= b.sn
+        WHERE
+           d.siteId = #{siteId}
+	  ]]>
+	</select>	
+	
+    <!-- 查询 人员管理电子卡低电或无电数量 -->
+	<select id="umaFindErrorUserCardCount"  resultType="java.lang.Integer" parameterType="java.lang.String">
+		<![CDATA[
+        SELECT  DISTINCT
+           COUNT(a.id)
+        FROM
+           t_users   AS  a
+         LEFT JOIN
+           t_logicgroup   AS  d  ON a.logicgroupId= d.id
+        LEFT JOIN
+           u_user_card  AS  c   ON  a.id=c.userId
+        LEFT JOIN
+           u_device  AS  b     ON   c.sn= b.sn
+        WHERE
+            b.voltage < 1.5
+        AND  d.siteId = #{siteId}
+	  ]]>
+	</select>	
+	
+	<!-- 查询 人员管理电子卡低电或无电 电子卡和对应人员信息 -->
+	<select id="umaFindErrorUserCards"  resultType="com.microwise.uma.bean.PersonBean" parameterType="java.lang.String">
+		<![CDATA[
+		SELECT  DISTINCT
+		   a.id   AS  id ,
+		   a.userName  AS  personName,
+           a.userEmail AS email,
+           a.photo AS photo,
+		   a.sex   AS  sex,
+		   b.sn    AS  cardSN ,
+		   b.voltage AS  voltage,
+           b.updateTime AS lastTime	   
+		FROM 
+		   t_users   AS  a  
+	        LEFT JOIN
+	           t_logicgroup   AS  d  ON a.logicgroupId= d.id
+		LEFT JOIN  
+		   u_user_card  AS  c   ON  a.id=c.userId
+		LEFT JOIN 
+		   u_device  AS  b     ON   c.sn= b.sn
+		WHERE 
+		    b.`sn` IS NOT NULL
+		AND b.voltage < 1.5
+		AND d.siteId = #{siteId}
+	  ]]>
+	</select>	
+	
+</mapper>

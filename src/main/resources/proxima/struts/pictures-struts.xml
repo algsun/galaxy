@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+        "http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+    <package name="proxima:opticsImage" extends="proxima" namespace="/proxima">
+        <!-- 默认加载光学摄像机图片 @galaxy-->
+        <action name="viewOpticsImageDefault" class="proxima:viewOpticsImageAction" method="view">
+            <result type="freemarker">/proxima/pages/opticsImage/index.ftl</result>
+        </action>
+
+        <!-- 条件查询光学摄像机图片 @galaxy-->
+        <action name="viewOpticsImage" class="proxima:viewOpticsImageAction" method="execute">
+            <result type="freemarker">/proxima/pages/opticsImage/index.ftl</result>
+        </action>
+
+        <!-- 默认加载红外摄像机图片 @galaxy-->
+        <action name="viewInfraredImageDefault" class="proxima:viewInfraredImageAction" method="view">
+            <result type="freemarker">/proxima/pages/infraredImage/index.ftl</result>
+        </action>
+
+        <!-- 条件查询红外摄像机图片 @galaxy-->
+        <action name="viewInfraredImage" class="proxima:viewInfraredImageAction" method="execute">
+            <result type="freemarker">/proxima/pages/infraredImage/index.ftl</result>
+        </action>
+
+        <!--根据区域获取该区域下所有直接摄像机点位-->
+        <action name="getDvPlaces" class="proxima:getDvPlacesByZoneAction">
+            <result type="json">
+                <param name="root">dvPlaces</param>
+            </result>
+        </action>
+
+        <!-- 加载光学摄像机和标记段信息 -->
+        <action name="trendChartDefault" class="proxima:viewOpticsChartAction" method="view">
+            <result type="freemarker">/proxima/pages/opticsChart/trend-chart.ftl</result>
+        </action>
+
+        <!-- 加载位移变化图和骤变趋势图 -->
+        <action name="trendChart" class="proxima:viewOpticsChartAction" method="execute">
+            <result type="freemarker">/proxima/pages/opticsChart/trend-chart.ftl</result>
+        </action>
+
+        <!-- 加载光学摄像机信息 -->
+        <action name="markChangeChartDefault" class="proxima:viewMarkChangeChartAction" method="view">
+            <result type="freemarker">/proxima/pages/opticsChart/mark-change-chart.ftl</result>
+        </action>
+
+        <!-- 加载两点位置变化图 -->
+        <action name="markChangeChart" class="proxima:viewMarkChangeChartAction" method="execute">
+            <result type="freemarker">/proxima/pages/opticsChart/mark-change-chart.ftl</result>
+        </action>
+
+        <!-- 导出图片 -->
+        <action name="exportImage" class="proxima:exportImageAction"
+                method="export">
+        </action>
+
+        <!-- 编辑标记段 -->
+        <action name="editMarkSegment" class="proxima:editMarkSegmentAction">
+            <result name="input">/pages/opticsImage/inputImageRealWidth.jsp</result>
+            <result name="success">/pages/opticsImage/editMarkSegment.jsp</result>
+        </action>
+
+        <!-- 输入图片实际宽度 -->
+        <action name="inputImageRealWidth" class="proxima:inputImageRealWidthAction">
+            <result type="redirect">editMarkSegment.action?picId=${picId}</result>
+        </action>
+    </package>
+
+    <package name="proxima:markSegment" extends="proxima" namespace="/proxima">
+        <!-- 添加标记段 -->
+        <action name="addMarkSegment" class="proxima:addMarkSegmentWidthPositionAction">
+            <result type="json">
+                <param name="includeProperties">success, markSegmentId, markPositionId, message</param>
+            </result>
+        </action>
+
+        <!-- 添加或者更新标记段坐标 -->
+        <action name="addOrUpdateMarkSegmentPosition" class="proxima:addOrUpdateMarkSegmentPositionAction">
+            <result type="json">
+                <param name="includeProperties">success</param>
+            </result>
+        </action>
+
+        <!-- 取消标记段 -->
+        <action name="cancelMarkSegment" class="proxima:cancelMarkSegmentAction">
+            <result type="json">
+                <param name="includeProperties">success</param>
+            </result>
+        </action>
+    </package>
+</struts>

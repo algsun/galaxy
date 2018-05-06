@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="saturn.Task">
+
+    <!-- insert texture -->
+    <insert id="save" parameterType="TaskVO">
+		<![CDATA[
+          INSERT INTO `s_tasks` (
+  `id`,
+  `title`,
+  `responsible`,
+  `participate`,
+  `predictStart`,
+  `predictEnd`,
+  `realStart`,
+  `realEnd`,
+  `taskDescription`,
+  `taskTarget`,
+  `demand`,
+  `remark`,
+  `createUser`,
+  `createDate`,
+  `siteId`,
+  `state`,
+  `updateDate`
+)
+VALUES
+  (
+    #{id},
+    #{title},
+    #{responsible},
+    #{participate},
+    #{predictStart},
+    #{predictEnd},
+    #{realStart},
+    #{realEnd},
+    #{taskDescription},
+    #{taskTarget},
+    #{demand},
+    #{remark},
+    #{createUser},
+    #{createDate},
+    #{siteId},
+    0,
+    #{updateDate}
+  ) ;
+        ]]>
+	</insert>
+
+    <select id="findTasks" parameterType="java.util.Map" resultType="TaskVO">
+		<![CDATA[
+            SELECT
+              t.id,
+              title,
+              updateDate,
+              responsible,
+              u.userName,
+              participate,
+              predictStart,
+              predictEnd,
+              realStart,
+              realEnd,
+              taskDescription,
+              taskTarget,
+              demand,
+              remark,
+              createUser,
+              createDate,
+              checkUser,
+              checkDate,
+              invalidUser,
+              invalidDate,
+              siteId,
+              state
+            FROM
+              s_tasks t
+              LEFT JOIN t_users u
+                ON t.responsible = u.id
+            WHERE siteId = #{siteId}
+              AND predictStart BETWEEN #{beginDate} AND #{endDate}
+        ]]>
+        <if test="title != null and title!=''">
+            AND title LIKE '%${title}%'
+        </if>
+        <if test="responsible != 0">
+            AND responsible = #{responsible}
+        </if>
+        <![CDATA[
+			ORDER BY
+		      t.createDate DESC
+			LIMIT
+				#{start},#{pageSize}
+		]]>
+	</select>
+
+    <select id="countTasks" parameterType="java.util.Map" resultType="int">
+        <![CDATA[
+            SELECT
+              count(t.id)
+            FROM
+              s_tasks t
+              LEFT JOIN t_users u
+                ON t.responsible = u.id
+            WHERE siteId = #{siteId}
+              AND predictStart BETWEEN #{beginDate} AND #{endDate}
+        ]]>
+        <if test="title != null and title!=''">
+            AND title LIKE '%${title}%'
+        </if>
+        <if test="responsible != 0">
+            AND responsible = #{responsible}
+        </if>
+    </select>
+
+    <select id="findTasksBySiteId" parameterType="java.util.Map" resultType="TaskVO">
+        <![CDATA[
+          SELECT
+            st.`id`,
+            `title`,
+            `updateDate`,
+            `responsible`,
+            `participate`,
+            `predictStart`,
+            `predictEnd`,
+            `realStart`,
+            `realEnd`,
+            `taskDescription`,
+            `taskTarget`,
+            `demand`,
+            `remark`,
+            `createUser`,
+            `createDate`,
+            `checkUser`,
+            `checkDate`,
+            `invalidUser`,
+            `invalidDate`,
+            `siteId`,
+            `state`,
+             tu.`userName`,
+             createUser.`userName` AS createName,
+             checkUser.`userName` AS checkName
+            FROM
+            `s_tasks` AS st
+            LEFT JOIN t_users AS tu ON st.`responsible` = tu.`id`
+            LEFT JOIN t_users AS createUser ON st.`createUser` = createUser.`id`
+            LEFT JOIN t_users AS checkUser ON st.checkUser = checkUser.`id`
+          WHERE siteId = #{siteId} ORDER BY updateDate DESC
+        ]]>
+    </select>
+
+    <select id="findById" parameterType="java.lang.String" resultType="TaskVO">
+        <![CDATA[
+          SELECT
+            `id`,
+            `title`,
+            `responsible`,
+            `participate`,
+            `predictStart`,
+            `predictEnd`,
+            `realStart`,
+            `realEnd`,
+            `taskDescription`,
+            `taskTarget`,
+            `demand`,
+            `remark`,
+            `createUser`,
+            `createDate`,
+            `checkUser`,
+            `checkDate`,
+            `invalidUser`,
+            `invalidDate`,
+            `siteId`
+           FROM `s_tasks` WHERE id =#{value}
+        ]]>
+
+    </select>
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        <![CDATA[
+          DELETE
+            FROM `s_tasks`
+          WHERE `id` = #{value};
+        ]]>
+    </delete>
+    
+    <update id="updateById" parameterType="TaskVO">
+        <![CDATA[
+          UPDATE `s_tasks`
+          SET
+            `title` = #{title},
+            `updateDate` = #{updateDate},
+            `responsible` = #{responsible},
+            `participate` = #{participate},
+            `predictStart` = #{predictStart},
+            `predictEnd` = #{predictEnd},
+            `realStart` = #{realStart},
+            `realEnd` = #{realEnd},
+            `taskDescription` = #{taskDescription},
+            `taskTarget` = #{taskTarget},
+            `demand` = #{demand},
+            `remark` = #{remark}
+           WHERE `id` = #{id}
+        ]]>
+    </update>
+
+    <update id="updateStateById" parameterType="java.util.Map">
+        <![CDATA[
+          UPDATE `s_tasks`
+          SET
+            `state` = #{state},
+            `updateDate` =#{date},
+        ]]>
+        <if test="state == 1 || state==2">
+            `checkUser` = #{userId},
+            `checkDate` = #{date}
+        </if>
+        <if test="state == 3">
+            `invalidUser` = #{userId},
+            `invalidDate` = #{date}
+        </if>
+        <![CDATA[
+          WHERE `id` = #{id}
+        ]]>
+    </update>
+</mapper>

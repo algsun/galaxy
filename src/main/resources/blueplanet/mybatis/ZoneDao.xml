@@ -1,0 +1,567 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blueplanet.mybatis.ZoneDao">
+
+    <sql id="excludeLocations">
+        <![CDATA[
+        AND l.id NOT IN ('10000201102426', '10000201102427', '10000201102428', '10000201102429')
+        ]]>
+    </sql>
+
+    <!-- 查询站点下的所有区域 -->
+    <select id="findZonesBySiteId" parameterType="java.lang.String"
+            resultType="ZoneVO">
+        <![CDATA[
+		SELECT
+			z.zoneId	as zoneId,
+			z.parentId	as parentId,
+			z.zoneName	as zoneName,
+			z.position
+		FROM
+			t_zone as z
+		WHERE
+			z.siteid = #{siteId}
+		ORDER BY
+			z.zoneName
+        ]]>
+    </select>
+
+	<!-- 删除区域 -->
+	<delete id="deleteZone" parameterType="java.lang.String">
+		<![CDATA[
+			DELETE FROM
+				t_zone
+			WHERE 
+				zoneId = #{value}
+		]]>
+	</delete>
+
+	<!-- 查询区域的所有子孙区域id集合 -->
+	<select id="findChildrenIdList" parameterType="java.lang.String"
+		resultType="java.lang.String">
+		<![CDATA[
+		SELECT 
+			zoneId 
+		FROM 
+			`t_zone`
+    	WHERE 
+    		FIND_IN_SET(zoneId, fun_getChildren(#{value}))
+		]]>
+	</select>
+
+	<!-- 查询区域拥有已经激活的监测指标 -->
+	<select id="findSensorinfo" parameterType="java.util.HashMap"
+		resultType="SensorinfoVO">
+		<![CDATA[
+			SELECT DISTINCT 
+              s.sensorPhysicalid AS sensorPhysicalid,
+              s.en_name AS enName,
+              ]]>
+        <if test="language=='en_US'">
+            s.en_name AS cnName,
+        </if>
+        <if test="language=='zh_CN'">
+            s.cn_name AS cnName,
+        </if>
+        <![CDATA[
+              s.sensorPrecision AS sensorPrecision,
+              s.units AS units,
+              s.positions AS positions,
+              s.showType AS showType
+            FROM
+              m_sensorinfo AS s
+              INNER JOIN m_location_sensor AS mls
+                ON s.sensorPhysicalid = mls.sensorPhysicalid
+              INNER JOIN m_location AS l
+                ON l.id = mls.locationId
+            WHERE s.isActive = 1
+			AND	l.zoneId IN
+			]]>
+		<foreach collection="zoneIdList" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+		<![CDATA[
+			ORDER BY s.sensorPhysicalid
+		]]>
+	</select>
+
+	<!-- 查询区域下该名称的子区域 -->
+	<select id="findZoneByName" parameterType="java.util.Map"
+		resultType="ZoneVO">
+		<![CDATA[
+			SELECT
+				z.zoneId	as zoneId,
+				z.zoneName	as zoneName,
+				z.siteId	as siteId,
+				z.parentId	as parentId,
+				z.planImage	as planImage,
+				z.position
+			FROM 
+				t_zone AS z
+			WHERE
+				z.siteId = #{siteId}
+			AND
+				z.zoneName = #{zoneName}
+			]]>
+		<if test="parentZoneId != null">
+			AND
+			z.parentId = #{parentZoneId}
+		</if>
+		<if test="parentZoneId == null">
+			AND
+			z.parentId IS NULL
+		</if>
+	</select>
+
+	<!-- 根据id查询区域 -->
+	<select id="findZoneById" parameterType="java.lang.String"
+		resultType="ZoneVO">
+		<![CDATA[
+			SELECT
+				z.zoneId	as zoneId,
+				z.zoneName	as zoneName,
+				z.siteId	as siteId,
+				z.parentId	as parentId,
+				z.planImage	as planImage,
+				z.position
+			FROM
+				t_zone AS z
+			WHERE
+				z.zoneId = #{value}
+		]]>
+	</select>
+
+	<!-- 根据站点id及父区域id查询子区域列表 -->
+	<select id="findZoneList" parameterType="java.util.Map"
+		resultType="ZoneVO">
+		<![CDATA[
+			SELECT
+				z.zoneId	as zoneId,
+				z.zoneName	as zoneName,
+				z.siteId	as siteId,
+				z.parentId	as parentId,
+				z.planImage	as planImage,
+				z.position
+			FROM 
+				t_zone AS z
+			WHERE
+				z.siteId = #{siteId}
+		]]>
+		<choose>
+			<when test="parentZoneId != null">
+				And
+				z.parentId = #{parentZoneId}
+			</when>
+			<when test="parentZoneId == null">
+				And
+				z.parentId IS NULL
+			</when>
+		</choose>
+		<![CDATA[
+		ORDER BY
+			z.zoneName
+		]]>
+	</select>
+
+    <select id="findZoneLineList" parameterType="java.lang.String"
+            resultType="ZoneVO">
+            <![CDATA[
+			SELECT
+				z.zoneId	as zoneId,
+				z.zoneName	as zoneName,
+				z.siteId	as siteId,
+				z.parentId	as parentId,
+				z.planImage	as planImage,
+				z.position
+			FROM
+				t_zone AS z
+			WHERE
+				z.siteId = #{value}
+		]]>
+    </select>
+
+    <!-- 区域的父区域id-->
+    <select id="findParentId" parameterType="java.util.Map"
+            resultType="java.lang.String">
+    <![CDATA[
+			SELECT
+				z.parentId	as parentId
+			FROM
+				t_zone AS z
+			WHERE
+				z.zoneId = #{value}
+		]]>
+    </select>
+
+    <!-- 通过id查坐标X-->
+    <select id="findPlanImageCoordinate" parameterType="java.util.Map"
+            resultType="PlanImageCoordinateVO">
+        <![CDATA[
+			SELECT
+              m.X AS coordinateX,
+              m.Y AS coordinateY
+            FROM
+              m_coordinate AS m
+            WHERE m.parentZoneId = #{zoneId}
+              AND (
+                m.zoneId = #{objectId}
+                OR m.locationId = #{objectId}
+                OR m.dvPlaceId = #{objectId}
+              )
+		]]>
+    </select>
+
+    <!-- 查询区域下位置点实时状态 -->
+    <select id="findLocationInfo" resultType="RealtimeDataVO"
+            parameterType="java.util.Map">
+        <![CDATA[
+        SELECT
+          l.id AS locationId,
+          l.nodeId,
+          l.locationName,
+          mnm.lowvoltage,
+          mnm.anomaly,
+          mnm.deviceMode,
+          z.zoneId,
+          z.zoneName,
+          mnm.stamp
+        FROM
+          m_location l
+        INNER JOIN m_location_sensor mls ON mls.locationId=l.id
+        LEFT JOIN m_nodeinfomemory mnm ON l.nodeId = mnm.nodeId
+        LEFT JOIN t_zone z ON l.zoneId = z.zoneId
+ 		]]>
+        <if test="zoneIds.size() !=0">
+            WHERE z.zoneId IN
+            <foreach collection="zoneIds" index="index" item="item" open="("
+                     separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="zoneIds.size() ==0">
+            WHERE 1=1
+        </if>
+        <if test="sensorPhysicalidList !=null">
+            AND mls.sensorPhysicalId IN
+            <foreach collection="sensorPhysicalidList" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <include refid="excludeLocations"/>
+        <![CDATA[
+		 GROUP BY l.id ORDER BY z.zoneName,l.id
+		]]>
+    </select>
+
+	<!-- 添加区域 -->
+	<insert id="saveZone" parameterType="ZoneVO">
+		<![CDATA[
+			INSERT INTO 
+				t_zone(zoneId,siteId,parentId,zoneName,planImage,`position`)
+			VALUES
+				(#{zoneId},#{siteId},#{parentId},#{zoneName},#{planImage},#{position})
+		]]>
+	</insert>
+
+	<!-- 查询区域的直接子区域 -->
+	<select id="findZones" parameterType="java.lang.String"
+		resultType="ZoneVO">
+		<![CDATA[
+			SELECT
+				z.zoneId	as zoneId,
+				z.zoneName	as zoneName
+			FROM
+				t_zone AS z
+			WHERE
+				z.parentId = #{value}
+		    ORDER BY
+			    z.zoneName
+		]]>
+	</select>
+
+	<!-- 查询区域的数据版本号 -->
+	<select id="findDataVersion" parameterType="java.lang.String"
+		resultType="long">
+		<![CDATA[
+			SELECT 
+				z.dataVersion 
+			FROM 
+				t_zone AS z 
+			WHERE 
+				z.zoneId = #{value}
+		]]>
+	</select>
+
+	<!-- 更新区域详情 -->
+	<update id="updateZone" parameterType="ZoneVO">
+		<![CDATA[
+			UPDATE 
+				t_zone AS z 
+			SET
+				z.dataVersion = ${dataVersion}
+		]]>
+		<if test="zoneName !=null">
+			,z.zoneName = #{zoneName}
+		</if>
+		<if test="planImage !=null">
+			,z.planImage = #{planImage}
+		</if>
+		<if test="parentId !=null">
+			,z.parentId = #{parentId}
+		</if>
+		<if test="parentId ==null || parentId ==''">
+			,z.parentId = NULL
+		</if>
+        <if test="position != 0">
+            ,z.position = #{position}
+        </if>
+		<![CDATA[
+			WHERE 
+				z.zoneId = #{zoneId}
+		]]>
+	</update>
+
+    <!-- 删除坐标信息 -->
+    <delete id="deletePlanImageCoordinate" parameterType="java.util.Map">
+        <![CDATA[
+            DELETE
+            FROM
+              m_coordinate
+            WHERE parentZoneId = #{zoneId}
+              AND (
+                zoneId = #{objectId}
+                OR locationId = #{objectId}
+                OR dvPlaceId = #{objectId}
+              )
+        ]]>
+    </delete>
+
+    <!-- 更新区域平面图坐标信息 -->
+    <update id="updatePlanImageCoordinate" parameterType="PlanImageCoordinateVO">
+        <![CDATA[
+			UPDATE
+              m_coordinate c
+            SET
+              c.X = #{coordinateX},
+              c.Y = #{coordinateY}
+            WHERE parentZoneId = #{zoneId}
+              AND (
+                zoneId = #{objectId}
+                OR locationId = #{objectId}
+                OR dvPlaceId = #{objectId}
+              )
+		]]>
+    </update>
+
+    <delete id="deleteAllCoordinates" parameterType="java.util.Map">
+        <![CDATA[
+        DELETE FROM m_coordinate WHERE
+        ]]>
+        <if test="flag==1">
+            zoneId  = #{id}
+        </if>
+        <if test="flag==2">
+            locationId  = #{id}
+        </if>
+        <if test="flag==3">
+            dvPlaceId  = #{id}
+        </if>
+    </delete>
+
+    <!-- 添加坐标信息 -->
+    <insert id="savePlanImageCoordinate" parameterType="PlanImageCoordinateVO">
+        <![CDATA[
+			INSERT INTO
+			  m_coordinate
+			  ( id,
+			   parentZoneId,
+	    ]]>
+        <if test="type==1">
+            zoneId ,
+        </if>
+        <if test="type==2">
+            locationId ,
+        </if>
+        <if test="type==3">
+            dvPlaceId ,
+        </if>
+        <![CDATA[
+            X,
+            Y)VALUES
+            (
+            #{id},
+            #{zoneId},
+            #{objectId},
+            #{coordinateX},
+            #{coordinateY}
+            )
+		]]>
+    </insert>
+
+    <select id="isCoordinateExist" resultType="int" parameterType="java.lang.String">
+        <![CDATA[
+            SELECT
+              COUNT(1)
+            FROM
+              m_coordinate AS m
+            WHERE m.parentZoneId = #{zoneId}
+              AND (
+                m.zoneId = #{objectId}
+                OR m.locationId = #{objectId}
+                OR m.dvPlaceId = #{objectId}
+              )
+	    ]]>
+    </select>
+
+    <select id="findZoneBySiteIdParentId" resultType="ZonePO" parameterType="java.lang.String">
+        <![CDATA[
+            SELECT
+            *
+           FROM
+           `t_zone` WHERE siteId=#{siteId} AND parentId #{parentId}
+        ]]>
+    </select>
+
+    <select id="findGeneralLocationDataByRoomId"  resultType="LocationDataVO" parameterType="java.util.Map">
+        <![CDATA[
+          SELECT
+		    mls.sensorPhysicalid AS sensorPhysicalId,
+		    ms.en_name AS enName,
+		]]>
+        <if test="language=='en_US'">
+            ms.en_name AS cnName,
+        </if>
+        <if test="language=='zh_CN'">
+            ms.cn_name AS cnName,
+        </if>
+        <![CDATA[
+		    ROUND(AVG(mls.sensorPhysicalValue),ms.sensorPrecision) AS sensorPhysicalValue,
+		    ms.units AS units,
+		    l.zoneId
+          FROM
+            `m_location_sensor` AS mls
+          LEFT JOIN `m_sensorinfo` AS ms ON mls.sensorphysicalid=ms.sensorPhysicalid
+          LEFT JOIN `m_location` AS l ON l.`id` = mls.`locationId`
+          WHERE
+             l.zoneId=#{zoneId} AND mls.stamp BETWEEN #{startDate} AND #{endDate}
+          AND mls.state=1
+        ]]>
+        <include refid="excludeLocations"/>
+        <![CDATA[
+          GROUP BY mls.sensorPhysicalid
+        ]]>
+    </select>
+
+    <select id="findLocationMaxMinValue"  resultType="LocationDataVO" parameterType="java.util.Map">
+        <![CDATA[
+          SELECT
+                MAX(m.`maxValue`) AS bigValue,
+                MIN(m.`minValue`) AS smallValue,
+                round(avg(m.avgValue),2) as avgValue,
+                m.`ms_date` AS stamp
+              FROM
+                m_avgdata m
+              INNER JOIN `m_location` AS l ON l.`id` = m.`nodeid`
+              INNER JOIN `t_zone` AS tz ON l.`zoneid` = tz.`zoneId`
+              WHERE  l.`siteId`= #{siteId}
+              AND m.`sensorPhysicalid` = #{sensorPhysicalid}
+              AND m.`ms_date` >= #{startDate}
+        ]]>
+        <include refid="excludeLocations"/>
+            <if test="zoneId != null">
+              AND tz.`zoneId`= #{zoneId}
+            </if>
+        <![CDATA[
+              GROUP BY m.`ms_date`
+        ]]>
+    </select>
+
+    <select id="findLocationMaxMinValueByZoneId"  resultType="AvgdataPO" parameterType="java.util.Map">
+        <![CDATA[
+          SELECT
+                MAX(m.`maxValue`) AS `maxValue`,
+                MIN(m.`minValue`) AS `minValue`,
+                ROUND(AVG(m.avgValue),1) AS `avgValue`
+              FROM
+                m_avgdata m
+              INNER JOIN `m_location` AS l ON l.`id` = m.`nodeid`
+              INNER JOIN `t_zone` AS tz ON l.`zoneid` = tz.`zoneId`
+              WHERE  tz.`zoneId`= #{zoneId}
+              AND m.`sensorPhysicalid` = #{sensorPhysicalid}
+              AND m.`ms_date` > #{start}
+              AND m.`ms_date` < #{end}
+        ]]>
+        <include refid="excludeLocations"/>
+        <![CDATA[
+              GROUP BY m.`ms_date`
+        ]]>
+    </select>
+
+
+    <select id="findLocationDataByLocationId"  resultType="LocationDataVO" parameterType="java.util.Map">
+        <![CDATA[
+           SELECT
+            m.locationName AS locationName,
+            ml.sensorPhysicalid AS sensorPhysicalId,
+            ms.en_name AS enName,
+            ]]>
+        <if test="language=='en_US'">
+            ms.en_name AS cnName,
+        </if>
+        <if test="language=='zh_CN'">
+            ms.cn_name AS cnName,
+        </if>
+        <![CDATA[
+            ROUND( ml.sensorPhysicalValue, ms.sensorPrecision ) AS sensorPhysicalValue,
+            ms.units AS units,
+            minfo.nodeType,
+            m.zoneId
+           FROM
+            `m_location_sensor` AS ml
+           LEFT JOIN m_location AS m ON m.`id` = ml.`locationId`
+           LEFT JOIN `m_sensorinfo` AS ms ON ml.sensorphysicalid = ms.sensorPhysicalid
+           LEFT JOIN `m_nodeinfo` AS minfo ON minfo.nodeId = m.`nodeid`
+           WHERE ml.`locationId` = #{locationId}
+           AND ml.stamp BETWEEN #{startDate} AND #{endDate}
+           AND ml.state = 1
+        ]]>
+    </select>
+
+    <select id="findZoneAvgData" resultType="ZoneAvgData" parameterType="java.util.Map">
+        SELECT
+          za.zoneId, z.zoneName, za.sensorId, za.avgValue, za.ms_date as msDate
+        FROM
+          m_zone_avgdata za
+        INNER JOIN
+          t_zone z ON za.zoneId = z.zoneId
+        WHERE
+          z.siteId = #{siteId}
+          AND sensorId = #{sensorPhysicalId}
+          AND za.ms_date BETWEEN #{begin} AND #{end}
+          <!---->
+        <!--<![CDATA[-->
+          <!---->
+
+             <!--SELECT-->
+                  <!--l.zoneId AS zoneId,-->
+                  <!--ROUND(AVG(m.avgValue),ms.`sensorPrecision` ) AS avgValue,-->
+                  <!--m.ms_date AS msDate-->
+                  <!--FROM m_avgdata m-->
+                  <!--LEFT JOIN `m_sensorinfo` ms ON ms.sensorPhysicalid =m.sensorPhysicalid-->
+                  <!--LEFT JOIN m_location l ON m.nodeid = l.id-->
+                  <!--LEFT JOIN t_zone t ON  l.zoneId =t.zoneId-->
+                  <!--WHERE  t.siteId = #{siteId}-->
+                  <!--AND l.zoneId IS NOT NULL-->
+                  <!--AND m.sensorPhysicalid = #{sensorPhysicalId}-->
+                  <!--AND m.ms_date BETWEEN #{startDate} AND #{endDate}-->
+        <!--]]>-->
+        <!--<include refid="excludeLocations"/>-->
+        <!--<![CDATA[-->
+          <!--GROUP BY ms_date,l.zoneId-->
+        <!--]]>-->
+    </select>
+
+</mapper>

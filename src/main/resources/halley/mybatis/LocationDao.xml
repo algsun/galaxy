@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="halley.mybatis.LocationDao">
+
+
+    <!-- 根据外展ID查询位置点 -->
+    <select id="findLocationListByExhibitionId" parameterType="java.lang.String"  resultType="LocationVO">
+        <![CDATA[
+        SELECT
+          n.id AS id,
+          n.locationName as locationName
+        FROM
+          h_device d,
+          m_location n
+        WHERE d.deviceId = n.id
+          AND d.deviceType = 2
+          AND d.carId IN
+          (SELECT
+            c.id
+          FROM
+            h_exhibition e,
+            h_car c
+          WHERE e.id = c.exhibitionId
+            AND e.id = #{value})
+        ]]>
+    </select>
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+
+    <m_nodeinfo nodeid="11111" nodeType="1"
+                createTime="2013-01-21 10:25:30" siteId="11010101"/>
+    <m_nodeinfo nodeid="22222" nodeType="1"
+                createTime="2013-01-21 10:25:30" siteId="11010101"/>
+
+    <t_logicgroup id="1" logicGroupName="测试数据1" activeState="3" logicGroupType="1"/>
+    <t_logicgroup id="2" logicGroupName="测试数据2" activeState="3" parentLogicGroupId="1" logicGroupType="1"/>
+    <t_logicgroup id="3" logicGroupName="测试数据3" siteId="11010104" parentLogicGroupId="2" activeState="3" logicGroupType="1"/>
+    <t_logicgroup id="4" logicGroupName="测试数据4" parentLogicGroupId="1" activeState="1" logicGroupType="2"/>
+
+    <dc_layout layoutId="aaa" description="描述aaa" create_time="2014-03-04 14:42:57" logicGroupId="3" />
+    <dc_layout layoutId="bbb" description="描述bbb" create_time="2013-03-04 14:42:57" logicGroupId="2" />
+
+    <dc_items id="1" related_layoutId="aaa" item_id="111" data_col="2" data_row="2" data_sizex="3" data_sizey="3" itemType="1"/>
+    <dc_items id="2" related_layoutId="bbb" item_id="222" data_col="2" data_row="2" data_sizex="3" data_sizey="3" itemType="1"/>
+
+    <dc_program id="1" related_layoutId="aaa" related_item_id="1" title="测试1" url="test1" refresh="10" locationId="11111" detail="测试描述1" />
+    <dc_program id="2" related_layoutId="bbb" related_item_id="2" title="测试2" url="test2" refresh="20" locationId="22222" detail="测试描述2" />
+    <dc_program id="3" related_layoutId="bbb" related_item_id="2" title="测试2" url="test2" refresh="20" locationId="22222" detail="测试描述2" />
+</dataset>

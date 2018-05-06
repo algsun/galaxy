@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+  <t_roles id="1" roleName="测试角色" isManager="1" />
+  <t_role_privilege id="1" roleId="1" privilegeId="blackhole:currentLogicGroup" />
+  <t_role_privilege id="2" roleId="1" privilegeId="blackhole:currentLogicGroup:changeStructure" />
+  <t_role_privilege id="3" roleId="1" privilegeId="blackhole:currentLogicGroup:info" />
+  <t_role_privilege id="4" roleId="1" privilegeId="blackhole:currentLogicGroup:update" />
+  <t_role_privilege id="5" roleId="1" privilegeId="blackhole:currentLogicGroup" />
+</dataset>

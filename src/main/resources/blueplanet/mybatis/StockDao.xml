@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blueplanet.mybatis.StockDao">
+    <!-- 查询位置点的某监测指标的KDJ指标 -->
+    <select id="findByLocationIdAndSensorId" parameterType="java.util.Map"
+            resultType="Stock">
+		<![CDATA[
+			SELECT
+	            id              AS id,
+                locationId      AS locationId,
+	            sensorId        AS sensorId,
+	            beginValue      AS beginValue,
+	            endValue        AS endValue,
+	            `maxValue`        AS `maxValue`,
+	            `minValue`        AS `minValue`,
+	            k               AS k,
+	            j               AS j,
+	            d               AS d,
+	            avgValue5       AS avgValue5,
+	            avgValue10      AS avgValue10,
+	            avgValue30      AS avgValue30,
+	            stamp           AS stamp
+            FROM
+	            `m_stock` ms
+            WHERE
+	            ms.`locationId` = #{locationId}
+            AND
+	            ms.`sensorId` = #{sensorId}
+	        AND ms.stamp BETWEEN #{starttime} AND #{endtime}
+	        ORDER BY stamp ASC
+        ]]>
+	</select>
+
+    <!-- 查询位置点的某监测指标的KDJ指标 -->
+    <select id="findStocks" parameterType="java.util.Map"
+            resultType="Stock">
+        <![CDATA[
+			SELECT
+	            id              AS id,
+                locationId      AS locationId,
+	            sensorId        AS sensorId,
+	            beginValue      AS beginValue,
+	            endValue        AS endValue,
+	            `maxValue`,
+	            `minValue`,
+	            k               AS k,
+	            j               AS j,
+	            d               AS d,
+	            avgValue5       AS avgValue5,
+	            avgValue10      AS avgValue10,
+	            avgValue30      AS avgValue30,
+	            stamp           AS stamp
+            FROM
+	            `m_stock` ms
+            WHERE
+	            ms.`locationId` = #{locationId}
+            AND
+	            ms.stamp = #{date}
+        ]]>
+    </select>
+</mapper>

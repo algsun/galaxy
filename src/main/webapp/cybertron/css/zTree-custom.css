@@ -1,0 +1,17 @@
+/**
+* ztree 自定义样式
+*
+* @author gaohui
+* @date 2013-03-04
+*/
+
+/* 增加字体大小, 默认为 12px */
+.ztree * {
+    font-size: 12px;
+}
+
+/* 增大节点的间隔，默认为 0 */
+.ztree li {
+    margin: 1px 0;
+}
+

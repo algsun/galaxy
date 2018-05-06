@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+    <settings>
+        <!-- 全局映射器启用缓存 -->
+        <setting name="cacheEnabled" value="true"/>
+        <!-- 查询时，关闭关联对象即时加载以提高性能 -->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <!-- 设置关联对象加载的形态，此处为按需加载字段(加载字段由SQL指 定)，不会加载关联表的所有字段，以提高性能 -->
+        <setting name="aggressiveLazyLoading" value="false"/>
+        <!-- 对于未知的SQL查询，允许返回不同的结果集以达到通用的效果 -->
+        <setting name="multipleResultSetsEnabled" value="true"/>
+        <!-- 允许使用列标签代替列名 -->
+        <setting name="useColumnLabel" value="true"/>
+        <!-- 允许使用自定义的主键值(比如由程序生成的UUID 32位编码作为键值)，数据表的PK生成策略将被覆盖 -->
+        <setting name="useGeneratedKeys" value="true"/>
+        <!-- 给予被嵌套的resultMap以字段-属性的映射支持 -->
+        <setting name="autoMappingBehavior" value="FULL"/>
+        <!-- 对于批量更新操作缓存SQL以提高性能 -->
+        <setting name="defaultExecutorType" value="BATCH"/>
+        <!-- 数据库超过25000秒仍未响应则超时 -->
+        <setting name="defaultStatementTimeout" value="25000"/>
+    </settings>
+
+    <!-- 全局别名设置，在映射文件中只需写别名，而不必写出整个类路径 -->
+    <typeAliases>
+        <!-- PO -->
+        <typeAlias alias="ZonePO" type="com.microwise.blueplanet.bean.po.ZonePO"/>
+        <typeAlias alias="NodeinfoPO" type="com.microwise.blueplanet.bean.po.NodeinfoPO"/>
+        <typeAlias alias="DefaultCoefficientPO" type="com.microwise.blueplanet.bean.po.DefaultCoefficientPO"/>
+        <!-- VO -->
+        <typeAlias alias="SiteVO" type="com.microwise.blueplanet.bean.vo.SiteVO"/>
+        <typeAlias alias="ZoneVO" type="com.microwise.blueplanet.bean.vo.ZoneVO"/>
+        <typeAlias alias="DeviceVO" type="com.microwise.blueplanet.bean.vo.DeviceVO"/>
+        <typeAlias alias="RealtimeDataVO" type="com.microwise.blueplanet.bean.vo.RealtimeDataVO"/>
+        <typeAlias alias="SensorinfoVO" type="com.microwise.blueplanet.bean.vo.SensorinfoVO"/>
+        <typeAlias alias="DeviceDataVO" type="com.microwise.blueplanet.bean.vo.DeviceDataVO"/>
+        <typeAlias alias="HistoryDataVO" type="com.microwise.blueplanet.bean.vo.HistoryDataVO"/>
+        <typeAlias alias="windRoseVO" type="com.microwise.blueplanet.bean.vo.WindRoseVO"/>
+        <typeAlias alias="reportVO" type="com.microwise.blueplanet.bean.vo.ReportVO"/>
+        <typeAlias alias="ThresholdVO" type="com.microwise.blueplanet.bean.vo.ThresholdVO"/>
+        <typeAlias alias="User" type="com.microwise.blackhole.bean.User"/>
+        <typeAlias alias="TopoViewVO" type="com.microwise.blueplanet.bean.vo.TopoViewVO"/>
+        <typeAlias alias="NodeSensorVO" type="com.microwise.blueplanet.bean.vo.NodeSensorVO"/>
+        <typeAlias alias="DCLayoutPO" type="com.microwise.blueplanet.bean.po.DCLayoutPO"/>
+        <typeAlias alias="DCItemPO" type="com.microwise.blueplanet.bean.po.DCItemPO"/>
+        <typeAlias alias="DCConditionPO" type="com.microwise.blueplanet.bean.po.DCConditionPO"/>
+        <typeAlias alias="Formula" type="com.microwise.blueplanet.bean.po.Formula"/>
+        <typeAlias alias="Switches" type="com.microwise.blueplanet.bean.po.Switches"/>
+        <typeAlias alias="SwitchChange" type="com.microwise.blueplanet.bean.po.SwitchChange"/>
+        <typeAlias alias="ConditionRefl" type="com.microwise.blueplanet.bean.po.ConditionRefl"/>
+        <typeAlias alias="DCConfigPO" type="com.microwise.blueplanet.bean.po.DCConfigPO"/>
+        <typeAlias alias="DCSlidePO" type="com.microwise.blueplanet.bean.po.DCSlidePO"/>
+        <typeAlias alias="AliasPO" type="com.microwise.blueplanet.bean.po.AliasPO"/>
+        <typeAlias alias="SwitchDailyAction" type="com.microwise.blueplanet.bean.po.SwitchDailyAction"/>
+        <typeAlias alias="SwitchIntervalAction" type="com.microwise.blueplanet.bean.po.SwitchIntervalAction"/>
+        <typeAlias alias="ConditionAction" type="com.microwise.blueplanet.bean.po.ConditionAction"/>
+        <typeAlias alias="AlarmRecordVO" type="com.microwise.blueplanet.bean.vo.AlarmRecordVO"/>
+        <typeAlias alias="MeasureVO" type="com.microwise.blueplanet.bean.vo.MeasureVO"/>
+        <typeAlias alias="ConditionActionVO" type="com.microwise.blueplanet.bean.vo.ConditionActionVO"/>
+        <typeAlias alias="DeviceStatisticsVO" type="com.microwise.blueplanet.bean.vo.DeviceStatisticsVO"/>
+        <typeAlias alias="DeviceAvePeakDataVO" type="com.microwise.blueplanet.bean.vo.DeviceAvePeakDataVO"/>
+        <typeAlias alias="NotificationPO" type="com.microwise.blueplanet.bean.po.NotificationPO"/>
+        <typeAlias alias="LocationAvgdataVO" type="com.microwise.blueplanet.bean.vo.LocationAvgdataVO"/>
+        <typeAlias alias="AvgdataPO" type="com.microwise.blueplanet.bean.po.AvgdataPO"/>
+        <typeAlias alias="LocationPO" type="com.microwise.blueplanet.bean.po.LocationPO"/>
+        <typeAlias alias="LocationVO" type="com.microwise.blueplanet.bean.vo.LocationVO"/>
+        <typeAlias alias="LocationHistoryPO" type="com.microwise.blueplanet.bean.po.LocationHistoryPO"/>
+        <typeAlias alias="LocationHistoryVO" type="com.microwise.blueplanet.bean.vo.LocationHistoryVO"/>
+        <typeAlias alias="LocationDataVO" type="com.microwise.blueplanet.bean.vo.LocationDataVO"/>
+        <typeAlias alias="PlanImageCoordinateVO" type="com.microwise.blueplanet.bean.vo.PlanImageCoordinateVO"/>
+        <typeAlias alias="RecentDataVO" type="com.microwise.blueplanet.bean.vo.RecentDataVO"/>
+        <typeAlias alias="RainDeviceVO" type="com.microwise.blueplanet.bean.vo.RainDeviceStateVO"/>
+        <typeAlias alias="Products" type="com.microwise.blueplanet.bean.po.Products"/>
+        <typeAlias alias="DeviceState" type="com.microwise.blueplanet.bean.po.DeviceState"/>
+        <typeAlias alias="ProductStateVO" type="com.microwise.blueplanet.bean.vo.ProductStateVO"/>
+        <typeAlias alias="Stock" type="com.microwise.blueplanet.bean.po.Stock"/>
+        <typeAlias alias="QCMVO" type="com.microwise.blueplanet.bean.vo.QCMVO"/>
+        <typeAlias alias="ThreeDimensionalPO" type="com.microwise.blueplanet.bean.po.ThreeDimensionalPO"/>
+        <typeAlias alias="DimensionalLocationPO" type="com.microwise.blueplanet.bean.po.DimensionalLocationPO"/>
+        <typeAlias alias="HourAvgDataPO" type="com.microwise.blueplanet.bean.po.HourAvgDataPO"/>
+        <typeAlias alias="YearAvgDataVO" type="com.microwise.blueplanet.bean.vo.YearAvgDataVO"/>
+        <typeAlias alias="ReplaceSensorPO" type="com.microwise.blueplanet.bean.po.ReplaceSensorPO"/>
+        <typeAlias alias="EvaluateCriterionPO" type="com.microwise.blueplanet.bean.po.EvaluateCriterionPO"/>
+        <typeAlias alias="LocationSensorPO" type="com.microwise.blueplanet.bean.po.LocationSensorPO"/>
+        <typeAlias alias="FloatValue" type="com.microwise.blueplanet.bean.po.FloatValue" />
+        <typeAlias alias="TextureThresholdVO" type="com.microwise.blueplanet.bean.vo.TextureThresholdVO" />
+        <typeAlias alias="Relic" type="com.microwise.orion.bean.Relic" />
+        <typeAlias alias="ZoneThresholdVO" type="com.microwise.blueplanet.bean.vo.ZoneThresholdVO" />
+        <typeAlias alias="SensorUsedDataVO" type="com.microwise.blueplanet.bean.vo.SensorUsedDataVO" />
+        <typeAlias alias="LocationDataPO" type="com.microwise.blueplanet.bean.po.LocationDataPO"/>
+        <typeAlias alias="LocationDate" type="com.microwise.phoenix.bean.po.LocationDate" />
+        <typeAlias alias="ZoneAvgData" type="com.microwise.blueplanet.bean.vo.ZoneAvgDataVO" />
+    </typeAliases>
+
+    <!-- 非注解的sql映射文件配置，如果使用mybatis注解，该mapper无需配置，但是如果mybatis注解中包含@resultMap注解，则mapper必须配置，给resultMap注解使用 -->
+    <mappers>
+        <mapper resource="blueplanet/mybatis/CommonDao.xml"/>
+        <mapper resource="blueplanet/mybatis/SiteDao.xml"/>
+        <mapper resource="blueplanet/mybatis/ZoneDao.xml"/>
+        <mapper resource="blueplanet/mybatis/DeviceDao.xml"/>
+        <mapper resource="blueplanet/mybatis/SensorinfoDao.xml"/>
+        <mapper resource="blueplanet/mybatis/ChartDao.xml"/>
+        <mapper resource="blueplanet/mybatis/ReportDao.xml"/>
+        <mapper resource="blueplanet/mybatis/ThresholdDao.xml"/>
+        <mapper resource="blueplanet/mybatis/TopoDao.xml"/>
+        <mapper resource="blueplanet/mybatis/DataCenterDao.xml"/>
+        <mapper resource="blueplanet/mybatis/OfflineDao.xml"/>
+        <mapper resource="blueplanet/mybatis/OfflineDataDao.xml"/>
+        <mapper resource="blueplanet/mybatis/FormulaDao.xml"/>
+        <mapper resource="blueplanet/mybatis/ConditionReflDao.xml"/>
+        <mapper resource="blueplanet/mybatis/SwitchDao.xml"/>
+        <mapper resource="blueplanet/mybatis/ThreeDimensionalDao.xml"/>
+        <mapper resource="blueplanet/mybatis/ActionDao.xml"/>
+        <mapper resource="blueplanet/mybatis/AlarmDao.xml"/>
+        <mapper resource="blueplanet/mybatis/NotificationDao.xml"/>
+        <mapper resource="blueplanet/mybatis/LocationDao.xml"/>
+        <mapper resource="blueplanet/mybatis/StockDao.xml"/>
+        <mapper resource="blueplanet/mybatis/QCMDao.xml"/>
+        <mapper resource="blueplanet/mybatis/FloatValueDao.xml"/>
+        <mapper resource="blueplanet/mybatis/FollowerDao.xml"/>
+        <mapper resource="blueplanet/mybatis/TextureThresholdDao.xml"/>
+        <mapper resource="blueplanet/mybatis/FollowerDao.xml"/>
+    </mappers>
+
+</configuration>  

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="halley.mybatis.PackingListDao">
+
+    <!-- 查询 文物运输车上的集装箱列表 -->
+    <select id="findPackingListByCarId" parameterType="java.lang.Integer" resultType="PackingListVO">
+	    <![CDATA[
+            SELECT
+              id,
+              sequence,
+              carId
+            FROM
+              h_packing_list
+            WHERE carId = #{carId}
+            ORDER BY sequence
+        ]]>
+	</select>
+
+    <!-- 查询 文物集装箱中的文物列表 -->
+    <select id="findPackingRelicListByPackingId" parameterType="java.lang.Integer" resultType="PackingRelicVO">
+	    <![CDATA[
+            SELECT
+              hr.totalCode,
+              hr.name,
+              l.name AS LEVEL,
+              t.name AS texture,
+              e.name AS era,
+              hr.hasTag
+            FROM
+              o_historical_relic hr
+              INNER JOIN o_level l
+                ON hr.level = l.id
+              INNER JOIN o_texture t
+                ON hr.texture = t.id
+              INNER JOIN o_era e
+                ON hr.era = e.id
+              INNER JOIN h_packing_relic pr
+                ON hr.id = pr.relicId
+            WHERE pr.packingId = #{packingId}
+        ]]>
+	</select>
+
+</mapper>

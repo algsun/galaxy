@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blueplanet.mybatis.TopoDao">
+
+    <sql id="excludeDevices">
+        <![CDATA[
+	        AND n.nodeId NOT IN ('1000020100001', '1000020100021', '1000020100022', '1000020108765')
+		]]>
+    </sql>
+
+    <select id="getTopos" resultType="TopoViewVO"
+            parameterType="java.util.Map">
+       <![CDATA[
+           SELECT
+              m.nodeid AS nodeId,
+              n.nodeType AS nodeType,
+              m.nodeVersion AS nodeVersion,
+              m.anomaly AS anomaly,
+              l.zoneId AS zoomId,
+              tz.zoneName AS zoomName,
+              m.isControl AS isControl,
+              m.childIP  AS selfIp,
+              m.parentIP AS parentIp,
+              m.interval_i AS `interval`,
+              m.rssi AS rssi,
+              m.lqi AS lqi
+            FROM
+              m_nodeinfomemory m
+              INNER JOIN m_nodeinfo n
+                ON m.nodeid = n.nodeid
+              LEFT JOIN m_location l
+                ON n.nodeid = l.nodeid
+              LEFT JOIN t_zone tz
+                ON tz.zoneId = l.zoneId
+            WHERE m.parentIP = #{parentId}
+              AND n.siteId = #{siteId}
+              AND m.nodeVersion = #{nodeVersion}
+              AND n.nodeType <> 7
+              AND m.childIP <> m.parentIP
+        ]]>
+        <include refid="excludeDevices"/>
+	</select>
+
+    <select id="getChildrenCount" resultType="java.lang.Integer"
+            parameterType="java.util.Map">
+    <![CDATA[
+           SELECT
+              COUNT(1)
+           FROM
+              m_nodeinfomemory m
+           WHERE m.parentIP = #{parentId}
+              AND LEFT(m.nodeid,#{size}) = #{siteId}
+              AND m.nodeVersion = #{nodeVersion}
+              AND m.parentIP <> m.childIP
+        ]]>
+    </select>
+
+
+    <select id="getCountDevices" resultType="TopoViewVO"
+            parameterType="java.util.Map">
+        <![CDATA[
+           SELECT
+              m.nodeid AS nodeId,
+              n.nodeType AS nodeType,
+              m.nodeVersion AS nodeVersion,
+              l.zoneId AS zoomId,
+              tz.zoneName AS zoomName,
+              m.isControl AS isControl,
+              m.parentIP AS parentIp,
+              m.interval_i AS `interval`,
+              m.rssi AS rssi,
+              m.lqi AS lqi
+            FROM
+              m_nodeinfomemory m
+              INNER JOIN m_nodeinfo n
+                ON m.nodeid = n.nodeid
+              LEFT JOIN m_location l
+                ON n.nodeid = l.nodeid
+              LEFT JOIN t_zone tz
+                ON tz.zoneId = l.zoneId
+            WHERE n.siteId = #{siteId}
+              AND n.nodeType IN (2, 3,5,7)
+
+        ]]>
+        <include refid="excludeDevices"/>
+        <if test="anomaly == 1">
+            AND m.anomaly != -1
+        </if>
+        <if test="anomaly == -1">
+            AND m.anomaly = -1
+        </if>
+        <![CDATA[
+            ORDER BY
+              n.nodeType DESC,n.nodeid
+        ]]>
+    </select>
+
+    <!-- 获取设备信号质量 -->
+    <select id="getRssi" resultType="TopoViewVO" parameterType="java.util.Map">
+        <![CDATA[
+
+            SELECT
+              n.nodeid     AS nodeId,
+              n.nodeType  AS nodeType,
+              l.zoneId    AS zoomId,
+              n.createtime AS createTime,
+              tz.zoneName  AS zoomName,
+              mn.isControl  AS `isControl`,
+              mn.parentIP   AS parentIp,
+              mn.interval_i AS `interval`,
+              mn.rssi       AS rssi,
+              mn.lqi        AS lqi,
+              mn.anomaly    AS anomaly,
+              mn.stamp      AS stamp
+            FROM
+              m_nodeinfo n
+              LEFT JOIN m_nodeinfomemory mn
+                ON  mn.nodeid= n.nodeid
+              LEFT JOIN m_location l
+                ON n.nodeid = l.nodeid
+              LEFT JOIN t_zone tz
+                ON tz.zoneId = l.zoneId
+            WHERE  n.siteId=#{siteId}
+            ]]>
+        <include refid="excludeDevices"/>
+        <if test="anomaly == 1">
+            AND mn.anomaly != -1
+        </if>
+        <if test="anomaly == -1">
+            AND mn.anomaly = -1
+        </if>
+    </select>
+
+    <!-- 获取设备信息 -->
+    <select id="getDevices" resultType="TopoViewVO" parameterType="java.util.Map">
+       <![CDATA[
+            SELECT
+              n.nodeid     AS nodeId,
+              n.nodeType  AS nodeType,
+              l.zoneId    AS zoomId,
+              n.createtime AS createTime,
+              tz.zoneName  AS zoomName,
+              mn.isControl  AS `isControl`,
+              mn.parentIP   AS parentIp,
+              mn.interval_i AS `interval`,
+              mn.rssi       AS rssi,
+              mn.lqi        AS lqi,
+              mn.anomaly    AS anomaly,
+              mn.stamp      AS stamp
+            FROM
+              m_nodeinfo n
+              LEFT JOIN m_nodeinfomemory mn
+                ON  mn.nodeid= n.nodeid
+              LEFT JOIN m_location l
+                ON n.nodeid = l.nodeid
+              LEFT JOIN t_zone tz
+                ON tz.zoneId = l.zoneId
+            WHERE  n.siteId=#{siteId}
+        ]]>
+        <include refid="excludeDevices"/>
+	</select>
+
+    <!-- 根据nodeid查询设备信息 -->
+    <select id="getNodeInfoByNodeId" resultType="TopoViewVO"
+            parameterType="java.util.Map">
+       <![CDATA[
+            SELECT
+              n.nodeid     AS nodeId,
+              n.nodeType  AS nodeType,
+              l.zoneId    AS zoomId,
+              n.createtime AS createTime,
+              tz.zoneName  AS zoomName,
+              mn.isControl  AS `isControl`,
+              mn.childIP    AS selfIp,
+              mn.parentIP   AS parentIp,
+              mn.interval_i AS `interval`,
+              mn.rssi       AS rssi,
+              mn.lqi        AS lqi,
+              mn.nodeVersion as nodeVersion,
+              mn.anomaly    AS anomaly
+            FROM
+              m_nodeinfo n
+              LEFT JOIN m_nodeinfomemory mn
+                ON  mn.nodeid= n.nodeid
+              LEFT JOIN m_location l
+                ON n.nodeid = l.nodeid
+              LEFT JOIN t_zone tz
+                ON tz.zoneId = l.zoneId
+            WHERE  mn.nodeId=#{nodeId};
+        ]]>
+	</select>
+
+    <!-- 查询一个站点下所有超时的设备 -->
+    <select id="getTimeoutDevice" resultType="TopoViewVO"
+            parameterType="java.util.Map">
+       <![CDATA[
+            SELECT
+              n.nodeid     AS nodeId,
+              n.nodeType  AS nodeType,
+              l.zoneId    AS zoomId,
+              tz.zoneName  AS zoomName,
+              mn.nodeVersion As nodeVersion,
+              mn.isControl  AS `isControl`,
+              mn.parentIP   AS parentIp,
+              mn.interval_i AS `interval`,
+              mn.rssi       AS rssi,
+              mn.lqi        AS lqi,
+              mn.anomaly    AS anomaly,
+              mn.stamp      AS stamp
+            FROM
+              m_nodeinfo n
+              LEFT JOIN m_nodeinfomemory mn
+                ON  mn.nodeid= n.nodeid
+              LEFT JOIN m_location l
+                ON n.nodeid = l.nodeid
+              LEFT JOIN t_zone tz
+                ON tz.zoneId = l.zoneId
+            WHERE n.siteId = #{siteId} AND
+            mn.anomaly=-1
+            ]]>
+        <include refid="excludeDevices"/>
+            <![CDATA[
+            ORDER BY
+              mn.stamp
+        ]]>
+	</select>
+
+    <select id="getNodeCount" resultType="java.lang.Integer"
+            parameterType="java.util.Map">
+       <![CDATA[
+            SELECT
+              COUNT(1)
+            FROM
+              m_device_${nodeId} m
+            WHERE m.timestamp BETWEEN #{startDate}
+              AND #{endDate}
+        ]]>
+	</select>
+
+    <select id="getMinTime" resultType="java.util.Date"
+            parameterType="java.util.Map">
+       <![CDATA[
+            SELECT
+              MIN(m.timestamp) AS stamp
+            FROM
+              m_device_${nodeId} m
+        ]]>
+	</select>
+
+    <select id="getHistoryRoute" resultType="TopoViewVO"
+            parameterType="java.util.Map">
+       <![CDATA[
+            SELECT
+              n.nodeid AS nodeId,
+              n.nodeType AS nodeType,
+              l.zoneId AS zoomId,
+              tz.zoneName AS zoomName,
+              mn.nodeVersion AS nodeVersion,
+              mn.parentIP AS parentIp,
+              mn.workInterval AS `interval`,
+              mn.rssi AS rssi,
+              mn.lqi AS lqi,
+              mn.anomaly AS anomaly,
+              mn.timestamp AS stamp
+            FROM
+              m_nodeinfo n
+              LEFT JOIN m_location l
+                ON n.nodeid = l.nodeid
+              LEFT JOIN m_device_${nodeId}  mn
+                ON mn.nodeid = n.nodeid
+              LEFT JOIN t_zone tz
+                ON tz.zoneId = l.zoneId
+            WHERE mn.timestamp
+                BETWEEN #{startDate} AND #{endDate}
+            ORDER BY mn.timestamp  DESC
+            LIMIT #{startIndex} , #{pageSize}
+        ]]>
+	</select>
+
+    <select id="getHistoryRouteCount" resultType="java.lang.Integer"
+            parameterType="java.util.Map">
+       <![CDATA[
+            SELECT
+                COUNT(1)
+            FROM
+                 m_device_${nodeId} m
+            WHERE  m.timestamp
+                BETWEEN #{startDate} AND #{endDate}
+        ]]>
+	</select>
+
+</mapper>

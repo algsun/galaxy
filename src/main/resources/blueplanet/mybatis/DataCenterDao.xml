@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blueplanet.mybatis.DataCenterDao">
+
+    <select id="findAllLayouts" resultType="DCLayoutPO">
+       <![CDATA[
+           SELECT
+            layoutId      AS layoutId,
+            description   AS description,
+            create_time   AS createTime,
+            logicGroupId  AS logicGroupId
+            FROM
+            dc_layout
+            WHERE
+            logicGroupId = #{logicGroupId}
+            ORDER BY
+            createTime
+            DESC
+        ]]>
+    </select>
+
+    <select id="findItemByLayoutId" resultType="DCItemPO" parameterType="java.lang.String">
+       <![CDATA[
+
+            SELECT
+            item.related_layoutId   AS related_layoutId,
+            item.item_id            AS item_id,
+            item.data_col           AS data_col,
+            item.data_row           AS data_row,
+            item.data_sizex         AS data_sizex,
+            item.data_sizey         AS data_sizey,
+            item.itemType           AS itemType,
+            con.chart_type          AS chart_type,
+            con.locationId            AS locationId,
+            con.sensorPhysicalid    AS sensorPhysicalid,
+            con.dateNum             AS dateNum,
+            con.param1              AS chartName,
+            con.url                 AS url,
+            con.serializationParam  AS serializationParams
+            FROM
+            dc_items item LEFT JOIN
+            dc_chart_condition con
+            ON item.item_id = con.related_item_id
+            WHERE  item.related_layoutId = #{value}
+
+        ]]>
+    </select>
+
+    <select id="findItemById" resultType="DCItemPO" parameterType="java.lang.String">
+       <![CDATA[
+           SELECT
+            related_layoutId   AS related_layoutId,
+            item_id            AS item_id,
+            data_col           AS data_col,
+            data_row           AS data_row,
+            data_sizex         AS data_sizex,
+            data_sizey         AS data_sizey,
+            itemType           AS itemType
+            FROM
+            dc_items
+            WHERE
+            item_id = #{value}
+        ]]>
+    </select>
+
+    <select id="findConditionByItemId" resultType="DCConditionPO" parameterType="java.lang.String">
+        <![CDATA[
+           SELECT
+            *
+            FROM
+            dc_chart_condition
+            WHERE
+            related_item_id = #{value}
+        ]]>
+    </select>
+
+    <select id="findConditionByLayoutId" resultType="DCConditionPO" parameterType="java.lang.String">
+        <![CDATA[
+           SELECT
+            *
+            FROM
+            dc_chart_condition
+            WHERE
+            related_layout_id = #{value}
+        ]]>
+    </select>
+
+    <insert id="saveLayout" parameterType="DCLayoutPO">
+        <![CDATA[
+			INSERT INTO
+				dc_layout(layoutId,description,create_time,logicGroupId)
+			VALUES
+				(#{layoutId},#{description},NOW(),#{logicGroupId})
+		]]>
+    </insert>
+
+    <update id="updateLayoutDescription" parameterType="DCLayoutPO">
+         <![CDATA[
+			UPDATE
+			      dc_layout AS l
+               SET
+                  l.description = #{description}
+             WHERE
+                  l.layoutId = #{layoutId}
+               AND
+                  l.logicGroupId = #{logicGroupId}
+
+		]]>
+    </update>
+
+    <insert id="saveItem" parameterType="DCItemPO">
+      <![CDATA[
+			INSERT INTO
+				dc_items(related_layoutId,item_id,data_col,data_row,data_sizex,data_sizey,itemType)
+			VALUES
+				(#{related_layoutId},#{item_id},#{data_col},#{data_row},#{data_sizex},#{data_sizey},#{itemType})
+		]]>
+    </insert>
+
+    <insert id="saveConditions" parameterType="java.util.Map">
+     <![CDATA[
+
+			INSERT INTO
+				dc_chart_condition(related_layout_id,related_item_id,chart_type,locationId,startTime,endTime,sensorPhysicalid,dateNum,param1,url,serializationParam)
+			VALUES
+				(#{related_layout_id},#{related_item_id},#{chart_type},#{locationId},#{startTime},#{endTime},#{sensorPhysicalid},#{dateNum},#{param1},#{url},#{serializationParams})
+
+        ]]>
+    </insert>
+
+    <!-- 删除布局 -->
+    <delete id="deleteLayoutById" parameterType="java.lang.String">
+		<![CDATA[
+			DELETE FROM
+				dc_layout
+			WHERE
+				layoutId = #{value}
+		]]>
+	</delete>
+
+    <!-- 删除布局控件 -->
+    <delete id="deleteLayoutItemById" parameterType="java.lang.String">
+		<![CDATA[
+			DELETE FROM
+				dc_items
+			WHERE
+				item_id = #{value}
+		]]>
+	</delete>
+
+    <delete id="deleteLayoutItemByLayoutId" parameterType="java.lang.String">
+             <![CDATA[
+			DELETE FROM
+				dc_items
+			WHERE
+				related_layoutId = #{value}
+		]]>
+    </delete>
+
+    <!-- 删除控件图表查询条件 -->
+    <delete id="deleteConditionsById" parameterType="java.lang.String">
+		<![CDATA[
+			DELETE FROM
+				dc_chart_condition
+			WHERE
+				related_layout_id = #{value}
+		]]>
+	</delete>
+
+    <delete id="deleteConditionByItemId" parameterType="java.lang.String">
+        <![CDATA[
+			DELETE FROM
+				dc_chart_condition
+			WHERE
+				related_item_id = #{value}
+		]]>
+    </delete>
+
+    <select id="findDataCenterConfig" parameterType="java.lang.String"
+            resultType="DCConfigPO">
+        <![CDATA[
+            SELECT
+                  con.related_layoutId AS relatedLayoutId,
+                  con.url              AS url
+             FROM
+                  `dc_config` con
+            WHERE
+                  con.related_layoutId = #{value}
+        ]]>
+    </select>
+
+    <insert id="saveDataCenterConfig" parameterType="DCConfigPO">
+      <![CDATA[
+			INSERT INTO
+				`dc_config`(related_layoutId,url)
+			VALUES
+				(#{related_layoutId},#{url})
+		]]>
+    </insert>
+    <delete id="deleteDataCenterConfig" parameterType="java.lang.String">
+		<![CDATA[
+			DELETE FROM
+				`dc_config`
+			WHERE
+				related_layoutId = #{value}
+		]]>
+	</delete>
+
+    <!--根据layoutId获取itemId-->
+    <select id="findItemIdByLayoutId" parameterType="java.lang.String"
+            resultType="DCSlidePO">
+        <![CDATA[
+            SELECT
+              related_item_id   AS relatedItemId
+            FROM
+              dc_program
+            WHERE related_layoutId = #{value} GROUP BY relatedItemId
+        ]]>
+    </select>
+
+    <!--根据itemId获取幻灯片id-->
+    <select id="findIdByItemId" parameterType="java.lang.String"
+            resultType="DCSlidePO">
+        <![CDATA[
+            SELECT
+              id                AS id
+            FROM
+              dc_program
+            WHERE related_item_id = #{value}
+            ORDER BY id ASC
+        ]]>
+    </select>
+
+    <!--根据id查找幻灯片-->
+    <select id="findSlideShowById" parameterType="java.lang.Integer"
+            resultType="DCSlidePO">
+        <![CDATA[
+            SELECT
+              id                AS id,
+              related_item_id   AS relatedItemId,
+              title             AS title,
+              url               AS url,
+              refresh           AS refresh,
+              locationId          AS locationId,
+              detail            AS detail
+            FROM
+              dc_program
+            WHERE id = #{value}
+        ]]>
+    </select>
+
+    <select id="findNodeSensor" parameterType="java.lang.String"
+            resultType="NodeSensorVO">
+        <![CDATA[
+            SELECT
+              ns.sensorPhysicalid AS sensorPhysicalId,
+              ns.sensorPhysicalValue AS sensorPhysicalValue,
+              ss.cn_name AS sensorPhysicalCnName,
+              ss.units AS units,
+              ns.state AS state,
+              ns.stamp as stamp
+            FROM
+              m_nodesensor AS ns
+            INNER JOIN  m_sensorinfo AS ss
+            ON ns.sensorPhysicalid  = ss.sensorPhysicalid
+            WHERE ns.nodeid = #{value}
+        ]]>
+    </select>
+    <insert id="saveSlide" parameterType="DCSlidePO">
+      <![CDATA[
+			INSERT INTO
+				dc_program(related_layoutId,related_item_id,title,url,refresh,locationId,detail)
+			VALUES
+				(#{relatedLayoutId},#{relatedItemId},#{title},#{url},#{refresh},#{locationId},#{detail})
+		]]>
+    </insert>
+
+    <update id="updateSlidePO" parameterType="DCSlidePO">
+        <![CDATA[
+			UPDATE
+				`dc_program` AS slide
+			SET
+                slide.refresh = #{refresh},
+                slide.title = #{title},
+                slide.locationId = #{locationId},
+                slide.detail = #{detail}
+			WHERE
+				slide.id = #{id}
+		]]>
+    </update>
+
+    <select id="findDataCenterSlides" resultType="DCSlidePO" parameterType="java.util.Map">
+        <![CDATA[
+            SELECT
+              dp.id               AS id,
+              dp.related_layoutId AS relatedLayoutId,
+              dp.related_item_id  AS relatedItemId,
+              dp.title            AS title,
+              dp.url              AS url,
+              dp.refresh          AS refresh,
+              dp.locationId         AS locationId,
+              dp.detail           AS detail
+            FROM
+              dc_program dp
+            WHERE
+              dp.related_layoutId = #{relatedLayoutId}
+            AND
+              dp.related_item_id = #{relatedItemId}
+
+        ]]>
+    </select>
+
+    <delete id="deleteSlideById" parameterType="java.lang.String">
+		<![CDATA[
+			DELETE FROM
+				dc_program
+			WHERE
+				id = #{value}
+		]]>
+	</delete>
+
+    <delete id="deleteItemAllSlidesByIds" parameterType="java.util.Map">
+		<![CDATA[
+			DELETE FROM
+				dc_program
+			WHERE
+				related_layoutId = #{layoutId}
+		    AND
+                related_item_id = #{itemId}
+		]]>
+	</delete>
+
+    <select id="findSiteVOByLogicGroupId" parameterType="java.lang.Integer"
+            resultType="SiteVO">
+        <![CDATA[
+            SELECT
+              l.id  AS id,
+              l.`siteId`  AS  siteId,
+              l.parentLogicGroupId AS  parentLogicGroupId,
+              l.logicGroupName     AS  logicGroupName,
+              ts.areaCode AS areaCode
+            FROM
+               `t_logicgroup` AS l LEFT JOIN t_site AS ts ON l.siteId = ts.siteId
+            WHERE l.`parentLogicGroupId` = #{value}
+        ]]>
+    </select>
+
+    <select id="findSiteVOById" parameterType="java.lang.Integer"
+            resultType="SiteVO">
+        <![CDATA[
+            SELECT
+              l.id  AS id,
+              l.`siteId`  AS  siteId,
+              l.parentLogicGroupId AS  parentLogicGroupId,
+              l.logicGroupName     AS  logicGroupName
+            FROM
+              `t_logicgroup` AS l
+            WHERE l.`id` = #{value}
+        ]]>
+    </select>
+
+</mapper>

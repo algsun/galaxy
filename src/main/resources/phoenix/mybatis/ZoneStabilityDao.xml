@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="phoenix.mybatis.ZoneStabilityDao">
+
+    <select id="findDevices" parameterType="java.util.Map" resultType="java.util.Map">
+	<![CDATA[
+        SELECT
+          z.`zoneId` AS zoneId,
+          z.`zoneName` AS zoneName,
+          l.`id` AS locationId
+        FROM
+          `t_zone` AS z
+          INNER JOIN m_location AS l
+            ON z.zoneId = l.zoneId
+          INNER JOIN `m_location_sensor` AS ns
+            ON l.`id` = ns.`locationId`
+        WHERE z.`siteId` = #{siteId}
+          AND ns.`sensorPhysicalid` = #{sensorPhysicalid}
+	]]>
+	</select>
+
+
+    <select id="findDevicesByZone" parameterType="java.util.Map" resultType="java.util.Map">
+	<![CDATA[
+        SELECT
+          z.`zoneId` AS zoneId,
+          z.`zoneName` AS zoneName,
+          l.`id` AS locationId
+        FROM
+          `t_zone` AS z
+          INNER JOIN m_location AS l
+            ON z.zoneId = l.zoneId
+          INNER JOIN `m_location_sensor` AS ns
+            ON l.`id` = ns.`locationId`
+        WHERE z.`siteId` = #{siteId}
+        AND z.zoneId =#{zoneId}
+          AND ns.`sensorPhysicalid` = #{sensorPhysicalid}
+	]]>
+	</select>
+
+    <select id="findVariances" parameterType="java.util.Map" resultType="Float">
+	<![CDATA[
+        SELECT
+            VAR_POP(n.`sensorPhysicalvalue`)
+        FROM
+            `${locationId}` AS n
+        WHERE
+            n.`sensorPhysicalid` = ${sensorPhysicalid} AND n.`createtime` BETWEEN #{startDate} AND #{endDate}
+	]]>
+	</select>
+
+</mapper>

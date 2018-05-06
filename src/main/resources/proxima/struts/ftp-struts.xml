@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+        "http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+    <package name="proxima:ftp" extends="proxima" namespace="/proxima">
+        <action name="FTPList" class="proxima:FTPListAction">
+            <result type="freemarker">/proxima/pages/ftp/query-ftp.ftl</result>
+        </action>
+
+        <!--add-->
+        <action name="toAddFTP" class="proxima:addFTPAction" method="view">
+            <result type="freemarker">/proxima/pages/ftp/add-ftp.ftl</result>
+        </action>
+        <action name="addFTP" class="proxima:addFTPAction" method="execute">
+            <result name="success" type="redirect">/proxima/FTPList.action</result>
+            <result name="input" type="freemarker">/proxima/pages/ftp/add-ftp.ftl</result>
+        </action>
+
+        <!--delete-->
+        <action name="deleteFTP" class="proxima:deleteFTPAction">
+            <result type="redirect">/proxima/proxima/FTPList.action</result>
+        </action>
+
+        <!--update-->
+        <action name="toUpdateFTP" class="proxima:updateFTPAction" method="view">
+            <result type="freemarker">/proxima/pages/ftp/update-ftp.ftl</result>
+        </action>
+        <action name="updateFTP" class="proxima:updateFTPAction" method="execute">
+            <result name="success" type="redirect">/proxima/FTPList.action</result>
+            <result name="input" type="freemarker">/proxima/pages/ftp/update-ftp.ftl</result>
+        </action>
+        <action name="testFTPConnect" class="proxima:testFTPConnectAction">
+            <result type="json">
+                <param name="root">msg</param>
+            </result>
+        </action>
+    </package>
+</struts>

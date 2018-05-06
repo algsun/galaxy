@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="blueplanet" extends="json-default" namespace="/blueplanet">
+    </package>
+
+    <include file="blueplanet/struts/index-struts.xml"/>
+    <!-- 区域 -->
+    <include file="blueplanet/struts/zone-struts.xml"/>
+    <!-- 位置点 -->
+    <include file="blueplanet/struts/location-struts.xml"/>
+    <!--网络拓扑图-->
+    <include file="blueplanet/struts/topo-struts.xml"/>
+
+    <include file="blueplanet/struts/file-struts.xml"/>
+
+</struts>

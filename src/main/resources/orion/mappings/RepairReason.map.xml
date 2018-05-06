@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.orion.bean">
+    <class name="RepairReason" table="o_reason">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="reason" type="java.lang.String">
+            <column name="repairReason" length="120" not-null="true">
+                <comment>修复因由</comment>
+            </column>
+        </property>
+        <property name="siteId" type="java.lang.String">
+            <column name="siteId" length="50" not-null="false">
+                <comment>站点编号</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

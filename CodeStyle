@@ -1,0 +1,5 @@
+2014-6-25 宋涛 返回复数的查询方法，函数名尽可能用被查询主题的复数形式命名，如findDevices、findLocationsBySiteId。但如果变量命名为XXList，那么方法名就应命名为findXXList。
+2014-6-27 宋涛 查询数量推荐使用count(1),如“select count(1) from XX_table”
+2014-6-30 宋涛 不要在service方法命名是findXXXVO，完全没有必要。
+2014-7-8  宋涛 action、service中多参数方法命名时，不要命名为findXXXBy..A..And..B..And..C..。
+2014-7-8  宋涛 供ajax调用的action必须在方法名前加ajax前缀，例如ajaxAddLocation。

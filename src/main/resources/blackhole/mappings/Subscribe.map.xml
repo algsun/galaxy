@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.blackhole.bean">
+
+    <class name="Subscribe" table="t_subscribe">
+        <id name="id">
+            <generator class="identity"/>
+        </id>
+	   <property name="subscribeType" column="subscribeType" type="java.lang.Integer"/>
+	    <property name="siteId" column="siteId" type="java.lang.String"/>
+        <property name="locationId" column="locationId" type="java.lang.String"/>
+	   <many-to-one name="user" column="userId" class="User"/>
+    </class>
+
+</hibernate-mapping> 

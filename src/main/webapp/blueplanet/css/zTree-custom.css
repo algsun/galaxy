@@ -1,0 +1,93 @@
+/**
+* ztree 自定义样式
+*
+* @author gaohui
+* @date 2013-03-04
+*/
+
+/* 增加字体大小, 默认为 12px */
+.ztree * {
+    font-size: 12px;
+}
+
+/* 增大节点的间隔，默认为 0 */
+.ztree li {
+    margin: 1px 0;
+}
+
+/*自定义图标*/
+
+/* 区域图标 icon for area */
+.ztree li span.area_ico_open, .ztree li span.area_ico_close {
+    background-image: url(../images/icon/house2-16.png);
+    margin-right: 2px;
+}
+
+/* 设备图标 icon for device */
+.ztree li span.device_ico_docu {
+    background-image: url(../images/icon/node-16.png);
+    margin-right: 2px;
+}
+
+.ztree li span.location_ico_docu {
+    background-image: url(../images/icon/location-16.png);
+    margin-right: 2px;
+}
+
+.ztree li span.offline-location_ico_docu {
+    background-image: url(../images/icon/offline-location-16.png);
+    margin-right: 2px;
+}
+
+/* 中继图标(归类) icon for relay */
+.ztree li span.relay_ico_open, .ztree li span.relay_ico_close {
+    background-image: url(../images/icon/relay-16.png);
+    margin-right: 2px;
+}
+
+/* 中继图标 icon for relay */
+.ztree li span.relay_ico_docu {
+    background-image: url(../images/icon/relay-16.png);
+    margin-right: 2px;
+}
+
+/* 网关图标 icon for gateway */
+.ztree li span.gateway_ico_docu {
+    background-image: url(../images/icon/router-16.png);
+    margin-right: 2px;
+}
+
+/* 主模块图标 icon for master-module */
+.ztree li span.master-module_ico_docu {
+    background-image: url(../images/icon/master-module-16.png);
+    margin-right: 2px;
+}
+
+/* 主模块图标 icon for master-module */
+.ztree li span.master-module_ico_open, .ztree li span.master-module_ico_close {
+    background-image: url(../images/icon/master-module-16.png);
+    margin-right: 2px;
+}
+
+/* 控制模块图标 icon for control module */
+.ztree li span.control-module_ico_docu {
+    background-image: url(../images/icon/control-module-16.png);
+    margin-right: 2px;
+}
+
+/* 设备图标(不可拖) icon for device */
+.ztree li span.undragable_ico_docu {
+    background-image: url(../images/icon/undragable-16.png);
+    margin-right: 2px;
+}
+
+/* 未部署设备图标 icon for undeploy */
+.ztree li span.undeploy_ico_open, .ztree li span.undeploy_ico_close {
+    background-image: url(../images/icon/question-circle-16.png);
+    margin-right: 2px;
+}
+
+.ztree li span.devices_ico_open, .ztree li span.devices_ico_close {
+    background-image: url(../images/icon/devices-16.png);
+    margin-right: 2px;
+}

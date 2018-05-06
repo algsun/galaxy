@@ -1,0 +1,79 @@
+/**
+* 整个系统公共样式
+*
+* @author gaohui
+* @date 2012-10-23
+*/
+
+body {
+    background: url('../images/body-bg.png');
+}
+
+/* 微软雅黑 */
+.yahei-font {
+    font-family: Arial, 'Microsoft Yahei', Simsun, sans-serif;
+}
+
+/* 业务系统名称 */
+.subsystem-brand {
+    font-family: Arial, 'Microsoft Yahei', Simsun, sans-serif;
+}
+
+/* 页面头部业务系统图标 */
+.subsystem-head-icon {
+    width: 20px;
+    height: 20px;
+    vertical-align: top;
+}
+
+/* 表单输入项(有红星号) */
+em.required {
+    font-style: normal;
+    color: red;
+    font-weight: bold;
+    padding-right: 5px;
+    vertical-align: bottom;;
+}
+
+/* icons */
+
+.mw-icon-ok {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    vertical-align: text-top;
+    background: url("../images/ok-16x16.png") no-repeat;
+}
+
+.mw-icon-cancel {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    vertical-align: text-top;
+    background: url("../images/cancel-16x16.png") no-repeat;
+}
+
+/* 返回图标 */
+i.mw-icon-prev {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url(../images/br_prev_icon&16.png);
+}
+
+/* 错误信息处理 */
+label.error {
+    background: url("../../blackhole/images/cancel-16x16.png") no-repeat 0px 0px;
+    display: inline;
+    margin-left: 20px;
+    padding-left: 16px;
+    padding-bottom: 2px;
+    color: #EA5200;
+}
+
+label.checked {
+    background: url("../../blackhole/images/ok-16x16.png") no-repeat 0px 0px;
+}
+

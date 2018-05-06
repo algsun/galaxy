@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blueplanet.mybatis.SiteDao">
+
+    <sql id="excludeDevices">
+        <![CDATA[
+	        AND n.nodeId NOT IN ('1000020100001', '1000020100021', '1000020100022', '1000020108765')
+		]]>
+    </sql>
+
+    <sql id="excludeLocations">
+        <![CDATA[
+        AND l.id NOT IN ('10000201102426', '10000201102427', '10000201102428', '10000201102429')
+        ]]>
+    </sql>
+
+    <!-- 查询站点下设备实时状态(设备实时状态) -->
+    <select id="findNodeinfo" resultType="RealtimeDataVO" parameterType="java.util.Map">
+        <![CDATA[
+			SELECT DISTINCT
+				n.nodeid		AS nodeId,
+				m.lowvoltage	As lowvoltage,
+				m.anomaly		AS anomaly,
+  				m.deviceMode	AS deviceMode,
+                b.stamp          AS stamp
+			FROM
+				m_nodeinfo			AS n
+			LEFT JOIN
+				m_nodeinfomemory	AS m ON m.nodeid = n.nodeid
+            LEFT JOIN
+                m_nodesensor        AS b ON  b.nodeid=n.nodeid
+			WHERE
+				n.siteid=#{siteId}
+			AND
+			    n.nodeType IN (1,3,4)
+		]]>
+        <if test="sensorPhysicalidList !=null">
+            AND
+            m.nodeid
+            IN
+            (SELECT DISTINCT
+            a.nodeid AS nodeid
+            FROM
+            m_nodesensor AS a
+            WHERE
+            a.sensorPhysicalid IN
+            <foreach collection="sensorPhysicalidList" index="index"
+                     item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            )
+        </if>
+        <include refid="excludeDevices"/>
+        <![CDATA[
+		GROUP BY n.nodeid
+		ORDER BY n.nodeid
+		]]>
+    </select>
+
+    <!-- 查询站点下设备实时状态(位置点实时状态) -->
+    <select id="findLocationInfo" resultType="RealtimeDataVO" parameterType="java.util.Map">
+        <![CDATA[
+        SELECT
+          l.id AS locationId,
+          l.nodeId,
+          l.locationName,
+          mnm.lowvoltage,
+          mnm.anomaly,
+          mnm.deviceMode,
+          z.zoneId,
+          z.zoneName,
+          mnm.stamp
+        FROM
+          m_location l
+        INNER JOIN m_location_sensor mls ON mls.locationId=l.id
+        LEFT JOIN m_nodeinfomemory mnm ON l.nodeId = mnm.nodeId
+        LEFT JOIN t_zone z ON l.zoneId = z.zoneId
+        WHERE l.siteId=#{siteId}
+ 		]]>
+        <include refid="excludeLocations"/>
+      <if test="sensorPhysicalidList !=null">
+        AND mls.sensorPhysicalId IN
+          <foreach collection="sensorPhysicalidList" index="index" item="item" open="(" separator="," close=")">
+          #{item}
+          </foreach>
+       </if>
+        <![CDATA[
+		 GROUP BY l.id ORDER BY z.zoneName,l.id
+		]]>
+
+    </select>
+
+    <!-- 查询站点下的所有设备 -->
+    <select id="findAllDevicesBySiteId" parameterType="java.lang.String"
+            resultType="DeviceVO">
+		<![CDATA[
+			SELECT
+				n.nodeid	AS nodeId,
+				n.nodeType	AS nodeType,
+				m.parentIP	AS parentIP,
+				m.childIP	AS currentIP
+			FROM
+				m_nodeinfo	AS n
+			LEFT JOIN
+				m_nodeinfomemory AS m ON n.nodeid = m.nodeid
+			WHERE
+				n.siteId = #{siteId}
+
+        ]]>
+        <include refid="excludeDevices"/>
+	</select>
+
+    <select id="findSite" resultType="SiteVO">
+		<![CDATA[
+
+			SELECT
+			*
+			FROM
+				t_site s
+			WHERE
+				lngBaiDu IS NOT NULL
+
+        ]]>
+	</select>
+
+    <select id="findAllSite" resultType="SiteVO">
+		<![CDATA[
+        SELECT
+          siteId,
+          logicGroupName AS siteName
+        FROM
+          t_logicgroup
+        WHERE siteId IS NOT NULL
+        ]]>
+	</select>
+    <!-- 根据站点id查询站点对象 -->
+    <select id="findSiteById" parameterType="java.lang.String"
+            resultType="SiteVO">
+		<![CDATA[
+			SELECT
+				s.siteId	as siteId,
+				s.siteName	as siteName
+			FROM 
+				t_site s
+			WHERE 
+				s.siteId = #{siteId}
+        ]]>
+	</select>
+
+    <!-- 查询站点下设备所拥有的激活的监测指标 -->
+    <select id="findSensorinfo" parameterType="java.util.HashMap"
+            resultType="SensorinfoVO">
+		<![CDATA[
+			SELECT DISTINCT
+              s.sensorPhysicalid AS sensorPhysicalid,
+              s.en_name AS enName,
+               ]]>
+              <if test="language=='en_US'">
+                s.en_name AS cnName,
+              </if>
+              <if test="language=='zh_CN'">
+                s.cn_name AS cnName,
+              </if>
+              <![CDATA[
+              s.sensorPrecision AS sensorPrecision,
+              s.units AS units,
+              s.positions AS positions,
+              s.showType AS showType
+            FROM
+              m_sensorinfo AS s
+              INNER JOIN m_location_sensor AS mls
+                ON s.sensorPhysicalid = mls.`sensorPhysicalId`
+              INNER JOIN m_location AS n
+                ON mls.locationId = n.id
+            WHERE n.siteId = #{siteId}
+              AND s.showType IN (0, 1)
+            ORDER BY s.sensorPhysicalid
+        ]]>
+	</select>
+
+    <!-- 查询站点下设备所拥有的激活的监测指标(设备的监测指标) -->
+    <select id="findDeviceSensorInfo" parameterType="java.lang.String"
+            resultType="SensorinfoVO">
+		<![CDATA[
+			SELECT DISTINCT
+				s.sensorPhysicalid	AS sensorPhysicalid,
+				s.en_name			AS enName,
+				s.cn_name			AS cnName,
+				s.sensorPrecision	AS sensorPrecision,
+				s.units				AS units,
+				s.positions			AS positions,
+				s.showType          AS showType
+			FROM
+				m_sensorinfo AS s
+			LEFT JOIN
+				m_nodesensor AS ns ON s.sensorPhysicalid = ns.sensorPhysicalid
+			LEFT JOIN
+				m_nodeinfo AS n ON ns.nodeid = n.nodeid
+			WHERE
+				s.isActive = 1
+			AND
+				n.siteId = #{siteId}
+			AND
+                s.showType in (0, 1)
+			ORDER BY
+				s.sensorPhysicalid
+        ]]>
+	</select>
+
+    <!-- 查询有订阅用户的site -->
+    <select id="findSiteHasSubscribeUser" resultType="SiteVO">
+		<![CDATA[
+			SELECT DISTINCT
+			  b.siteId,
+			  b.siteName
+			FROM
+			  t_subscribe a 
+			LEFT JOIN t_site b 
+			ON 
+			a.siteId  = b.siteId 
+
+        ]]>
+	</select>
+
+
+    <!-- 根据检测指标,开始时间，查询监测指标的平均值 -->
+    <select id="findAvgLocationById" resultType="LocationDataVO" parameterType="java.util.Map">
+        <![CDATA[
+			SELECT
+              ]]>
+              <if test="language=='en_US'">
+              s.en_name AS cnName,
+              </if>
+              <if test="language=='zh_CN'">
+              s.cn_name AS cnName,
+             </if>
+        <![CDATA[
+              s.sensorPhysicalid AS sensorPhysicalid,
+              ROUND(
+                AVG(mls.sensorPhysicalValue),
+                s.sensorPrecision
+              ) AS sensorPhysicalValue,
+              s.units AS units
+            FROM
+              `m_location_sensor` mls
+              INNER JOIN `m_location` AS l
+                ON l.`id` = mls.`locationId`
+              INNER JOIN `m_sensorinfo` AS s
+                ON mls.sensorPhysicalid = s.sensorPhysicalid
+              INNER JOIN `t_zone` AS tz
+                ON l.`zoneid` = tz.`zoneId`
+            WHERE l.`siteId`=#{siteId} AND s.showType = 0 AND mls.`stamp` > #{startDate}  AND mls.state =1
+            ]]>
+            <include refid="excludeLocations"/>
+            <if test="zoneId != null">
+              AND tz.`zoneId`= #{zoneId}
+            </if>
+            <![CDATA[
+              GROUP BY mls.sensorPhysicalid
+            ]]>
+    </select>
+
+    <!--根据站点id获取子区域（一级区域）-->
+    <select id="findZoneBySiteIdParent" resultType="ZonePO" parameterType="java.lang.String">
+        <![CDATA[
+           SELECT
+            *
+           FROM
+           `t_zone` WHERE siteId=#{siteId} AND parentId IS NULL
+        ]]>
+    </select>
+</mapper>

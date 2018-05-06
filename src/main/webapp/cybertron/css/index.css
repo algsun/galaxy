@@ -1,0 +1,21 @@
+/* check xie.deng 2013-11-14 #6612 */
+/*瀑布流布局样式*/
+#li-box {
+    position: absolute;
+}
+
+#li-box li {
+    list-style: none;
+    position: absolute;
+    background: #fff;
+    border: solid 1px #ccc;
+    top: 0;
+    width: 160px;
+}
+/*css3动画*/
+li {
+    -webkit-transition: all .7s ease-out .1s;
+    -moz-transition: all .7s ease-out;
+    -o-transition: all .7s ease-out .1s;
+    transition: all .7s ease-out .1s
+}

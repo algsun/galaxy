@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="orion" extends="json-default" namespace="/orion">
+    </package>
+
+    <include file="orion/struts/common-struts.xml"/>
+    <!-- 系统 http 服务 -->
+    <include file="orion/struts/http-struts.xml"/>
+
+    <!--文物信息-->
+    <include file="orion/struts/relic.xml"/>
+
+    <!-- 库存盘点 -->
+    <include file="orion/struts/inventory.xml"/>
+
+    <!-- 出入库管理 -->
+    <include file="orion/struts/stock.xml"/>
+
+    <!-- 库房管理 -->
+    <include file="orion/struts/storeroom.xml"/>
+
+    <include file="orion/struts/file-struts.xml"/>
+</struts>

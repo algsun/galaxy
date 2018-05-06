@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+
+    <t_logicgroup id="1" logicGroupName="测试数据1" activeState="3"
+                  logicGroupType="1" />
+    <t_logicGroup_subsystem_disable id="1" logicGroupId="1" subsystemId="2" />
+
+</dataset>

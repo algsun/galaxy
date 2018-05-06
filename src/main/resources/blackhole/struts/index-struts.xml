@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="blackhole:index" extends="blackhole" namespace="/blackhole">
+
+        <!-- 子系统入口( name 为空是有意的) -->
+        <action name="">
+            <result type="redirect">/blackhole/subsystems.action</result>
+        </action>
+
+        <action name="subsystems" class="blackhole:subsystemsAction">
+            <result name="success" type="freemarker">/blackhole/pages/index/subsystems.ftl</result>
+            <result name="error" type="redirect">/blackhole/logout</result>
+        </action>
+
+        <action name="chooseLogicGroup" class="blackhole:chooseLogicGroupAction" method="view">
+            <result type="freemarker">/blackhole/pages/index/choose-logic-group.ftl</result>
+        </action>
+        <action name="chooseAnonymityLogicGroup" class="blackhole:chooseLogicGroupAction" method="view">
+            <result type="freemarker">/blackhole/pages/index/choose-guest-logic-group.ftl</result>
+        </action>
+
+        <action name="doChooseLogicGroup" class="blackhole:chooseLogicGroupAction">
+            <result name="input" type="redirect">/blackhole/chooseLogicGroup.action</result>
+            <result name="success" type="redirect">/blackhole/subsystems.action</result>
+            <result name="toSaturn" type="redirect">/saturn/</result>
+            <result name="toBlueplanet" type="redirect">/blueplanet/site/realtime-data</result>
+        </action>
+
+        <action name="switchLogicGroup" class="blackhole:switchLogicGroupAction">
+            <result name="input" type="redirect">/blackhole/chooseLogicGroup.action</result>
+            <result name="success" type="redirect">${forward}</result>
+        </action>
+
+        <action name="querySubLogicGroups" class="blackhole:querySubLogicGroupAction">
+            <result type="json">
+                <param name="root">subLogicGroupsMap</param>
+            </result>
+        </action>
+
+        <action name="availableLogicGroup" class="blackhole:availableLogicGroupAction" method="view">
+            <result type="json">
+                <param name="root">logicGroupMap</param>
+            </result>
+        </action>
+        <action name="availableAllBasicLogicGroup" class="blackhole:availableAllBasicLogicGroupAction">
+            <result type="json">
+                <param name="root">logicGroupMap</param>
+            </result>
+        </action>
+
+        <action name="toHome" class="blackhole:toUserLogicGroupAction">
+            <result type="redirect">${forward}</result>
+        </action>
+
+        <action name="clearCurrentLogicGroup" class="blackhole:clearCurrentLogicGroupAction">
+            <result type="redirect">${forward}</result>
+        </action>
+    </package>
+
+</struts>

@@ -1,0 +1,67 @@
+#show-hide-compare {
+    cursor: pointer;
+    display: none;
+}
+
+#add-compare {
+    cursor: pointer;
+}
+
+#cancel-all-compare {
+    display: none;
+    cursor: pointer;
+}
+
+#add-compare:hover, #show-hide-compare:hover, #cancel-all-compare:hover {
+    color: #08c;
+}
+
+.compare-style {
+    float: left;
+    width: 100%;
+    color: #777;
+    font-size: 90%;
+}
+
+.compare-column {
+    /*margin-bottom: 10px;*/
+    margin-top: 5px;
+    width: 100%;
+    float: left;
+}
+
+.compare-column-node {
+    padding: 0 10px 0 40px;
+}
+
+.compare-column-sensorinfo>label, .compare-column-node>label {
+    display: block;
+    float: left;
+    width: 100px;
+    padding-right: 10px;
+    text-align: right;
+}
+
+.compare-column-ok {
+    display: none;
+}
+
+.compare-column-cancel {
+    display: none;
+    cursor: pointer;
+    float: left;
+    padding-top: 3px;
+    margin: 0 10px;
+}
+
+.compare-column-sensorinfo {
+    padding: 0 10px;
+}
+
+.sensorinfo-select-label {
+    padding-top: 3px;
+}
+
+.m-0 {
+    margin: 0;
+}

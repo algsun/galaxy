@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="blackhole:role" extends="blackhole" namespace="/blackhole">
+        <action name="queryRole" class="blackhole:queryRolesAction">
+            <result name="success" type="freemarker">/blackhole/pages/role/list-role.ftl</result>
+        </action>
+
+        <!-- 跳转到添加角色页面 -->
+        <action name="addRole" class="blackhole:addRoleAction" method="view">
+            <result name="success" type="freemarker">/blackhole/pages/role/add-role.ftl</result>
+        </action>
+
+        <!-- 访客权限，权限管理 -->
+        <action name="modifyAnonymityRole" class="blackhole:modifyAnonymityRoleAction" method="view">
+            <result name="success" type="freemarker">/blackhole/pages/index/modify-anonymity-role.ftl</result>
+        </action>
+        <action name="enableAnonmity" class="blackhole:modifyAnonymityRoleAction" method="enableAnonmity">
+            <result name="success" type="freemarker">/blackhole/pages/index/modify-anonymity-role.ftl</result>
+        </action>
+        <action name="disableAnonmity" class="blackhole:modifyAnonymityRoleAction" method="disableAnonmity">
+            <result name="success" type="freemarker">/blackhole/pages/index/modify-anonymity-role.ftl</result>
+        </action>
+        <action name="saveAnonmityRole" class="blackhole:modifyAnonymityRoleAction" method="execute">
+            <result name="success" type="freemarker">/blackhole/pages/index/modify-anonymity-role.ftl</result>
+        </action>
+
+        <!-- 执行添加 -->
+        <action name="doAddRole" class="blackhole:addRoleAction" method="execute">
+            <result type="redirect">queryRole.action</result>
+            <result name="error" type="freemarker">/blackhole/pages/role/add-role.ftl</result>
+        </action>
+
+        <!-- 跳转到修改页面 -->
+        <action name="updateRole" class="blackhole:updateRoleAction" method="view">
+            <result type="freemarker">/blackhole/pages/role/update-role.ftl</result>
+        </action>
+
+        <!-- 执行修改 -->
+        <action name="doUpdateRole" class="blackhole:updateRoleAction" method="execute">
+            <result type="redirect">queryRole.action</result>
+            <result name="error" type="freemarker">/blackhole/pages/role/update-role.ftl</result>
+        </action>
+
+        <action name="deleteRole" class="blackhole:deleteRoleAction">
+            <result type="redirect">queryRole.action</result>
+        </action>
+        <action name="roleExist" class="blackhole:roleExistAction">
+            <result type="json"/>
+        </action>
+        <action name="roleInfo" class="blackhole:roleInfoAction">
+            <result type="freemarker">/blackhole/pages/role/detail-role.ftl</result>
+        </action>
+
+
+        <!-- jsonp ajax action -->
+        <action name="querySingleRole" class="blackhole:queryRoleAction">
+            <result type="json">
+                <param name="callbackParameter">callback</param>
+            </result>
+        </action>
+    </package>
+
+</struts>

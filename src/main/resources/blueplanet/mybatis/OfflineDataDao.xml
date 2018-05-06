@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blueplanet.mybatis.OfflineDataDao">
+
+    <delete id="deleteOfflineData" parameterType="java.util.Map">
+       DELETE FROM `${locationId}` WHERE createtime = #{date};
+    </delete>
+
+    <insert id="initLocationSensorList" parameterType="LocationSensorPO">
+        <![CDATA[
+		   INSERT INTO `${locationId}` (`nodeid`,`sensorPhysicalid`,`sensorPhysicalvalue`,`createtime`,`state`)
+           VALUES ("",#{sensorPhysicalid},#{sensorValue},#{stamp},#{state}) ;
+		 ]]>
+    </insert>
+
+
+    <update id="updateLocationSensor" parameterType="LocationSensorPO">
+        <![CDATA[
+			UPDATE
+			    m_location_sensor
+			SET
+			    sensorPhysicalvalue = #{sensorValue},
+				state = #{state},
+				stamp = #{stamp}
+			WHERE
+				locationId = #{locationId} AND
+				sensorPhysicalid = #{sensorPhysicalid}
+		 ]]>
+	</update>
+
+    <select id="findLocationHistoryOffline" resultType="LocationDataVO"
+            parameterType="java.util.Map">
+        <![CDATA[
+		   SELECT
+              a.sensorPhysicalid    AS sensorPhysicalid,
+              a.sensorPhysicalvalue As sensorPhysicalvalue,
+              a.createtime          AS stamp,
+              a.state               AS state,
+              s.`units`             as units,
+              s.`en_name`           AS enName,
+              s.showType            AS showType
+           FROM
+              `${locationId}` AS a
+           LEFT JOIN
+              m_sensorinfo AS s ON s.sensorPhysicalid = a.sensorPhysicalid
+           ORDER BY
+              a.createtime desc
+        ]]>
+    </select>
+
+    <select id="findHistoryOfflineCreateTime" resultType="RecentDataVO"
+            parameterType="java.lang.String">
+        <![CDATA[
+		   SELECT
+              a.createtime          AS stamp
+           FROM
+              `${locationId}` AS a GROUP BY a.`createtime`
+           ORDER BY
+              a.createtime desc
+        ]]>
+    </select>
+
+</mapper>

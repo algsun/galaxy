@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+    <!-- 行为规则 -->
+    <package name="uma-rule" extends="uma" namespace="/uma">
+        <action name="queryRule" class="uma:queryRuleAction" method="queryRule">
+            <result type="freemarker">/uma/pages/rule/list-rule.ftl</result>
+        </action>
+        <action name="addSingleRuleView" class="uma:addOrUpdateRuleViewAction" method="addRuleView">
+            <result type="freemarker">/uma/pages/rule/add-rule.ftl</result>
+        </action>
+
+        <action name="addGoBackRuleView" class="uma:addOrUpdateRuleViewAction" method="addRuleView">
+            <result type="freemarker">/uma/pages/rule/add-go-back-rule.ftl</result>
+        </action>
+
+        <action name="updateSingleRuleView" class="uma:addOrUpdateRuleViewAction" method="updateRuleView">
+            <result type="freemarker">/uma/pages/rule/update-rule.ftl</result>
+        </action>
+
+        <action name="updateGoBackRuleView" class="uma:addOrUpdateRuleViewAction" method="updateRuleView">
+            <result type="freemarker">/uma/pages/rule/update-go-back-rule.ftl</result>
+        </action>
+
+        <action name="addSingleRule" class="uma:addOrUpdateRuleAction" method="addRule">
+            <result type="redirect">/uma/queryRule.action</result>
+        </action>
+
+        <action name="addGoBackRule" class="uma:addOrUpdateRuleAction" method="addRule">
+            <result type="redirect">/uma/queryRule.action</result>
+        </action>
+
+        <action name="updateSingleRule" class="uma:addOrUpdateRuleAction" method="updateRule">
+            <result type="redirect">/uma/queryRule.action</result>
+        </action>
+
+        <action name="updateGoBackRule" class="uma:addOrUpdateRuleAction" method="updateRule">
+            <result type="redirect">/uma/queryRule.action</result>
+        </action>
+
+        <action name="setRuleEnable" class="uma:setRuleEnableAction" method="setRuleEnable">
+            <result type="redirect">/uma/queryRule.action</result>
+        </action>
+
+        <action name="ruleExist" class="uma:ruleExistAction" method="ruleExist">
+            <result type="json"/>
+        </action>
+
+        <action name="initDevice" class="uma:initDeviceListAction">
+            <result type="json"/>
+        </action>
+
+        <action name="actionRuleView" class="uma:actionRuleViewAction">
+            <result type="freemarker">/uma/pages/rule/list-action-rule.ftl</result>
+        </action>
+
+        <action name="singleActionRuleDetail" class="uma:singleActionRuleDetailAction">
+            <result type="freemarker">/uma/pages/rule/detail-single-rule.ftl</result>
+        </action>
+
+        <action name="censusActionRuleDetail" class="uma:censusActionRuleDetailAction">
+            <result type="freemarker">/uma/pages/rule/detail-census-rule.ftl</result>
+        </action>
+
+    </package>
+</struts>

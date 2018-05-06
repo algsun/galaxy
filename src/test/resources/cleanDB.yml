@@ -1,0 +1,38 @@
+# 数据库
+driver: com.mysql.jdbc.Driver
+url: jdbc:mysql://127.0.0.1:3306/galaxy_test
+username: microwise
+password: microwise
+
+# 白名单
+whitelist:
+  - t_areacode_cn
+  - t_site
+  - t_site_real
+  - t_sitemap
+  - t_subsystem
+  - t_system_privilege
+  - m_sensorinfo
+  - m_defaultcoefficient
+  - m_windmark
+  - m_formula
+  - m_formula_sensor
+  - m_formula_param
+  - m_systemconfig
+  - p_color_dictionary
+  - o_property
+  - o_out_type
+  - o_era
+  - o_level
+  - o_texture
+  - ACT_RE_DEPLOYMENT
+  - ACT_RE_MODEL
+  - ACT_RE_PROCDEF
+  - ACT_GE_BYTEARRAY
+  - ACT_GE_PROPERTY
+  - act_re_deployment
+  - act_re_model
+  - act_re_procdef
+  - act_ge_bytearray
+  - act_ge_property
+  - schema_version

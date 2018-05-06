@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+	<t_logicgroup id="1" logicGroupName="测试站点" activeState="3"
+		logicGroupType="1" />
+	<t_users id="1" userEmail="962097540@qq.com" logicGroupId="1"
+		userName="爷爷" userPassword="121212" sex="2" isDisable="0" token="token2"
+		isActive="0" />
+	<u_location id='1' userId='1' deviceId='1' currentTime='1367573876192'/>
+	<u_user_card id='1' userId='1' sn='00000000'/>
+</dataset>

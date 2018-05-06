@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+        "http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+    <package name="uma:realtime" extends="uma" namespace="/uma">
+        <!--获取区域人员实时信息-->
+        <action name="realtimeLocation" class="uma:realtimeLocationAction" method="execute">
+            <result type="freemarker">/uma/pages/realtime/realtime-data.ftl</result>
+        </action>
+
+        <!--Ajax获取区域人员实时信息-->
+        <action name="ajaxRealtimeLocation" class="uma:realtimeLocationAction" method="ajaxExecute">
+            <result name="success" type="json">
+                <param name="root">zoneList</param>
+            </result>
+        </action>
+
+        <!--获取区域人员详情-->
+        <action name="realtimeDetail" class="uma:realtimeLocationAction" method="detail">
+            <result type="freemarker">/uma/pages/realtime/realtime-detail.ftl</result>
+        </action>
+
+        <!--Ajax获取区域人员详情-->
+        <action name="ajaxRealtimeDetail" class="uma:realtimeLocationAction" method="ajaxDetail">
+            <result name="success" type="json">
+                <param name="root">zoneList</param>
+            </result>
+        </action>
+    </package>
+</struts>

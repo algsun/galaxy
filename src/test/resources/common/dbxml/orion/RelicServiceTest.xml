@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+   <t_zone zoneId="001" siteId="31010101" zoneName="测试区域1"
+		planImage="区域实景图1" dataVersion="32" />
+    
+
+	<o_historical_relic id="1" totalCode="1230" era="1" level="1" zoneId="001" siteId="31010101"
+		texture="1" catalogCode="1" typeCode="1" name="12" state="0" hasTag="1" count="2"/>
+	<o_historical_relic id="2" totalCode="1231" era="1" level="1"  zoneId="001" siteId="31010101"
+		texture="1" catalogCode="1" typeCode="1" name="121" state="0" hasTag="1" count="2" />
+	<o_historical_relic id="3" totalCode="1232" era="1" level="1"  siteId="31010101"
+		texture="1" catalogCode="1" typeCode="1" name="122" state="0" hasTag="1" count="2"/>
+	<o_historical_relic id="4" totalCode="1233" era="1" level="1" zoneId="001" siteId="31010101"
+		texture="1" catalogCode="1" typeCode="1" name="123" state="0" hasTag="1" count="2" />
+
+	<o_photo id="1" relicId="1" photoDate="2013-01-21 14:47:31.0" path="zzzzz" />
+	<o_photo id="2" relicId="1"  photoDate="2013-01-21 14:47:32.0" path="zzzzzx" />
+	
+	<o_property_info  id="1" propertyId="1" relicId="1"  propertyVlaue="12千克"/>
+	<o_property_info  id="2" propertyId="4" relicId="1"  propertyVlaue="23"/>
+	<o_property_info  id="3" propertyId="9" relicId="1"  propertyVlaue="231"/>
+	
+	<o_accident id="1" relicId="1"  accidentInfo="胳膊断裂" accidentDate="2013-01-21 14:47:32.0"/>
+    <o_accident id="2" relicId="1"  accidentInfo="胳膊破碎" accidentDate="2013-01-22 14:47:32.0"/>
+
+
+</dataset>

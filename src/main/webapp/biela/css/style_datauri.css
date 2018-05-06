@@ -1,0 +1,68 @@
+.map_container_tools {
+    display: none;
+    position: absolute;
+    right: 20px;
+    top: 40px;
+    width: 116px;
+    z-index: 202
+}
+.map_satellite_holder {
+    background: #fff;
+    margin-top: 20px
+}
+
+.map_satellite_holder {
+    border: 1px solid #acacac;
+    box-shadow: 1px 2px 3px 0 #828e9a;
+    clear: both;
+    cursor: pointer;
+    float: right;
+    padding: 5px;
+    position: relative;
+    z-index: 201
+}
+.map_satellite {
+    background: url(../images/weixingditu.png) no-repeat -68px -6px;
+    border: 1px solid #b0b0b0;
+    height: 52px;
+    width: 52px
+}
+.map_char {
+    color: #666;
+    height: 18px;
+    line-height: 24px;
+    text-align: center;
+    width: 54px;
+    margin-top: 34px;
+}
+.map_normal_holder {
+    background: #fff;
+    border: 1px solid #acacac;
+    box-shadow: 1px 2px 3px 0 #828e9a;
+    clear: both;
+    cursor: pointer;
+    float: right;
+    margin-top: 20px;
+    padding: 5px;
+    z-index: 201
+}
+.not_display {
+    display: none
+}
+
+.map_normal {
+    background: url(../images/putongditu.png) no-repeat -4px -6px;
+    border: 1px solid #808080;
+    height: 52px;
+    width: 52px
+}
+.mapType_font{
+    font-size:9pt;
+    margin-top: 1px;
+    padding: 0;
+}
+/* 返回按钮 */
+a.go-back {
+    text-decoration: none;
+    color: black;
+}

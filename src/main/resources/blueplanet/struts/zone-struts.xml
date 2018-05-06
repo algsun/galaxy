@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+    <!-- 区域 -->
+    <package name="blueplanet-zone" extends="blueplanet" namespace="/blueplanet">
+        <action name="zone-index" class="com.microwise.blueplanet.action.zone.IndexAction">
+            <result type="freemarker">/blueplanet/pages/zone/layout.ftl</result>
+        </action>
+
+        <action name="zone-realtime-chart" class="com.microwise.blueplanet.action.zone.RealtimeChartAction">
+            <result type="freemarker">/blueplanet/pages/zone/layout.ftl</result>
+        </action>
+
+        <action name="zone-realtime-data" class="com.microwise.blueplanet.action.zone.RealtimeDataAction">
+            <result type="freemarker">/blueplanet/pages/zone/layout.ftl</result>
+        </action>
+
+        <action name="zone-location" class="com.microwise.blueplanet.action.zone.LocationAction">
+            <result type="freemarker">/blueplanet/pages/zone/layout.ftl</result>
+        </action>
+
+        <action name="zone-device" class="com.microwise.blueplanet.action.zone.DevicesAction">
+            <result type="freemarker">/blueplanet/pages/zone/layout.ftl</result>
+        </action>
+        <action name="uploadZonePlanimage" class="blueplanet:planImageUploadAction">
+            <result type="json"/>
+        </action>
+
+        <action name="saveThreshold" class="com.microwise.blueplanet.action.zone.ZoneThresholdAction" method="saveThreshold">
+            <result name="success" type="json">
+                <param name="includeProperties">flag</param>
+            </result>
+        </action>
+    </package>
+</struts>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.orion.bean">
+    <class name="InstitutionRoom" table="o_institution_room">
+
+        <id name="id" type="java.lang.Integer">
+            <generator class="identity"/>
+        </id>
+        <property name="institutionId" length="11"/>
+        <property name="roomName" length="50"/>
+    </class>
+</hibernate-mapping>

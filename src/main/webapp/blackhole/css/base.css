@@ -1,0 +1,56 @@
+/**
+* 业务系统内基础样式, 主要包括布局相关样式
+*
+* @author gao.hui
+* @date 2012-10-18
+*/
+
+body {
+    /*background: url('../images/body-bg-1.png');*/
+}
+
+/* 缩小一级导航栏菜单间距, 默认为 15 */
+.data-header .nav > li > a {
+    padding-left: 14px;
+    padding-right: 13px;
+}
+
+
+/* galaxy content, 内面内容区域 */
+#gcontent {
+    min-height: 500px;
+}
+
+/* 页面底部 */
+#footer.bottom {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+/* 返回按钮 */
+a.go-back {
+    text-decoration: none;
+    color: black;
+}
+
+a.go-back:hover{
+    color: #0075ab;
+}
+
+/* 返回图标 */
+i.mw-icon-prev {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url(../images/br_prev_icon&16.png);
+}
+
+
+/* 当文字显示不下时省略显示, 如 “123456” 显示为 "123..." */
+.elippsis{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

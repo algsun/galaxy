@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.orion.bean">
+	<class name="OutEvent" table="o_out_event">
+		<id name="id" type="java.lang.String">
+			<column name="id" />
+			<generator class="assigned" />
+		</id>
+		<property name="siteId" type="java.lang.String" column="siteId" />
+		<property name="useFor" type="java.lang.String" column="useFor" />
+		<property name="beginDate" type="java.util.Date" column="beginDate" />
+		<property name="endDate" type="java.util.Date" column="endDate" />
+		<property name="applicant" type="java.lang.String" column="applicant" />
+        <property name="state" />
+		<property name="remark" type="java.lang.String" column="remark" />
+        <property name="eventType"/>
+        <property name="outBound" type="org.hibernate.type.NumericBooleanType"/>
+
+		<many-to-one name="user" class="com.microwise.blackhole.bean.User">
+			<column name="userId" />
+		</many-to-one>
+
+		<set name="eventRelics" fetch="select" lazy="false">
+			<key>
+				<column name="eventId" not-null="true">
+					<comment>事件id</comment>
+				</column>
+			</key>
+			<one-to-many class="EventRelic" />
+		</set>
+	</class>
+</hibernate-mapping>

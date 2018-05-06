@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="uma.mybatis.UserActionDao">
+
+	<!-- 用户行为规则记录 -->
+	<resultMap id="userAction2" type="AbstractUserActionBean">
+		<discriminator javaType="int" column="type">
+			<case value="1" resultMap="userAction"></case>
+			<case value="2" resultMap="userCensusAction"></case>
+		</discriminator>
+	</resultMap>
+
+
+	<!-- 往返规则记录 -->
+	<resultMap id="userCensusAction" type="UserCensusActionBean">
+		<id property="id" column="id" />
+		<result property="type" column="type" />
+		<association property="person" resultMap="person" />
+		<association property="rule" resultMap="rule" />
+
+		<association property="goAction" javaType="UserActionBean">
+			<result property="type" column="go_type" />
+			<result property="occurrenceTime" column="goTime"
+				typeHandler="com.microwise.uma.util.LongToDateTypeHandler" />
+			<association property="person" resultMap="person" />
+			<association property="rule" resultMap="rule"
+				columnPrefix="go_" />
+		</association>
+		<association property="backAction" javaType="UserActionBean">
+			<result property="type" column="back_type" />
+			<result property="occurrenceTime" column="backTime"
+				typeHandler="com.microwise.uma.util.LongToDateTypeHandler" />
+			<association property="person" resultMap="person" />
+			<association property="rule" resultMap="rule"
+				columnPrefix="back_" />
+		</association>
+	</resultMap>
+
+	<!-- 单程规则记录 -->
+	<resultMap id="userAction" type="UserActionBean">
+		<id property="id" column="id" />
+		<result property="occurrenceTime" column="occurrence_time"
+			typeHandler="com.microwise.uma.util.LongToDateTypeHandler" />
+		<result property="type" column="type" />
+		<association property="person" resultMap="person" />
+		<association property="rule" resultMap="rule" />
+	</resultMap>
+
+	<resultMap id="person" type="PersonBean">
+		<id property="id" column="userId" />
+		<result property="personName" column="userName" />
+		<result property="sex" column="userSex" />
+	</resultMap>
+
+	<resultMap id="rule" type="RuleBean">
+		<id property="id" column="templet_id" />
+		<result property="parentId" column="templet_parentId" />
+		<result property="ruleName" column="templet_name" />
+		<result property="type" column="templet_type" />
+		<result property="enable" column="templet_enable" />
+		<result property="siteId" column="templet_siteId" />
+	</resultMap>
+
+	<!-- 用户匹配的行为规则数量(单程与往返) -->
+	<select id="findUserActionsCount2" parameterType="java.util.Map"
+		resultType="int">
+        <![CDATA[
+        SELECT
+          (SELECT
+            COUNT(id)
+          FROM
+            u_user_action
+          WHERE TYPE = 1
+            AND occurrenceTime >= #{startTime}
+            AND occurrenceTime <= #{endTime}
+        ]]>
+		<if test="userId != 0">
+			AND userId=#{userId}
+		</if>
+        <![CDATA[
+            ) +
+          (SELECT
+            COUNT(id)
+          FROM
+            u_action_census
+          WHERE goTime >= #{startTime}
+            AND goTime <= #{endTime}
+        ]]>
+		<if test="userId != 0">
+			AND userId=#{userId}
+		</if>
+        <![CDATA[
+            )  + 
+		  (SELECT 
+		    COUNT(id) 
+		  FROM
+		    u_user_action 
+		  WHERE checkFlag = 2 
+		    AND occurrenceTime >= #{startTime}
+		    AND occurrenceTime <= #{endTime}
+		   ]]>
+		<if test="userId != 0">
+			AND userId=#{userId}
+		</if>
+        <![CDATA[
+          )  AS t
+        ]]>
+	</select>
+
+	<!-- 查询用户某一时间段内的匹配的行为规则 (单程，往返) -->
+	<select id="findUserActionsByUserId" parameterType="java.util.Map"
+		resultMap="userAction2">
+        <![CDATA[
+        SELECT
+          ac.id AS id,
+          ac.occurrenceTime AS occurrence_time,
+          ac.goTime AS goTime,
+          ac.backTime AS backTime,
+          t.type AS `type`,
+
+          u.id AS userId,
+          u.userName AS userName,
+          u.sex AS userSex,
+
+          t.id AS templet_id,
+          t.name AS templet_name,
+          t.type AS templet_type,
+
+          t_go.id AS go_templet_id,
+          t_go.name AS go_templet_name,
+          t_go.type As go_templet_type,
+          t_go.type AS go_type,
+
+          t_back.id AS back_templet_id,
+          t_back.name AS back_templet_name,
+          t_back.type AS back_templet_type,
+          t_back.type AS back_type
+        FROM
+          u_action_templet t
+          INNER JOIN
+            (SELECT
+              id,
+              userId,
+              actionTempletId,
+              occurrenceTime,
+              0 AS goTime,
+              0 AS backTime,
+              0 AS goTempletId,
+              0 AS backTempletId
+            FROM
+              u_user_action AS ua
+            WHERE ua.`type` = 1   -- 只查询单程
+              AND ua.occurrenceTime >= #{startTime}
+              AND ua.occurrenceTime <= #{endTime}
+        ]]>
+		<if test="userId != 0">
+			AND userId=#{userId}
+		</if>
+        <![CDATA[
+            UNION
+            ALL
+            SELECT
+              id,
+              userId,
+              actionTempletId,
+              goTime AS occurrenceTime,
+              goTime,
+              backTime,
+              goActionTempId,
+              backActionTempId
+            FROM
+              u_action_census
+            WHERE goTime >= #{startTime}
+              AND goTime <= #{endTime}
+        ]]>
+		<if test="userId != 0">
+			AND userId=#{userId}
+		</if>
+        <![CDATA[
+            UNION
+            ALL
+            SELECT 
+			  ua.id,
+			  ua.userid,
+			  act.parentid AS actiontempletid,
+			  ua.occurrencetime AS occurrencetime,
+			  ua.occurrencetime AS gotime,
+			  0 AS backtime,
+			  ua.actiontempletid AS gotempletid,
+			  0 AS backtempletid 
+			FROM
+			  u_user_action AS ua,
+			  u_action_templet AS act 
+			WHERE ua.`type` = 3 -- 只查往行为
+			  AND ua.checkflag = 2 
+			  AND ua.actiontempletid = act.id 
+			  AND ua.occurrenceTime >= #{startTime}
+			  AND ua.occurrenceTime <=#{endTime} 
+			  ]]>
+            <if test="userId != 0">
+			AND ua.userId=#{userId}
+		</if>
+		<![CDATA[
+            UNION
+            ALL
+            SELECT 
+			  ua.id,
+			  ua.userid,
+			  act.parentid AS actiontempletid,
+			  ua.occurrencetime AS occurrencetime,
+			  0 AS gotime,
+			  ua.occurrencetime AS backtime,
+			  0 AS gotempletid,
+			  ua.actiontempletid AS backtempletid 
+			FROM
+			  u_user_action AS ua,
+			  u_action_templet AS act 
+			WHERE ua.`type` = 4  -- 只查返行为
+			  AND ua.checkflag = 2 
+			  AND ua.actiontempletid = act.id 
+			  AND ua.occurrenceTime >= #{startTime}
+			  AND ua.occurrenceTime <=#{endTime}   
+			   ]]>
+            <if test="userId != 0">
+			AND ua.userId=#{userId}
+		</if>
+		<![CDATA[
+		   ) ac
+            ON t.id = ac.actionTempletId
+          INNER JOIN t_users AS u
+            ON ac.userId = u.id
+          LEFT JOIN u_action_templet AS t_go
+            ON ac.goTempletId = t_go.id
+          LEFT JOIN u_action_templet AS t_back
+            ON ac.backTempletId = t_back.id
+          ORDER BY
+            ac.occurrenceTime
+        ]]>
+		<if test="order">ASC</if>
+		<if test="! order">DESC</if>
+        <![CDATA[
+        LIMIT #{start},#{size}
+        ]]>
+	</select>
+
+	<!-- 单程用户匹配的行为规则数量 -->
+	<select id="findUserActionsCount" parameterType="java.util.Map"
+		resultType="int">
+        <![CDATA[
+        SELECT
+            COUNT(uc.id)
+        FROM
+            u_user_action AS uc
+            JOIN
+            t_users AS u
+                ON uc.userId = u.id
+        WHERE
+            uc.type = 1 AND
+            u.id = #{userId} AND
+            uc.occurrenceTime >= #{startTime} AND
+            uc.occurrenceTime <= #{endTime}
+        ]]>
+	</select>
+
+	<!-- 根据规则ID查找单程匹配的记录 -->
+    <!-- TODO 规范变量名称-->
+	<select id="findSingleActionCountByRoleId" parameterType="java.util.Map"
+		resultType="int">
+        <![CDATA[
+        SELECT
+            COUNT(uc.id)
+        FROM
+            u_user_action AS uc
+        WHERE
+            uc.actionTempletId = #{ruleId} AND
+            uc.occurrenceTime >= #{startTime} AND
+            uc.occurrenceTime <= #{endTime}
+        ]]>
+	</select>
+
+    <!-- TODO 规范变量名称-->
+	<!-- 根据规则ID查找单程匹配的记录 -->
+	<select id="findGoOrBackActionCountByRoleId" parameterType="java.util.Map"
+		resultType="int">
+        <![CDATA[
+        SELECT
+            COUNT(uc.id)
+        FROM
+            u_user_action AS uc
+        WHERE
+            uc.actionTempletId IN 
+			  (SELECT 
+			    id 
+			  FROM
+			    u_action_templet t,
+			    (SELECT 
+			      t1.parentId,
+			      t1.type
+			    FROM
+			      u_action_templet t1 
+			    WHERE t1.id = #{ruleId}) temp 
+			  WHERE t.parentId = temp.parentId 
+			    AND t.type = temp.type) 
+			     AND
+            uc.occurrenceTime >= #{startTime} AND
+            uc.occurrenceTime <= #{endTime}
+        ]]>
+	</select>
+
+
+	<!-- 根据规则ID查找往返匹配的记录 -->
+	<select id="findCensusActionCountByRoleId" parameterType="java.util.Map"
+		resultType="int">
+        <![CDATA[
+        SELECT
+            COUNT(uc.id)
+        FROM
+            u_action_census AS uc
+            JOIN
+            u_action_templet AS t
+                ON uc.actionTempletId = t.id
+        WHERE
+            t.id = #{ruleId} AND
+            uc.goTime >= #{startTime} AND
+            uc.goTime <= #{endTime}
+        ]]>
+	</select>
+
+	<!-- 根据规则ID分页查询匹配往返的记录 -->
+	<select id="findCensusActionsByRuleId2" parameterType="java.util.Map"
+		resultMap="userCensusAction">
+        <![CDATA[
+            SELECT
+                ac.id AS id,
+                ac.goTime AS goTime,
+                ac.backTime AS backTime,
+                2 AS type,
+
+                u.id AS userId,
+                u.userName AS userName,
+                u.sex AS userSex,
+
+                t.id AS templet_id,
+                t.name AS templet_name,
+                t.type AS templet_type,
+
+                t_go.type AS go_type,
+                t_go.id AS go_templet_id,
+                t_go.name AS go_templet_name,
+                t_go.type AS go_templet_type,
+
+                t_back.type AS back_type,
+                t_back.id AS back_templet_id,
+                t_back.name AS back_templet_name,
+                t_back.type AS back_templet_type
+            FROM
+                u_action_census AS ac
+                JOIN
+                t_users AS u
+                    ON ac.userId = u.id
+                JOIN
+                u_action_templet AS t
+                    ON ac.actionTempletId = t.id
+                JOIN
+                u_action_templet AS t_go
+                    ON ac.goActionTempId = t_go.id
+                JOIN
+                u_action_templet AS t_back
+                    ON ac.backActionTempId = t_back.id
+            WHERE
+                t.id = #{ruleId} AND
+                ac.goTime >= #{startTime} AND
+                ac.goTime <= #{endTime}
+            ORDER BY
+                ac.goTime
+        ]]>
+		<if test="order">ASC</if>
+		<if test="! order">DESC</if>
+        <![CDATA[
+            LIMIT #{start},#{size}
+        ]]>
+	</select>
+
+	<!-- 根据规则ID分页查询匹配单程的记录 -->
+	<select id="findSingleActionsByRuleId2" parameterType="java.util.Map"
+		resultMap="userAction">
+        <![CDATA[
+        SELECT
+            uc.id AS id,
+            uc.occurrenceTime AS occurrence_time,
+            uc.type AS type,
+
+            t.id AS templet_id,
+            t.name AS templet_name,
+            t.type AS templet_type,
+            t.enable AS templet_enable,
+            t.siteId AS templet_siteId,
+
+            u.id AS userId,
+            u.userName AS userName,
+            u.sex AS userSex
+        FROM
+            u_action_templet AS t
+            JOIN
+            u_user_action AS uc
+                ON t.id = uc.actionTempletId
+            JOIN
+            t_users AS u
+                ON uc.userId = u.id
+        WHERE
+        ]]>
+		<if test="goBack">
+			t.id in (
+			SELECT id FROM u_action_templet t
+			WHERE t.`type` = (
+			SELECT TYPE FROM u_action_templet WHERE id = #{ruleId})
+			AND t.`parentId` = (
+			SELECT parentId FROM u_action_templet WHERE id = #{ruleId}))
+		</if>
+		<if test="! goBack">
+			t.id = #{ruleId}
+		</if>
+         <![CDATA[
+            AND
+            uc.occurrenceTime >= #{startTime} AND
+            uc.occurrenceTime <= #{endTime}
+        ORDER BY
+            uc.occurrenceTime
+        ]]>
+		<if test="order">ASC</if>
+		<if test="! order">DESC</if>
+        <![CDATA[
+        LIMIT #{start},#{size}
+        ]]>
+	</select>
+
+</mapper>

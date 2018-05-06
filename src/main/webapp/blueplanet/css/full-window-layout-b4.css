@@ -1,0 +1,74 @@
+/*<%-- 左侧内容 --%>*/
+.left-aside-container {
+    position: absolute;
+    top: 50px;
+    bottom: 0;
+    left: 0;
+    width: 200px;
+    overflow: auto;
+}
+
+/* 隐藏后 */
+.left-aside-container.xclose {
+    width: 0;
+}
+
+/* 左右伸缩条 */
+.shrink-bar {
+    position: absolute;
+    top: 50px;
+    bottom: 0;
+    left: 200px;
+    width: 5px;
+    z-index: 10;
+    cursor: pointer;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+
+.shrink-bar:hover {
+    background-color: gray;
+}
+
+/* 隐藏后 */
+.shrink-bar.xclose {
+    left: 0;
+    width: 8px;
+}
+
+/* 伸缩条中间的小图标 */
+.shrink-bar-icon {
+    background: url(../images/mini-left.gif) no-repeat 50% 50%;
+    width: 5px;
+    height: 35px;
+    top: 50%;
+    position: absolute;
+}
+
+.shrink-bar.xclose .shrink-bar-icon {
+    background: url(../images/mini-right.gif) no-repeat 50% 50%;
+}
+
+/*<%--内容区域--%>*/
+.content-container {
+    alignment: left;
+    position: absolute;
+    top: 50px;
+    bottom: 0;
+    left: 200px;
+    right: 0;
+    margin-right: 20px; /* 留给右侧空白 */
+    overflow: auto;
+}
+
+/* 左侧隐藏后 */
+.content-container.xclose {
+    left: 0;
+}
+
+/* 设置内容区域的宽度范 */
+.content-container > .container-fluid {
+    min-width: 900px;
+    /*max-width: 1200px;*/
+    /*margin-left: 0;*/
+}

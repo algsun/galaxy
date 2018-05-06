@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="saturn.mybatis.MediaDetailDao">
+    <!--增-->
+    <insert id="save" parameterType="MediaDetailPO">
+        <![CDATA[
+             INSERT INTO `s_media_detail`
+                (
+                      mediaShowId,
+                      detailTitle,
+                      detailContent,
+                      detailImage,
+                      detailSubTitle,
+                      detailSubImage,
+                      detailSubDesc,
+                      createOn,
+                      createBy,
+                      line,
+                      enable,
+                      pubDate,
+                      material
+                )
+                VALUES
+                  (
+                      #{mediaShowId},
+                      #{detailTitle},
+                      #{detailContent},
+                      #{detailImage},
+                      #{detailSubTitle},
+                      #{detailSubImage},
+                      #{detailSubDesc},
+                      #{createOn},
+                      #{createBy},
+                      #{line},
+                      #{enable},
+                      #{pubDate},
+                      #{material}
+                  )
+        ]]>
+    </insert>
+
+    <!--删-->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        <![CDATA[
+             DELETE FROM `s_media_detail` WHERE id = #{mediaDetailId}
+        ]]>
+    </delete>
+
+    <!--查-->
+    <select id="findAll" resultType="MediaDetailPO">
+        <![CDATA[
+              SELECT
+	            id               AS id,
+	            mediaShowId      AS mediaShowId,
+	            detailTitle      AS detailTitle,
+	            detailContent    AS detailContent,
+	            detailImage      AS detailImage,
+	            detailSubTitle   AS detailSubTitle,
+	            detailSubImage   AS detailSubImage,
+	            detailSubDesc    AS detailSubDesc,
+	            createOn         AS createOn,
+	            createBy         AS createBy,
+	            line             AS line,
+	            enable           AS enable,
+	            pubDate          AS pubDate,
+	            material         AS material
+              FROM
+                `s_media_detail`
+        ]]>
+    </select>
+
+    <select id="findAllByPage"  resultType="MediaDetailPO" parameterType="java.util.Map">
+        <![CDATA[
+              SELECT
+	            id               AS id,
+	            mediaShowId      AS mediaShowId,
+	            detailTitle      AS detailTitle,
+	            detailContent    AS detailContent,
+	            detailImage      AS detailImage,
+	            detailSubTitle   AS detailSubTitle,
+	            detailSubImage   AS detailSubImage,
+	            detailSubDesc    AS detailSubDesc,
+	            createOn         AS createOn,
+	            createBy         AS createBy,
+	            line             AS line,
+	            enable           AS enable,
+	            pubDate          AS pubDate,
+	            material         AS material
+              FROM
+                `s_media_detail`
+                ORDER BY line ASC
+              LIMIT #{begin},#{pageSize}
+        ]]>
+    </select>
+
+    <select id="findMediaDetailById" resultType="MediaDetailPO" parameterType="java.lang.Integer">
+        <![CDATA[
+              SELECT
+	            id               AS id,
+	            mediaShowId      AS mediaShowId,
+	            detailTitle      AS detailTitle,
+	            detailContent    AS detailContent,
+	            detailImage      AS detailImage,
+	            detailSubTitle   AS detailSubTitle,
+	            detailSubImage   AS detailSubImage,
+	            detailSubDesc    AS detailSubDesc,
+	            createOn         AS createOn,
+	            createBy         AS createBy,
+	            line             AS line,
+	            enable           AS enable,
+	            pubDate          AS pubDate,
+	            material         AS material
+              FROM
+                `s_media_detail` smd
+              WHERE
+                smd.id = #{id}
+        ]]>
+    </select>
+
+    <select id="findByCondition" resultType="MediaDetailPO" parameterType="java.util.Map">
+        <![CDATA[
+              SELECT
+	            id               AS id,
+	            mediaShowId      AS mediaShowId,
+	            detailTitle      AS detailTitle,
+	            detailContent    AS detailContent,
+	            detailImage      AS detailImage,
+	            detailSubTitle   AS detailSubTitle,
+	            detailSubImage   AS detailSubImage,
+	            detailSubDesc    AS detailSubDesc,
+	            createOn         AS createOn,
+	            createBy         AS createBy,
+	            line             AS line,
+	            enable           AS enable,
+	            pubDate          AS pubDate,
+	            material         AS material
+              FROM
+                `s_media_detail`
+              WHERE 1=1
+        ]]>
+        <if test="id!=null and id!='' and id!=0">
+            <![CDATA[
+		      AND id=#{id}
+		]]>
+        </if>
+        <if test="detailTitle!=null and detailTitle!=''">
+            <![CDATA[
+		      AND detailTitle LIKE '%${detailTitle}%'
+		]]>
+        </if>
+        <if test="detailContent!=null and detailContent!=''">
+            <![CDATA[
+		      AND detailContent='%${detailContent}%'
+		]]>
+        </if>
+        <if test="detailImage!=null and detailImage!=''">
+            <![CDATA[
+		      AND detailImage=#{detailImage}
+		]]>
+        </if>
+        <if test="detailSubTitle!=null and detailSubTitle!=''">
+            <![CDATA[
+		      AND detailSubTitle LIKE '%${detailSubTitle}%'
+		]]>
+        </if>
+        <if test="detailSubImage!=null and detailSubImage!=''">
+            <![CDATA[
+		      AND detailSubImage=#{detailSubImage}
+		]]>
+        </if>
+        <if test="detailSubDesc!=null and detailSubDesc!=''">
+            <![CDATA[
+		      AND detailSubDesc LIKE '%${detailSubDesc}%'
+		]]>
+        </if>
+        <if test="createOn!=null and createOn!=''">
+            <![CDATA[
+		      AND createOn=#{createOn}
+		]]>
+        </if>
+        <if test="createBy!=null and createBy!=''">
+            <![CDATA[
+		      AND createBy=#{createBy}
+		]]>
+        </if>
+        <if test="line!=null and line!='' and line!=0">
+            <![CDATA[
+		      AND line=#{line}
+		]]>
+        </if>
+        <if test="enable!=null and enable!='' and enable!=0">
+            <![CDATA[
+		      AND enable=#{enable}
+		]]>
+        </if>
+        <if test="pubDate!=null and pubDate!=''">
+            <![CDATA[
+		      AND pubDate=#{pubDate}
+		]]>
+        </if>
+        <if test="material!=null and material!='' and material!=0">
+            <![CDATA[
+		      AND material=#{material}
+		]]>
+        </if>
+        <![CDATA[
+		      ORDER BY line ASC
+              LIMIT #{begin},#{pageSize}
+        ]]>
+    </select>
+
+    <select id="findByYearAndTextureId" resultType="MediaDetailPO" parameterType="java.util.Map">
+        <![CDATA[
+              SELECT
+	            id               AS id,
+	            mediaShowId      AS mediaShowId,
+	            detailTitle      AS detailTitle,
+	            detailContent    AS detailContent,
+	            detailImage      AS detailImage,
+	            detailSubTitle   AS detailSubTitle,
+	            detailSubImage   AS detailSubImage,
+	            detailSubDesc    AS detailSubDesc,
+	            createOn         AS createOn,
+	            createBy         AS createBy,
+	            line             AS line,
+	            enable           AS enable,
+	            pubDate          AS pubDate,
+	            material         AS material
+              FROM
+                `s_media_detail`
+              WHERE 1=1
+        ]]>
+        <if test="createOn != null">
+            AND YEAR(createOn) = #{createOn}
+        </if>
+
+        <if test="quarterNum != null">
+            AND QUARTER(createON) = #{quarterNum}
+        </if>
+
+        <if test="material != null">
+            AND material = #{material}
+        </if>
+
+        <if test="desc != null and desc != ''">
+            AND detailTitle LIKE '%${desc}%' OR detailSubTitle LIKE '%${desc}%' OR detailContent LIKE '%${desc}%' OR detailSubDesc LIKE '%${desc}%'
+        </if>
+
+    </select>
+
+    <select id="findByConditionSize" resultType="MediaDetailPO" parameterType="java.util.Map">
+        <![CDATA[
+              SELECT
+	            id               AS id,
+	            mediaShowId      AS mediaShowId,
+	            detailTitle      AS detailTitle,
+	            detailContent    AS detailContent,
+	            detailImage      AS detailImage,
+	            detailSubTitle   AS detailSubTitle,
+	            detailSubImage   AS detailSubImage,
+	            detailSubDesc    AS detailSubDesc,
+	            createOn         AS createOn,
+	            createBy         AS createBy,
+	            line             AS line,
+	            enable           AS enable,
+	            pubDate          AS pubDate,
+	            material         AS material
+              FROM
+                `s_media_detail`
+              WHERE 1=1
+        ]]>
+        <if test="id != 0 and id!=''">
+            <![CDATA[
+		      AND id=#{id}
+		]]>
+        </if>
+        <if test="detailTitle!=null and detailTitle!=''">
+            <![CDATA[
+		      AND detailTitle LIKE '%${detailTitle}%'
+		]]>
+        </if>
+        <if test="detailContent!=null and detailContent!=''">
+            <![CDATA[
+		      AND detailContent='%${detailContent}%'
+		]]>
+        </if>
+        <if test="detailImage!=null and detailImage!=''">
+            <![CDATA[
+		      AND detailImage=#{detailImage}
+		]]>
+        </if>
+        <if test="detailSubTitle!=null and detailSubTitle!=''">
+            <![CDATA[
+		      AND detailSubTitle LIKE '%${detailSubTitle}%'
+		]]>
+        </if>
+        <if test="detailSubImage!=null and detailSubImage!=''">
+            <![CDATA[
+		      AND detailSubImage=#{detailSubImage}
+		]]>
+        </if>
+        <if test="detailSubDesc!=null and detailSubDesc!=''">
+            <![CDATA[
+		      AND detailSubDesc LIKE '%${detailSubDesc}%'
+		]]>
+        </if>
+        <if test="createOn!=null and createOn!=''">
+            <![CDATA[
+		      AND createOn=#{createOn}
+		]]>
+        </if>
+        <if test="createBy!=null and createBy!=''">
+            <![CDATA[
+		      AND createBy=#{createBy}
+		]]>
+        </if>
+        <if test="enable != 0 and enable!=''">
+            <![CDATA[
+		      AND enable=#{enable}
+		]]>
+        </if>
+        <if test="pubDate!=null and pubDate!=''">
+            <![CDATA[
+		      AND pubDate=#{pubDate}
+		]]>
+        </if>
+        <if test="material!=null and material != 0">
+            <![CDATA[
+		      AND material=#{material}
+		]]>
+        </if>
+    </select>
+
+    <!--改-->
+    <update id="update" parameterType="MediaDetailPO">
+        <![CDATA[
+            UPDATE
+              `s_media_detail`
+            SET
+              mediaShowId = #{mediaShowId}
+        ]]>
+
+        <if test="detailTitle!=null and detailTitle!=''">
+            <![CDATA[
+		     ,detailTitle=#{detailTitle}
+		]]>
+        </if>
+        <if test="detailContent!=null and detailContent!=''">
+            <![CDATA[
+		     ,detailContent=#{detailContent}
+		]]>
+        </if>
+        <if test="detailImage!=null and detailImage!=''">
+            <![CDATA[
+		     ,detailImage=#{detailImage}
+		]]>
+        </if>
+        <if test="detailSubTitle!=null and detailSubTitle!=''">
+            <![CDATA[
+		     ,detailSubTitle=#{detailSubTitle}
+		]]>
+        </if>
+        <if test="detailSubImage!=null and detailSubImage!=''">
+            <![CDATA[
+		     ,detailSubImage=#{detailSubImage}
+		]]>
+        </if>
+        <if test="detailSubDesc!=null and detailSubDesc!=''">
+            <![CDATA[
+		     ,detailSubDesc=#{detailSubDesc}
+		]]>
+        </if>
+        <if test="createOn!=null and createOn!=''">
+            <![CDATA[
+		     ,createOn=#{createOn}
+		]]>
+        </if>
+        <if test="createBy!=null and createBy!=''">
+            <![CDATA[
+		     ,createBy=#{createBy}
+		]]>
+        </if>
+        <if test="line!=null and line!=''">
+            <![CDATA[
+		     ,line=#{line}
+		]]>
+        </if>
+        <if test="enable!=null and enable!=''">
+            <![CDATA[
+		     ,enable=#{enable}
+		]]>
+        </if>
+        <if test="pubDate!=null and pubDate!=''">
+            <![CDATA[
+		     ,pubDate=#{pubDate}
+		]]>
+        </if>
+        <if test="material!=null and material!=''">
+            <![CDATA[
+		     ,material=#{material}
+		]]>
+        </if>
+
+        <![CDATA[
+            WHERE id = #{id}
+        ]]>
+    </update>
+
+    <!--启用-->
+    <update id="enable" parameterType="java.util.Map">
+        <![CDATA[
+            UPDATE
+              `s_media_detail`
+            SET
+              enable = #{enable}
+            WHERE id = #{mediaDetailId}
+        ]]>
+    </update>
+</mapper>

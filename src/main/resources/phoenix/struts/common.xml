@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+        "http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+
+    <package name="phoenix:common" extends="phoenix" namespace="/phoenix">
+        <!-- 系统根路径 -->
+        <action name="">
+            <result type="redirect">/phoenix/index/summaryReport</result>
+        </action>
+
+        <action name="home" class="phoenix:homeAction">
+            <result type="freemarker">/phoenix/pages/index/layout.ftl</result>
+        </action>
+
+        <action name="example" class="phoenix:exampleAction">
+            <result type="freemarker">/phoenix/pages/index/layout.ftl</result>
+        </action>
+
+		<!-- ====区域对比统计==== -->
+        <action name="zoneContrast" class="phoenix:zoneContrastAction">
+            <result type="freemarker">/phoenix/pages/index/layout.ftl</result>
+        </action>
+        
+    </package>
+</struts>

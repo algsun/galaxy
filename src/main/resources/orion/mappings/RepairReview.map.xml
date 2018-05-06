@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.orion.bean">
+    <class name="RepairReview" table="o_repair_reviews">
+
+        <id name="id" type="java.lang.Integer">
+            <generator class="identity"/>
+        </id>
+        
+        <many-to-one name="repairRecord" column="repairRecordId"></many-to-one>
+
+        <property name="expertsAcceptance" length="11"/>
+        <property name="acceptanceDate" type="java.util.Date"/>
+        <property name="organizationUnit" length="200"/>
+        <property name="expertsList" length="200"/>
+        <property name="acceptanceIdea" length="1000"/>
+
+    </class>
+</hibernate-mapping>

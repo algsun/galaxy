@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <t_posts id="1" scope="1" title="一个新闻" content="高辉中了五百万" createDate="2013-09-10 12:34:56"/>
+    <t_posts id="2" scope="1" title="第二个新闻" content="高辉中了八百万" createDate="2013-09-10 12:34:57"/>
+    <t_posts id="3" scope="2" title="内部消息" content="高辉中了一千万, 请勿走漏风声" createDate="2013-09-10 12:34:58"/>
+    <t_posts id="4" scope="2" title="内部消息" content="高辉中了两千万, 请勿走漏风声" createDate="2013-09-10 12:34:59"/>
+</dataset>

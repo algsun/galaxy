@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.orion.bean">
+    <class name="Inventory" table="o_inventory" >
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="siteId" type="java.lang.String">
+            <column name="siteId" length="50" not-null="true">
+                <comment>站点编号</comment>
+            </column>
+        </property>
+        <property name="deadlineDate" type="java.util.Date">
+            <column name="deadline" length="19">
+                <comment>截止时间</comment>
+            </column>
+        </property>
+        <property name="state" type="org.hibernate.type.NumericBooleanType">
+            <column name="state" not-null="true">
+            </column>
+        </property>
+        <property name="sumCount" type="java.lang.Integer">
+            <column name="sumCount">
+                <comment>藏品总数</comment>
+            </column>
+        </property>
+        <property name="sumNumber" type="java.lang.Integer">
+            <column name="sumNumber">
+                <comment>藏品总件数</comment>
+            </column>
+        </property>
+        <property name="stockInCount" type="java.lang.Integer">
+            <column name="stockInCount">
+                <comment>在库数</comment>
+            </column>
+        </property>
+        <property name="stockInNumber" type="java.lang.Integer">
+            <column name="stockInNumber">
+                <comment>在库总件数</comment>
+            </column>
+        </property>
+        <property name="stockOutCount" type="java.lang.Integer">
+            <column name="stockOutCount">
+                <comment>出库数</comment>
+            </column>
+        </property>
+        <property name="stockOutNumber" type="java.lang.Integer">
+            <column name="stockOutNumber">
+                <comment>出库总件数</comment>
+            </column>
+        </property>
+        <property name="tagCount" type="java.lang.Integer">
+            <column name="tagCount">
+                <comment>标签数</comment>
+            </column>
+        </property>
+        <property name="tagNumber" type="java.lang.Integer">
+            <column name="tagNumber">
+                <comment>标签对应总件数</comment>
+            </column>
+        </property>
+        <property name="scanCount" type="java.lang.Integer">
+            <column name="scanCount">
+                <comment>扫描到总数</comment>
+            </column>
+        </property>
+        <property name="scanNumber" type="java.lang.Integer">
+            <column name="scanNumber">
+                <comment>扫描对应总件数</comment>
+            </column>
+        </property>
+        <property name="errorCount" type="java.lang.Integer">
+            <column name="errorCount">
+                <comment>异常总数</comment>
+            </column>
+        </property>
+        <property name="errorNumber" type="java.lang.Integer">
+            <column name="errorNumber">
+                <comment>异常对应总件数</comment>
+            </column>
+        </property>
+        <property name="remark" type="java.lang.String">
+            <column name="remark" length="1000">
+                <comment>备注</comment>
+            </column>
+        </property>
+        <set name="inventoryOuts" inverse="true">
+            <key>
+                <column name="inventoryId" not-null="true">
+                    <comment>事件id</comment>
+                </column>
+            </key>
+            <one-to-many class="InventoryOut" />
+        </set>
+
+        <set name="InventoryErrors" inverse="true">
+            <key>
+                <column name="inventoryId" not-null="true">
+                    <comment>事件id</comment>
+                </column>
+            </key>
+            <one-to-many class="InventoryError" />
+        </set>
+    </class>
+</hibernate-mapping>

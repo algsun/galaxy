@@ -1,0 +1,5 @@
+2014年8月8日
+1、DataCenter相关业务代码中，应将ChartType定义为常量；DcChartsIndexAction；
+2、设备管理页面仍存在已部署、未部署；
+3、SiteDaoImpl/findLocationInfoLocation函数更名
+4、DeviceServiceImpl  位置点实时数据136行

@@ -1,0 +1,98 @@
+/**
+* 布局样式
+*
+* @author gaohui
+* @date  2012-12-29
+*/
+
+/**
+* 左侧设备树的样式
+*/
+.left-aside-container .ztree {
+    position: absolute;
+    top: 80px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: auto;
+}
+
+/* 覆盖 bootstrap 样式 START */
+
+.table thead {
+    background-color: #ececec;
+}
+
+/* 表格灰白相间 */
+.table-striped tbody > tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+.table-striped tbody > tr:nth-child(odd) > td, .table-striped tbody > tr:nth-child(odd) > th {
+    background-color: transparent;
+}
+
+/* 内容居中 */
+.table.table-center td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table.table-center thead th {
+    text-align: center;
+    vertical-align: top;
+}
+
+/* 覆盖 END */
+
+/*
+界面左上角业务系统列表 小三角
+*/
+.brand > a > .caret{
+    border-top-color: #999;
+    border-bottom-color: #999;
+}
+.brand > a:hover > .caret{
+    border-top-color: #fff;
+    border-bottom-color: #fff;
+}
+
+.ztree li a.level0 {
+    width: 260px;
+    height: 20px;
+    text-align: center;
+    display: block;
+    background-color: #0B61A4;
+    border: 1px silver solid;
+}
+
+.ztree li a.level0.cur {
+    background-color: #66A3D2;
+}
+
+.ztree li a.level0 span {
+    display: block;
+    color: white;
+    padding-top: 3px;
+    font-size: 12px;
+    font-weight: bold;
+    word-spacing: 2px;
+}
+
+.ztree li a.level0 span.button {
+    float: right;
+    margin-left: 10px;
+    visibility: visible;
+    display: none;
+}
+
+.ztree li span.button.switch.level0 {
+    display: none;
+}
+
+.ztree li span.button.icon01_ico_docu {
+    margin-right: 2px;
+    background: url(css/zTreeStyle/img/folder.png) no-repeat scroll 0 0 transparent;
+    vertical-align: top;
+    *vertical-align: middle
+}

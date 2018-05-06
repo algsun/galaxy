@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="phoenix.zoneStats">
+
+    <resultMap id="ZoneData" type="ZoneData">
+        <result property="zoneName"  column="zoneName"/>
+        <result property="minValue"  column="minValue"/>
+        <result property="maxValue"  column="maxValue"/>
+        <result property="waveValue"  column="waveValue"/>
+    </resultMap>
+
+    <!-- 查询各个区域监测指标值的范围 -->
+    <select id="findRangeStatsOfZones" parameterType="java.util.Map" resultType="ZoneData">
+        <![CDATA[
+        SELECT
+            zoneId,
+            zoneName,
+            `position`,
+            `minValue`,
+            `maxValue`,
+            `minDate`, 
+            `maxDate`,
+            (`maxValue` - `minValue`) AS waveValue
+        FROM (
+           SELECT
+               l.zoneId AS zoneId,
+               zone.position,
+               zone.zoneName as zoneName,
+               avgdata.minTime as minDate,
+               avgdata.maxTime as maxDate,
+               MIN(avgdata.minValue) AS `minValue`,
+               MAX(avgdata.maxValue) AS `maxValue`
+
+            FROM m_nodeinfo AS node
+                INNER JOIN m_location l ON node.nodeid = l.nodeId
+                INNER JOIN t_zone AS zone ON l.zoneId = zone.zoneId
+                INNER JOIN m_avgdata avgdata ON l.id = avgdata.nodeid
+
+            WHERE  l.zoneId IS NOT NULL
+            AND avgdata.minValue IS NOT NULL
+            AND avgdata.maxValue IS NOT NULL
+            AND node.siteId = #{siteId}
+            AND avgdata.sensorPhysicalid = #{sensorPhysicalId}
+			AND avgdata.ms_date >= #{start}
+			AND avgdata.ms_date <= #{end}
+            GROUP BY l.zoneId
+        ) AS temp
+        ORDER BY waveValue DESC
+        ]]>
+    </select>
+
+</mapper>

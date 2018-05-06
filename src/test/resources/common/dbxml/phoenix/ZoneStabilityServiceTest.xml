@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+
+    <t_zone zoneId="zone1" siteId="31010101" zoneName="测试区域1" dataVersion="0" />
+    <t_zone zoneId="zone2" siteId="31010101" zoneName="测试区域2" dataVersion="0" />
+    <t_zone zoneId="zone3" siteId="31010101" zoneName="测试区域3" dataVersion="0" />
+    <t_zone zoneId="zone4" siteId="31010101" zoneName="测试区域4" dataVersion="0" />
+    <t_zone zoneId="zone5" siteId="31010101" zoneName="测试区域5" dataVersion="0" />
+
+    <m_nodeinfo nodeid="n1" nodeType="1" createTime="2013-08-01 12:12:12" X="0" Y="0" Z="0" siteId="31010101" dataVersion="0" isActive="1" />
+    <m_nodeinfo nodeid="n2" nodeType="1" createTime="2013-08-01 12:12:12" X="0" Y="0" Z="0" siteId="31010101" dataVersion="0" isActive="1" />
+    <m_nodeinfo nodeid="n3" nodeType="1" createTime="2013-08-01 12:12:12" X="0" Y="0" Z="0" siteId="31010101" dataVersion="0" isActive="1" />
+    <m_nodeinfo nodeid="n4" nodeType="1" createTime="2013-08-01 12:12:12" X="0" Y="0" Z="0" siteId="31010101" dataVersion="0" isActive="1" />
+    <m_nodeinfo nodeid="n5" nodeType="1" createTime="2013-08-01 12:12:12" X="0" Y="0" Z="0" siteId="31010101" dataVersion="0" isActive="1" />
+    <m_nodeinfo nodeid="n6" nodeType="1" createTime="2013-08-01 12:12:12" X="0" Y="0" Z="0" siteId="31010101" dataVersion="0" isActive="1" />
+    <m_nodeinfo nodeid="n7" nodeType="1" createTime="2013-08-01 12:12:12" X="0" Y="0" Z="0" siteId="31010101" dataVersion="0" isActive="1" />
+    <m_nodeinfo nodeid="n8" nodeType="1" createTime="2013-08-01 12:12:12" X="0" Y="0" Z="0" siteId="31010101" dataVersion="0" isActive="1" />
+    <m_nodeinfo nodeid="n9" nodeType="1" createTime="2013-08-01 12:12:12" X="0" Y="0" Z="0" siteId="31010101" dataVersion="0" isActive="1" />
+    <m_nodeinfo nodeid="n10" nodeType="1" createTime="2013-08-01 12:12:12" X="0" Y="0" Z="0" siteId="31010101" dataVersion="0" isActive="1" />
+    <m_nodeinfo nodeid="n11" nodeType="1" createTime="2013-08-01 12:12:12" X="0" Y="0" Z="0" siteId="31010101" dataVersion="0" isActive="1" />
+
+    <m_nodesensor id="s1" nodeid="n1" sensorPhysicalid="32" sensorPhysicalValue="0" state="1" stamp="2013-08-01" dataVersion="0" />
+    <m_nodesensor id="s2" nodeid="n1" sensorPhysicalid="41" sensorPhysicalValue="0" state="1" stamp="2013-08-01" dataVersion="0" />
+
+    <m_nodesensor id="s3" nodeid="n2" sensorPhysicalid="32" sensorPhysicalValue="0" state="1" stamp="2013-08-01" dataVersion="0" />
+    <m_nodesensor id="s4" nodeid="n2" sensorPhysicalid="44" sensorPhysicalValue="0" state="1" stamp="2013-08-01" dataVersion="0" />
+
+    <m_nodesensor id="s5" nodeid="n3" sensorPhysicalid="32" sensorPhysicalValue="0" state="1" stamp="2013-08-01" dataVersion="0" />
+    <m_nodesensor id="s6" nodeid="n3" sensorPhysicalid="33" sensorPhysicalValue="0" state="1" stamp="2013-08-01" dataVersion="0" />
+
+    <m_nodesensor id="s7" nodeid="n4" sensorPhysicalid="44" sensorPhysicalValue="0" state="1" stamp="2013-08-01" dataVersion="0" />
+
+</dataset>

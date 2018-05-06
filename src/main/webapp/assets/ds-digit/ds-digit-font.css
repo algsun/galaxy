@@ -1,0 +1,26 @@
+/**
+* LED 数字形式的字体
+* ref: http://www.dafont.com/ds-digital.font
+* @author @gaohui
+* @date 2014-02-21
+*/
+
+@font-face {
+    font-family: ds-digi;
+    src: url("DS-DIGI.TTF");
+}
+
+@font-face {
+    font-family: ds-digib;
+    src: url("DS-DIGIB.TTF");
+}
+
+@font-face {
+    font-family: ds-digii;
+    src: url("DS-DIGII.TTF");
+}
+
+@font-face {
+    font-family: ds-digit;
+    src: url("DS-DIGIT.TTF");
+}

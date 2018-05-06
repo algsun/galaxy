@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+
+	<t_zone zoneId="001" siteId="31010101" zoneName="测试区域1"
+		planImage="区域实景图1" dataVersion="32" />
+	<t_zone zoneId="002" siteId="31010101" zoneName="测试区域2"
+		planImage="区域实景图2" dataVersion="32" />
+
+	<m_nodeinfo nodeid="3101010100256" nodeType="3"
+		createTime="2013-01-21 14:42:57.0" X="0" Y="0" Z="0"
+		siteId="31010101" dataVersion="0" />
+	<m_nodeinfo nodeid="3101010100257" nodeType="4"
+		createTime="2013-01-21 14:42:57.0" X="0" Y="0" Z="0"
+		siteId="31010101" dataVersion="0" />
+
+	<m_nodeinfo nodeid="3101010100260" nodeType="3"
+		createTime="2013-01-21 14:42:57.0" X="0" Y="0" Z="0" siteId="31010101"
+		dataVersion="0" />
+	<m_nodeinfo nodeid="3101010100261" nodeType="4"
+		createTime="2013-01-21 14:42:57.0" X="0" Y="0" Z="0" siteId="31010101"
+		dataVersion="0" />
+	<m_nodeinfo nodeid="3101010100262" nodeType="4"
+		createTime="2013-01-21 14:42:57.0" X="0" Y="0" Z="0" siteId="31010101"
+		dataVersion="0" />
+
+	<m_nodeinfomemory id="7bd72808-52c8-49f3-ab89-1338e6b36d93"
+		nodeid="3101010100256" nodeVersion="3" isControl="1" parentIP="257"
+		childIP="256" feedbackIP="0" sequence="171" stamp="2013-01-21 14:47:31.0"
+		interval_i="600" rssi="1" lqi="1" lowvoltage="0.0" anomaly="0"
+		deviceMode="0" remoteIp="127.0.0.1" remotePort="4296" dataVersion="0" />
+	<m_nodeinfomemory id="7bd72808-52c8-49f3-ab89-5485sadr4545"
+		nodeid="3101010100257" nodeVersion="3" isControl="1" parentIP="256"
+		childIP="256" feedbackIP="0" sequence="171" stamp="2013-01-21 14:47:31.0"
+		interval_i="600" rssi="1" lqi="1" lowvoltage="0.0" anomaly="0"
+		deviceMode="0" remoteIp="127.0.0.1" remotePort="4296" dataVersion="0" />
+		
+	<m_nodeinfomemory id="7bd72808-52arwerw34asserteersdzfzdz93"
+		nodeid="3101010100260" nodeVersion="3" isControl="1" parentIP="1"
+		childIP="222" feedbackIP="0" sequence="171" stamp="2013-01-21 14:47:31.0"
+		interval_i="600" rssi="1" lqi="1" lowvoltage="0.0" anomaly="0"
+		deviceMode="0" remoteIp="127.0.0.1" remotePort="4296" dataVersion="0" />
+	<m_nodeinfomemory id="7bd72808ds52c8-49f3-dfsgsee5rteab8993"
+		nodeid="3101010100261" nodeVersion="3" isControl="1" parentIP="222"
+		childIP="223" feedbackIP="0" sequence="171" stamp="2013-01-21 14:47:31.0"
+		interval_i="600" rssi="1" lqi="1" lowvoltage="0.0" anomaly="0"
+		deviceMode="0" remoteIp="127.0.0.1" remotePort="4296" dataVersion="0" />
+	<m_nodeinfomemory id="7bd72808-52c8-49f3-ab89-133zsasrewe93"
+		nodeid="3101010100262" nodeVersion="3" isControl="1" parentIP="222"
+		childIP="224" feedbackIP="0" sequence="171" stamp="2013-01-21 14:47:31.0"
+		interval_i="600" rssi="1" lqi="1" lowvoltage="0.0" anomaly="0"
+		deviceMode="0" remoteIp="127.0.0.1" remotePort="4296" dataVersion="0" />
+
+
+    <t_zone zoneId="003" siteId="31010101" zoneName="测试区域3"
+            planImage="区域实景图3" dataVersion="32" />
+
+    <m_nodeinfo nodeid="3101010100456" nodeType="1"
+                createTime="2013-01-21 14:42:57.0" X="0" Y="0" Z="0" siteId="31010101"
+                dataVersion="0" />
+    <m_nodeinfo nodeid="3101010100789" nodeType="1"
+                createTime="2013-01-21 14:42:57.0" X="0" Y="0" Z="0" siteId="31010101"
+                dataVersion="0" />
+
+    <m_nodeinfomemory id="7bd72808ds52wetdghertrtewrgshteab8993"
+                      nodeid="3101010100456" nodeVersion="3" isControl="1" parentIP="222"
+                      childIP="223" feedbackIP="0" sequence="171" stamp="2013-01-21 14:47:31.0"
+                      interval_i="600" rssi="1" lqi="1" lowvoltage="0.0" anomaly="0"
+                      deviceMode="0" remoteIp="127.0.0.1" remotePort="4296" dataVersion="0" />
+    <m_nodeinfomemory id="7bd7serweygshrtdrtwsetsehserty5e3le93"
+                      nodeid="3101010100789" nodeVersion="3" isControl="1" parentIP="222"
+                      childIP="224" feedbackIP="0" sequence="171" stamp="2013-01-21 14:47:31.0"
+                      interval_i="600" rssi="1" lqi="1" lowvoltage="0.0" anomaly="0"
+                      deviceMode="0" remoteIp="127.0.0.1" remotePort="4296" dataVersion="0" />
+
+</dataset>
+

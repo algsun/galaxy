@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+        "http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+    <package name="uma:planView" extends="uma" namespace="/uma">
+        <!--获取区域人员实时信息-->
+        <action name="planView" class="uma:planViewAction" method="execute">
+            <result type="freemarker">/uma/pages/planview/plan-view.ftl</result>
+        </action>
+    </package>
+</struts>

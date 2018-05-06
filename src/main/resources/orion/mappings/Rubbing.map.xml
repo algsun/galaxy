@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+     
+<hibernate-mapping package="com.microwise.orion.bean">
+    <class name="Rubbing" table="o_rubbing">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="relic" class="Relic">
+           <column name="relicId" />
+        </many-to-one>
+        <property name="rubbingCode" type="java.lang.String">
+            <column name="rubbingCode" length="50">
+                <comment>拓片号</comment>
+            </column>
+        </property>
+        <property name="producer" type="java.lang.String">
+            <column name="producer" length="20">
+                <comment>拓片人</comment>
+            </column>
+        </property>
+        <property name="rubbingDate" type="java.util.Date">
+            <column name="rubbingDate" length="10" not-null="true">
+                <comment>拓片日期</comment>
+            </column>
+        </property>
+        <property name="ratio" type="java.lang.String">
+            <column name="ratio" length="20">
+                <comment>拓片比例</comment>
+            </column>
+        </property>
+        <property name="path" type="java.lang.String">
+            <column name="path" length="100" not-null="true">
+                <comment>拓片路径</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

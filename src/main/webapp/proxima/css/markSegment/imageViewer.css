@@ -1,0 +1,86 @@
+html, body {
+    background-color: black;
+}
+
+.white {
+    color: white;
+}
+
+.red {
+    color: red;
+}
+
+.hide {
+    display: none;
+}
+
+.t-m-30 {
+    margin-top: 30px;
+}
+
+.t-m-20 {
+    margin-top: 20px;
+}
+
+.move {
+    cursor: move;
+}
+
+.float-right {
+    float: right;
+}
+
+.inline-block {
+    display: inline-block;
+    zoom: 1;
+    *display: inline;
+}
+
+#container {
+    width: 1350px;
+    margin-top: 30px;
+}
+
+#canvas-wrapper {
+    width: 1040px;
+    padding: 10px;
+    background-color: white;
+    float: left;
+}
+
+#canvas {
+    background-color: white;
+}
+
+#aside-section {
+    width: 240px;
+    float: left;
+    margin-left: 0;
+}
+
+#lines {
+    cursor: default;
+    padding: 5px;
+    background-color: white;
+    border-radius: 3px;
+    overflow: auto;
+    height: 200px;
+}
+
+#lines li {
+    cursor: pointer;
+    padding: 5px 10px;
+    border-bottom: 1px dotted gray;
+}
+
+#lines li.selected {
+    color: white;
+    background-color: #AAA;
+}
+
+#lines li .mark-segment-name {
+    display: inline-block;
+    margin-bottom: 5px;
+    width: 170px;
+}
+

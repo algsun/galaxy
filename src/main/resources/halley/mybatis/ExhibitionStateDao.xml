@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="halley.mybatis.ExhibitionStateDao">
+
+    <!--添加外展状态-->
+    <insert id="addState" parameterType="ExhibitionStateVO" useGeneratedKeys="true">
+        <selectKey keyProperty="id" resultType="java.lang.Integer"
+                   order="AFTER">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+        <![CDATA[
+			INSERT INTO h_exhibition_state (exhibitionId, state, beginTime,endTime,operator)
+            VALUES
+              (#{exhibitionId}, #{state}, #{beginTime},#{endTime},#{operator})
+        ]]>
+    </insert>
+    <!-- 查询外展详细信息-->
+    <select id="findExhibition" parameterType="java.lang.String" resultType="ExhibitionVO">
+	    <![CDATA[
+             SELECT
+               e.id  AS   exhibitionId,
+               e.outEventId    AS   outEventId ,
+               o.useFor        AS   useFor,
+               o.beginDate  AS   estimatedBeginTime ,
+               o.endDate     AS  estimatedEndTime ,
+               o.applicant      AS      applicant ,
+               e.beginTime      AS      beginTime ,
+               e.endTime        AS      endTime
+             FROM
+             h_exhibition   e
+              INNER JOIN
+             o_out_event o
+              ON
+              o.id = e.outEventId
+             WHERE
+              e.id = #{value}
+
+        ]]>
+	</select>
+
+    <!-- 查询外展当前状态-->
+    <select id="findCurrentState" parameterType="java.lang.String" resultType="ExhibitionStateVO">
+        <![CDATA[
+             SELECT
+             e.id           AS    id,
+             e.exhibitionId AS    exhibitionId,
+             e.state        AS    state,
+             e.beginTime    AS    beginTime ,
+             e.endTime      AS    endTime ,
+             e.operator      AS    operator
+            FROM
+            h_exhibition_state  e
+            WHERE exhibitionId = #{value}
+            ORDER BY
+            e.id
+            DESC
+            LIMIT 1
+
+        ]]>
+	</select>
+
+    <!-- 查询所有路径-->
+    <select id="getALLPathPO" parameterType="java.lang.String" resultType="PathPO">
+        <![CDATA[
+
+                  SELECT
+                    path.id            as id,
+                    path.exhibitionId  as exhibitionId,
+                    path.longitude   as longitude,
+                    path.latitude      as latitude,
+                    path.dataType as dataType,
+                    path.destinationName as destinationName
+                FROM
+                    h_path AS path
+                 WHERE
+                  path.exhibitionId=#{value}
+                  AND
+                  (path.destinationName<>'' AND path.destinationName IS NOT NULL)
+                  order by id
+        ]]>
+	</select>
+    <!-- 查询外展历史操作集合-->
+    <select id="getHistoryState" parameterType="java.lang.String" resultType="ExhibitionStateVO">
+        <![CDATA[
+
+            SELECT
+              exhibitionId,
+              state,
+              beginTime,
+              endTime,
+              operator
+            FROM
+              h_exhibition_state
+            WHERE exhibitionId = #{value}
+
+        ]]>
+	</select>
+    <!-- 获取第一个目的地-->
+    <select id="getFirstDestination" parameterType="java.lang.String" resultType="PathPO">
+        <![CDATA[
+
+            SELECT
+                    path.id            as id,
+                    path.exhibitionId  as exhibitionId,
+                    path.longitude   as longitude,
+                    path.latitude      as latitude,
+                    path.dataType as dataType,
+                    path.destinationName as destinationName
+                FROM
+                    h_path AS path
+                WHERE
+                    path.exhibitionId = #{value}
+                 ORDER BY
+                      path.id
+                 ASC
+                   LIMIT 1,1
+        ]]>
+	</select>
+
+    <!-- 修改上一条记录的结束时间-->
+    <update id="alterHistoryItemEndTime" parameterType="java.util.Map">
+        <![CDATA[
+		UPDATE
+        h_exhibition_state e
+        SET
+        e.endTime = #{endTime}
+        WHERE
+         e.id
+        IN
+        (SELECT
+         id
+         FROM
+         (
+         SELECT
+         id
+         FROM
+         h_exhibition_state
+          WHERE
+          exhibitionId=#{exhibitionId}
+          AND
+          state!=1
+          ORDER BY
+           id
+           DESC
+           LIMIT 1,1)
+            c)
+		]]>
+    </update>
+    <!-- 修改下一条记录的开始时间-->
+    <update id="alterNextItemBeginTime" parameterType="java.util.Map">
+        <![CDATA[
+			UPDATE
+              h_exhibition_state  e
+            SET
+             e.beginTime     = #{beginTime}
+            WHERE
+              e.id = #{id}
+		]]>
+    </update>
+    <!-- 修改外展的开始时间-->
+    <update id="alterExhibitionBeginTime" parameterType="java.util.Map">
+        <![CDATA[
+		UPDATE
+         h_exhibition
+        SET
+         beginTime  =#{date}
+        WHERE
+          id=#{id};
+		]]>
+    </update>
+
+    <!-- 获取出发点-->
+    <select id="getStartDestination" parameterType="java.lang.String" resultType="PathPO">
+        <![CDATA[
+
+            SELECT
+                    path.id            as id,
+                    path.exhibitionId  as exhibitionId,
+                    path.longitude   as longitude,
+                    path.latitude      as latitude,
+                    path.dataType as dataType,
+                    path.destinationName as destinationName
+                FROM
+                    h_path AS path
+                WHERE
+                    path.exhibitionId = #{value}
+                 ORDER BY
+                      path.id
+                 ASC
+                   LIMIT 1
+        ]]>
+	</select>
+    <!-- 根据ID查人员-->
+    <select id="findUser" parameterType="java.lang.String" resultType="User">
+        <![CDATA[
+
+            SELECT
+                    users.id            as id,
+                    users.userName  as userName,
+                    users.userEmail   as userEmail
+                FROM
+                    t_users AS users
+                WHERE
+                   users.id = #{value}
+
+        ]]>
+	</select>
+
+    <!-- 查询外展开始时间 -->
+    <select id="findExhibitionBeginTime" parameterType="java.lang.String" resultType="java.util.Date">
+       <![CDATA[
+            SELECT
+                  state.beginTime
+            FROM
+                  h_exhibition_state state
+            WHERE
+                  state.state = 2
+              AND
+                  state.exhibitionId = #{value}
+         ORDER BY
+                  state.beginTime
+             ASC
+                  LIMIT 1
+        ]]>
+    </select>
+
+    <!-- 查询外展结束时间 -->
+    <select id="findExhibitionEndTime" parameterType="java.lang.String" resultType="java.util.Date">
+        <![CDATA[
+            SELECT
+                  state.endTime
+            FROM
+                  h_exhibition_state state
+            WHERE
+                  state.state = 2
+              AND
+                  state.exhibitionId = #{value}
+         ORDER BY
+                  state.beginTime
+             DESC
+                  LIMIT 1
+        ]]>
+    </select>
+</mapper>

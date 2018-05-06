@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.blackhole.bean">
+
+    <class name="SysLog" table="t_sys_logs">
+        <id name="id">
+            <generator class="identity"/>
+        </id>
+
+        <property name="userName" length="50"/>
+        <property name="userEmail" length="50"/>
+        <property name="logicGroupId" length="50"/>
+        <property name="logicGroupName" length="50"/>
+        <property name="subsystemId"/>
+        <property name="logName" length="50"/>
+        <property name="logContent" length="100"/>
+        <property name="logTime" type="timestamp"/>
+        <property name="logState" type="org.hibernate.type.NumericBooleanType"/>
+    </class>
+
+</hibernate-mapping> 

@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blueplanet.ActionDao">
+    <insert id="insertDailyAction" parameterType="java.util.Map">
+        <![CDATA[
+
+           INSERT INTO m_control_module_action_daily
+            (id,
+             deviceId,
+             route,
+             time,
+             action)
+            VALUES (#{id},
+             #{deviceId},
+             #{route},
+             #{time},
+             #{action});
+
+        ]]>
+    </insert>
+
+    <delete id="deleteDailyAction" parameterType="java.util.Map">
+       <![CDATA[
+
+          DELETE
+          FROM m_control_module_action_daily
+          WHERE id = #{value}
+
+        ]]>
+    </delete>
+
+    <update id="updateDailyAction" parameterType="java.util.Map">
+       <![CDATA[
+
+        UPDATE m_control_module_action_daily
+        SET
+        time=#{time}
+        AND
+        action=#{action}
+        WHERE
+        id=#{id}
+
+        ]]>
+    </update>
+
+    <select id="findDailyActionById" parameterType="string" resultType="SwitchDailyAction">
+        <![CDATA[
+        SELECT
+             id,
+             deviceId,
+             route,
+             time,
+             action
+         FROM
+             m_control_module_action_daily
+         WHERE
+             id=#{id}
+        ]]>
+    </select>
+
+    <select id="findDailyActions" parameterType="java.util.Map" resultType="SwitchDailyAction">
+      <![CDATA[
+
+        SELECT
+             id,
+             deviceId,
+             route,
+             time,
+             action
+             FROM
+             m_control_module_action_daily
+             WHERE
+             deviceId=#{deviceId}
+             AND
+             route=#{route}
+             ORDER BY
+             time
+
+        ]]>
+    </select>
+
+
+    <insert id="insertIntervalAction" parameterType="java.util.Map">
+        <![CDATA[
+
+           INSERT INTO m_control_module_action_interval
+            (id,
+             deviceId,
+             route,
+             intervalTime,
+             executionTime,
+             action)
+            VALUES (#{id},
+             #{deviceId},
+             #{route},
+             #{intervalTime},
+             #{executionTime},
+             #{action});
+
+        ]]>
+    </insert>
+
+    <delete id="deleteIntervalAction" parameterType="java.util.Map">
+       <![CDATA[
+
+          DELETE
+          FROM m_control_module_action_interval
+          WHERE deviceId = #{deviceId}
+          AND route=#{route}
+
+        ]]>
+    </delete>
+
+    <delete id="deleteIntervalActionById" parameterType="java.lang.String">
+       <![CDATA[
+
+          DELETE
+          FROM m_control_module_action_interval
+          WHERE id = #{value}
+
+        ]]>
+    </delete>
+
+    <update id="updateIntervalAction" parameterType="java.util.Map">
+       <![CDATA[
+
+        UPDATE m_control_module_action_interval
+        SET
+        intervalTime=#{intervalTime}
+        AND
+        executionTime=#{executionTime}
+        AND
+        action=#{action}
+        WHERE
+        deviceId=#{deviceId}
+        AND
+        route=#{route}
+
+        ]]>
+    </update>
+
+    <select id="findIntervalActionById" parameterType="string" resultType="SwitchIntervalAction">
+        <![CDATA[
+        SELECT id,
+             deviceId,
+             route,
+             intervalTime,
+             executionTime,
+             action
+         FROM
+            m_control_module_action_interval
+        WHERE
+            id= #{id}
+        ]]>
+    </select>
+
+    <select id="findIntervalActions" parameterType="java.util.Map" resultType="SwitchIntervalAction">
+      <![CDATA[
+
+            SELECT id,
+             deviceId,
+             route,
+             intervalTime,
+             executionTime,
+             action
+             FROM
+            m_control_module_action_interval
+            WHERE
+            deviceId= #{deviceId}
+            AND
+            route=#{route}
+
+        ]]>
+    </select>
+
+    <insert id="insertSensorCondition" parameterType="ConditionAction">
+        <![CDATA[
+           INSERT INTO m_control_module_sensor_condition
+            (id,
+             sensorActionId ,
+             deviceId,
+             sensorId,
+            `operator`,
+            `value`,
+           `updateTime`)
+            VALUES (
+             #{id},
+             #{sensorActionId} ,
+             #{deviceId},
+             #{sensorId},
+             #{operator},
+             #{conditionValue},
+             #{updateTime});
+        ]]>
+    </insert>
+
+    <insert id="insertSensorAction" parameterType="ConditionActionVO" keyProperty="id">
+        <selectKey keyProperty="id" resultType="java.lang.String"
+                   order="AFTER">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+        <![CDATA[
+           INSERT INTO m_control_module_sensor_action
+            (
+             id,
+             controlModuleId ,
+             route,
+            `logic`,
+            `action`,
+           `updateTime`)
+            VALUES (
+             #{id},
+             #{deviceId},
+             #{route},
+             #{logic},
+             #{action},
+             #{updateTime}
+             );
+        ]]>
+    </insert>
+
+    <delete id="deleteSensorCondition" parameterType="java.lang.String">
+       <![CDATA[
+
+          DELETE
+          FROM m_control_module_sensor_condition
+          WHERE id = #{value}
+
+        ]]>
+    </delete>
+
+    <delete id="deleteSensorAction" parameterType="java.util.Map">
+       <![CDATA[
+
+          DELETE
+          FROM m_control_module_sensor_action
+          WHERE
+            controlModuleId= #{deviceId}
+            AND
+            route = #{route}
+
+        ]]>
+    </delete>
+
+
+    <delete id="deleteSensorActionById" parameterType="java.lang.String">
+       <![CDATA[
+
+          DELETE
+          FROM m_control_module_sensor_action
+          WHERE
+           id=#{value}
+
+        ]]>
+    </delete>
+
+    <select id="findSensorCondition" parameterType="java.util.Map" resultType="ConditionAction">
+      <![CDATA[
+
+            SELECT
+             id,
+             sensorActionId ,
+             deviceId,
+             sensorId,
+            `operator`,
+            `value` AS conditionValue,
+           `updateTime`
+             FROM
+            m_control_module_sensor_condition
+            WHERE
+            sensorActionId= #{value}
+
+        ]]>
+    </select>
+
+    <select id="findSensorAction" parameterType="java.util.Map" resultType="ConditionActionVO">
+      <![CDATA[
+
+            SELECT
+              id,
+             controlModuleId AS deviceId,
+             route,
+            `logic`,
+            `action`,
+           `updateTime`
+             FROM
+            m_control_module_sensor_action
+            WHERE
+            controlModuleId= #{deviceId}
+            AND
+            route = #{route}
+
+        ]]>
+    </select>
+
+    <select id="findSensorConditionById" parameterType="java.lang.String" resultType="ConditionAction">
+      <![CDATA[
+
+            SELECT
+             id,
+             sensorActionId ,
+             deviceId,
+             sensorId,
+            `operator`,
+            `value` AS conditionValue,
+           `updateTime`
+             FROM
+            m_control_module_sensor_condition
+            WHERE
+            id= #{value}
+
+        ]]>
+    </select>
+
+    <update id="updateSensorAction" parameterType="conditionActionVO">
+       <![CDATA[
+
+        UPDATE m_control_module_sensor_action
+        SET
+         `action` = #{action},
+        logic = #{logic},
+        updateTime = #{updateTime}
+        WHERE
+        controlModuleId = #{deviceId}
+        AND
+        route = #{route}
+
+        ]]>
+    </update>
+
+</mapper>

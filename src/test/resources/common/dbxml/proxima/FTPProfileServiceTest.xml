@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+
+	<t_zone zoneId="00001" siteId="11010101" zoneName="一区"
+		dataVersion="0" />
+
+	<p_ftp_profile id="001" profile_name="ftp配置测试" host="192.168.0.110"
+		port="65535" username="root" password="pass" siteId="11010101" />
+
+	<p_ftp_profile id="002" profile_name="ftp配置测试222" host="192.168.0.111"
+		port="65534" username="root" password="pass" siteId="11010101" />
+
+	<p_ftp_profile id="003" profile_name="ftp配置测试333" host="192.168.0.112"
+		port="65533" username="root" password="pass" siteId="11010101" />
+
+	<p_dv_place id="1111" dvType="1" placeCode="222" placeName="点位1"
+		ftpProfileId="003" createTime="2013-02-25 12:01:01" imageRealWidth="55"
+		imageWidth="55" imageHeight="30" enable="1" remark="备注" dvIp="192.168.0.211"
+		zoneId="00001" />
+	<p_dv_place_optics dvPlaceId="1111" dvPort="65535"
+		ioIp="192.168.0.222" ioPort="65534" lightOnTime="1000" lightOffTime="1000"
+		photographTime="500" isIoOn="1" isLightOn="0" />
+
+</dataset>

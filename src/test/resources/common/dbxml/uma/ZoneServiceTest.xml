@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+
+    <t_zone zoneId="001" siteId="31010101" zoneName="测试区域1"
+            planImage="区域实景图1" dataVersion="32"/>
+    <t_zone zoneId="002" siteId="31010101" parentId="001" zoneName="测试区域2"
+            planImage="区域实景图2" dataVersion="17"/>
+    <t_zone zoneId="003" siteId="31010101" parentId="001" zoneName="测试区域3"
+            planImage="区域实景图3" dataVersion="22"/>
+
+
+    <u_device id="1" type="1" deviceId="0002" name="读卡器"
+              sn="12345678"
+              version="1.0.1" enable="1" state="1" createTime="2013-02-25 12:01:01" siteId="31010101"/>
+
+    <u_device id="2" type="2" name="激发器"
+              sn="11111111"
+              voltage="2V" enable="1" state="1" createTime="2013-02-25 12:01:01" siteId="31010101"/>
+
+    <u_device id="3" type="2" name="激发器2"
+              sn="22222222"
+              voltage="2.5V" enable="1" state="1" createTime="2013-02-25 12:01:01" siteId="31010101"/>
+
+    <u_device id="4" type="3" name="电子卡" sn="99999999" enable="1" state="1" createTime="2013-02-25 12:01:01" siteId="31010101"/>
+
+    <u_zone_exciter zoneId="001" deviceId="2"/>
+
+    <t_users id="99" logicGroupId="1" userPassword="$2a$11$/5BAjxR//r0/Aw8KDYLrgu74/8bJiJl4R5LT3/VP7lsSNk3F5wydG" userName="李建飞" userEmail="8@163.com"/>
+
+    <u_user_card userId="99" sn="99999999"/>
+
+    <u_realtime_location userId="99" deviceId="2" occurrenceTime="2013"/>
+
+
+</dataset>

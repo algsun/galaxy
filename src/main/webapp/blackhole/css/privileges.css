@@ -1,0 +1,20 @@
+.switch-role{
+    padding: 4px 0;
+    text-align: center;
+}
+.switch-role:hover{
+    background-color: #08C;
+    color: #FFF;
+    cursor: pointer;
+}
+a:hover {
+    text-decoration:none;
+}
+.text-left{
+    font-size: 80%;
+    font-weight: 600;
+    text-align: left;
+}
+.all-module-checkbox{
+    font-size: 70%;
+}

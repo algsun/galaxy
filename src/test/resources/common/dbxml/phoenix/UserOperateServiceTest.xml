@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+   <t_sys_logs id='1' userName='a' userEmail='a@qq.com' subsystemId='1' logName='a' logContent='aa' logTime='2013-01-21 14:42:57.0' logState='1'/>
+   <t_sys_logs id='2' userName='a' userEmail='a@qq.com' subsystemId='1' logName='a' logContent='aaa' logTime='2013-02-21 14:42:57.0' logState='1'/>
+   <t_sys_logs id='3' userName='a' userEmail='a@qq.com' subsystemId='1' logName='a' logContent='aaa' logTime='2013-03-21 14:42:57.0' logState='1'/>
+   <t_sys_logs id='4' userName='a' userEmail='a@qq.com' subsystemId='1' logName='b' logContent='aaa' logTime='2013-03-21 14:45:57.0' logState='1'/>
+</dataset>

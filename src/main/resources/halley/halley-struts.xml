@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <package name="halley" extends="json-default" namespace="/halley">
+    </package>
+
+    <include file="halley/struts/index-struts.xml"/>
+    <include file="halley/struts/history-struts.xml"/>
+</struts>

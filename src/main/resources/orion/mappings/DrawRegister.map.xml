@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.orion.bean">
+    <class name="DrawRegister" table="o_draw_register">
+
+        <id name="id" type="java.lang.Integer">
+            <generator class="identity"/>
+        </id>
+        <many-to-one name="repairRecord" column="repairRecordId" class="com.microwise.orion.bean.RepairRecord"/>
+        <property name="drawingType" length="50"/>
+        <property name="description" length="200"/>
+        <many-to-one name="drawingPerson" column="drawingPerson" class="com.microwise.blackhole.bean.User" lazy="false"></many-to-one>
+        <property name="stamp" type="java.util.Date"/>
+        <property name="remark" length="200"/>
+        <property name="imgPath" length="200"/>
+
+    </class>
+</hibernate-mapping>

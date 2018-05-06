@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+	<t_zone zoneId="002" siteId="31010101" parentId="001" zoneName="测试区域2"
+		planImage="区域实景图2" dataVersion="17" />
+	<t_zone zoneId="003" siteId="31010101" parentId="001" zoneName="测试区域3"
+		planImage="区域实景图3" dataVersion="22" />
+	<t_zone zoneId="001" siteId="31010101" zoneName="测试区域1"
+		planImage="区域实景图1" dataVersion="32" />
+
+
+	<o_historical_relic id="1" totalCode="1230" era="1" level="1" zoneId="001" siteId="31010101"
+		texture="1" catalogCode="1" typeCode="1" name="12" state="0" hasTag="1" count="2"/>
+	<o_historical_relic id="2" totalCode="1231" era="1" level="1"  zoneId="002" siteId="31010101"
+		texture="1" catalogCode="1" typeCode="1" name="121" state="0" hasTag="1" count="2" />
+
+</dataset>

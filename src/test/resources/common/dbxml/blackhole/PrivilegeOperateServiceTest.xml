@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+
+    <t_logicgroup id="1" logicGroupName="测试数据1" activeState="3"
+                  logicGroupType="1" />
+    <t_privilege_operate_disable id="erhuiwhruiewh" logicGroupId="1" privilegeId="blackhole:role:delete" />
+
+</dataset>

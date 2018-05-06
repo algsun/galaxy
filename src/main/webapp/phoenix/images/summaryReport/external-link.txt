@@ -1,0 +1,10 @@
+# 图片在又拍图片管家上, 帐户使用的是 microwise
+
+chuku.png => http://pic.yupoo.com/microwise/D2rYdZdl/n7Fzj.png
+relicOut.png => http://pic.yupoo.com/microwise/D2rYi2wH/KzXHX.png
+relicStat.png => http://pic.yupoo.com/microwise/D2rYiMnV/csC5X.png
+stopover.png => http://pic.yupoo.com/microwise/D2rYjdyd/pqw2g.png
+userAction.png => http://pic.yupoo.com/microwise/D2rYfhQh/pCfKF.png
+userDistribution.png => http://pic.yupoo.com/microwise/D2rYjPSN/7fR5I.png
+userStat.png => http://pic.yupoo.com/microwise/D2rYjVKv/15izFC.png
+zoneContrast.png => http://pic.yupoo.com/microwise/D2rYhqjJ/Pnwx3.png

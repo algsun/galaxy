@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+
+
+    <t_zone zoneId="001" siteId="31010101" zoneName="测试区域1" parentId="002"
+		planImage="区域实景图1" dataVersion="32" />
+	<t_zone zoneId="002" siteId="31010101" zoneName="测试区域2"
+		planImage="区域实景图2" dataVersion="32" />
+
+	<m_nodeinfo nodeid="3101010100256" nodeType="1"
+		createTime="2013-01-21 14:42:57.0" X="0" Y="0" Z="0"
+		siteId="31010101" dataVersion="0" />
+	<m_nodeinfo nodeid="3101010100257" nodeType="2"
+		createTime="2013-01-21 14:42:57.0" X="0" Y="0" Z="0"
+		siteId="31010101" dataVersion="0" />
+
+    <t_logicgroup id="1" logicGroupName="测试站点" siteId="31010101" logicGroupType="1" />
+
+    <m_location id="3101010170000" locationName="测试位置点一" nodeId="3101010100257" zoneId="001"
+                siteId="31010101" createTime="2014-06-24 14:42:57.0"/>
+
+    <m_location id="3101010170001" locationName="测试位置点一" nodeId="3101010100256" zoneId="001"
+                siteId="31010101" createTime="2014-06-24 14:42:57.0"/>
+
+    <m_location_history id="09e395dc-fb7f-11e3-a65a-001e672dcadc" locationId="3101010170001
+    " nodeId="3101010100315" startTime="2014-06-24 17:07:43.0" endTime="2014-06-26 15:42:42"  />
+
+    <m_location_history id="09e395dc-fb7f-11e3-a65a-001e672dcad4" locationId="3101010170001
+    " nodeId="3101010100315" startTime="2014-06-24 17:07:43.0" endTime="2014-06-26 15:42:42"  />
+</dataset>

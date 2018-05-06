@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.orion.bean">
+    <class name="Comment" table="o_comment">
+        <id name="id" type="java.lang.Integer">
+            <generator class="identity"/>
+        </id>
+        <property name="organization"/>
+        <property name="expert"/>
+        <property name="advice"/>
+        <property name="repairRecordId"/>
+        <property name="date" type="java.util.Date"/>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="saturn.mybatis.MediaShowDao">
+
+    <!--增-->
+    <insert id="save" parameterType="MediaShowPO">
+        <![CDATA[
+             INSERT INTO `s_media_show`
+                (
+                      title,
+                      remark,
+                      indexImage,
+                      createOn,
+                      createBy,
+                      siteCode
+                )
+                VALUES
+                  (
+                      #{title},
+                      #{remark},
+                      #{indexImage},
+                      #{createOn},
+                      #{createBy},
+                      #{siteCode}
+                  )
+        ]]>
+    </insert>
+
+    <!-- 查 -->
+    <select id="findAllByPage" resultType="MediaShowPO" parameterType="java.util.Map">
+		<![CDATA[
+              SELECT
+	            id               AS id,
+	            title            AS title,
+	            remark           AS remark,
+	            indexImage       AS indexImage,
+	            createOn         AS createOn,
+	            createBy         AS createBy,
+	            siteCode         AS siteCode
+              FROM
+                `s_media_show`
+              ORDER BY createOn DESC
+              LIMIT #{begin},#{pageSize}
+        ]]>
+	</select>
+
+    <select id="findAll" resultType="MediaShowPO">
+		<![CDATA[
+              SELECT
+	            id               AS id,
+	            title            AS title,
+	            remark           AS remark,
+	            indexImage       AS indexImage,
+	            createOn         AS createOn,
+	            createBy         AS createBy,
+	            siteCode         AS siteCode
+              FROM
+                `s_media_show`
+              ORDER BY createOn DESC
+        ]]>
+	</select>
+
+    <select id="findByConditionSize" resultType="MediaShowPO" parameterType="java.util.Map">
+        <![CDATA[
+              SELECT
+                id               AS id,
+	            title            AS title,
+	            remark           AS remark,
+	            indexImage       AS indexImage,
+	            createOn         AS createOn,
+	            createBy         AS createBy,
+	            siteCode         AS siteCode
+              FROM
+                `s_media_show`
+              WHERE 1=1
+        ]]>
+        <if test="id!=null and id!=''">
+            <![CDATA[
+		      AND id=#{id}
+		]]>
+        </if>
+
+        <if test="title!=null and title!=''">
+            <![CDATA[
+		      AND title LIKE '%${title}%'
+		]]>
+        </if>
+
+        <if test="remark!=null and remark!=''">
+            <![CDATA[
+		      AND remark LIKE '%${remark}%'
+		]]>
+        </if>
+
+        <if test="indexImage!=null and indexImage!=''">
+            <![CDATA[
+		      AND indexImage = #{indexImage}
+		]]>
+        </if>
+
+        <if test="createOn!=null and createOn!=''">
+            <![CDATA[
+		      AND createOn = #{createOn}
+		]]>
+        </if>
+
+        <if test="createBy!=null and createBy!=''">
+            <![CDATA[
+		      AND createBy = #{createBy}
+		]]>
+        </if>
+
+        <if test="siteCode!=null and siteCode!=''">
+            <![CDATA[
+		      AND siteCode = #{siteCode}
+		]]>
+        </if>
+    </select>
+
+    <select id="findByCondition" resultType="MediaShowPO" parameterType="java.util.Map">
+        <![CDATA[
+              SELECT
+	            id               AS id,
+	            title            AS title,
+	            remark           AS remark,
+	            indexImage       AS indexImage,
+	            createOn         AS createOn,
+	            createBy         AS createBy,
+	            siteCode         AS siteCode
+              FROM
+                `s_media_show`
+              WHERE 1=1
+        ]]>
+        <if test="id!=null and id!=''">
+        <![CDATA[
+		      AND id=#{id}
+		]]>
+        </if>
+
+        <if test="title!=null and title!=''">
+        <![CDATA[
+		      AND title LIKE '%${title}%'
+		]]>
+        </if>
+
+        <if test="remark!=null and remark!=''">
+        <![CDATA[
+		      AND remark LIKE '%${remark}%'
+		]]>
+        </if>
+
+        <if test="indexImage!=null and indexImage!=''">
+        <![CDATA[
+		      AND indexImage = #{indexImage}
+		]]>
+        </if>
+
+        <if test="createOn!=null and createOn!=''">
+        <![CDATA[
+		      AND createOn = #{createOn}
+		]]>
+        </if>
+
+        <if test="createBy!=null and createBy!=''">
+        <![CDATA[
+		      AND createBy = #{createBy}
+		]]>
+        </if>
+
+        <if test="siteCode!=null and siteCode!=''">
+        <![CDATA[
+		      AND siteCode = #{siteCode}
+		]]>
+        </if>
+        <![CDATA[
+		      ORDER BY createOn DESC
+              LIMIT #{begin},#{pageSize}
+        ]]>
+    </select>
+    <!--删-->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+       <![CDATA[
+             DELETE FROM `s_media_show` WHERE id = #{mediaShowId}
+        ]]>
+    </delete>
+    <!--改-->
+    <update id="update" parameterType="MediaShowPO">
+        <![CDATA[
+            UPDATE
+              `s_media_show`
+            SET
+              siteCode = #{siteCode}
+        ]]>
+
+        <if test="title!=null and title!=''">
+        <![CDATA[
+		     ,title=#{title}
+		]]>
+        </if>
+
+        <if test="remark!=null and remark!=''">
+        <![CDATA[
+		     ,remark=#{remark}
+		]]>
+        </if>
+
+        <if test="indexImage!=null and indexImage!=''">
+        <![CDATA[
+		     ,indexImage=#{indexImage}
+		]]>
+        </if>
+
+        <if test="createOn!=null and createOn!=''">
+        <![CDATA[
+		     ,createOn=#{createOn}
+		]]>
+        </if>
+
+        <if test="createBy!=null and createBy!=''">
+        <![CDATA[
+		     ,createBy=#{createBy}
+		]]>
+        </if>
+
+        <if test="createBy!=null and createBy!=''">
+        <![CDATA[
+		     ,createBy=#{createBy}
+		]]>
+        </if>
+
+        <![CDATA[
+            WHERE id = #{id}
+        ]]>
+    </update>
+</mapper>

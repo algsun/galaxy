@@ -1,0 +1,56 @@
+/**
+* 布局样式
+*
+* @author gaohui
+* @date  2012-12-29
+*/
+
+/**
+* 左侧设备树的样式
+*/
+.left-aside-container .ztree {
+    position: absolute;
+    top: 80px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: auto;
+}
+
+/* 覆盖 bootstrap 样式 START */
+
+.table thead {
+    background-color: #ececec;
+}
+
+/* 表格灰白相间 */
+.table-striped tbody > tr:nth-child(odd) {
+    background-color: #fff;
+}
+.table-striped tbody > tr:nth-child(odd) > td, .table-striped tbody > tr:nth-child(odd) > th {
+    background-color: transparent;
+}
+
+/* 内容居中 */
+.table.table-center td {
+    text-align: center;
+    vertical-align: middle;
+}
+.table.table-center thead th {
+    text-align: center;
+    vertical-align: top;
+}
+
+/* 覆盖 END */
+
+/*
+界面左上角业务系统列表 小三角
+*/
+.brand > a > .caret{
+    border-top-color: #999;
+    border-bottom-color: #999;
+}
+.brand > a:hover > .caret{
+    border-top-color: #fff;
+    border-bottom-color: #fff;
+}

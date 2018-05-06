@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="uma.mybatis.ZoneDao">
+	<!-- 查询已绑定设备 -->
+	<select id="findZonesHasDevice" parameterType="java.lang.String"
+		resultType="ZoneBean">
+        <![CDATA[
+
+            SELECT DISTINCT
+              z.zoneId AS zoneId,
+              z.zoneName AS zoneName
+            FROM
+              t_zone z
+              INNER JOIN u_zone_exciter zd
+                ON z.zoneId = zd.zoneId
+            WHERE z.siteId = #{siteId}
+
+        ]]>
+	</select>
+
+    <!-- 查询区域信息 -->
+    <select id="findZoneById" parameterType="java.lang.String"
+            resultType="ZoneBean">
+        <![CDATA[
+            SELECT
+              zoneId,
+              zoneName,
+              siteId,
+			  parentId,
+			  planImage
+            FROM
+              t_zone
+            WHERE zoneId = #{zoneId}
+        ]]>
+	</select>
+
+    <!-- 查询指定区域的子区域信息 -->
+    <select id="findSubZoneById" parameterType="java.lang.String"
+            resultType="ZoneBean">
+        <![CDATA[
+            SELECT
+              zoneId,
+              zoneName,
+              siteId,
+			  parentId,
+			  planImage
+            FROM
+              t_zone
+            WHERE parentId = #{zoneId}
+        ]]>
+	</select>
+
+	<!-- 根据父区域ID查询子区域集合(主要用于实时定位数据统计) -->
+	<select id="findZoneListByParentId" parameterType="java.util.Map"
+		resultType="ZoneBean">
+        <![CDATA[
+            SELECT
+              z.zoneId,
+              z.parentId,
+              zoneName,
+              COUNT(rl.userId) AS numberOfPeople,
+			  u.userId,
+              u.userName,
+              u.occurrenceTime
+            FROM
+              t_zone z
+              LEFT JOIN u_zone_exciter zd
+                ON zd.zoneId = z.zoneId
+              LEFT JOIN
+                (SELECT
+                  userId,
+                  deviceId
+                FROM
+                  u_realtime_location
+                WHERE FROM_UNIXTIME(
+                    occurrenceTime / 1000,
+                    '%Y-%m-%d %H:%i:%S'
+                  ) >= DATE_ADD(SYSDATE(), INTERVAL - #{hourInterval} HOUR)) rl
+                ON zd.deviceId = rl.deviceId
+              LEFT JOIN
+                (SELECT
+                  zoneId,
+                  deviceId,
+                  occurrenceTime,
+				   userId,
+                  userName
+                FROM
+                  (SELECT
+                    zoneId,
+                    userId,
+                    deviceId,
+                    occurrenceTime
+                  FROM
+                    (SELECT
+                      zoneId,
+                      userId,
+                      url.deviceId,
+                      occurrenceTime
+                    FROM
+                      u_realtime_location url
+                      INNER JOIN u_zone_exciter ure
+                        ON url.deviceId = ure.deviceId
+                    WHERE FROM_UNIXTIME(
+                        occurrenceTime / 1000,
+                        '%Y-%m-%d %H:%i:%S'
+                      ) >= DATE_ADD(SYSDATE(), INTERVAL - #{hourInterval} HOUR)
+                    ORDER BY occurrenceTime DESC) rl
+                  GROUP BY zoneId) rlTmp
+                  INNER JOIN t_users u
+                    ON userId = u.id) u
+                ON zd.zoneId = u.zoneId
+            WHERE z.siteId=#{siteId}
+            AND
+        ]]>
+		<if test="parentId !=null and parentId != ''">
+			parentId = #{parentId}
+		</if>
+		<if test="parentId == null">
+			parentId IS NULL
+		</if>
+        <![CDATA[
+            GROUP BY zoneId, zoneName
+            ORDER BY zoneName
+        ]]>
+	</select>
+
+	<!--区域人员详情 -->
+	<select id="findPeoplesInZone" parameterType="java.util.Map"
+		resultType="ZoneBean">
+        <![CDATA[
+
+            SELECT
+              z.zoneId,
+              z.parentId,
+              zoneName,
+			  u.id AS userId,
+              u.userName,
+              rl.occurrenceTime
+            FROM
+              t_zone z
+              INNER JOIN u_zone_exciter zd
+                ON zd.zoneId = z.zoneId
+              INNER JOIN u_realtime_location rl
+                ON zd.deviceId = rl.deviceId
+              INNER JOIN t_users u
+                ON rl.userId = u.id
+            WHERE
+                z.zoneId = #{zoneId}
+            AND FROM_UNIXTIME(
+                    occurrenceTime / 1000,
+                    '%Y-%m-%d %H:%i:%S'
+                ) >= DATE_ADD(SYSDATE(), INTERVAL - #{hourInterval} HOUR)
+            ORDER BY zoneName,rl.occurrenceTime DESC
+
+        ]]>
+	</select>
+
+	<!-- 查询出入记录最新人员： -->
+	<select id="countGobackTimesOfZone" parameterType="java.util.Map"
+		resultType="ZoneBean">
+		SELECT
+		COUNT(1) as numberOfPeople,
+		MAX(tt.occurrenceTime) as  occurrenceTime,
+		tt.userId,
+		tt.userName,
+		tt.name,
+		tt.zoneId,
+		tt.zoneName,
+		tt.parentId
+		FROM (
+		SELECT
+		a.occurrenceTime,
+		a.userId AS userId,
+		u.userName AS userName,
+		t.name AS NAME,
+		z.zoneId AS zoneId,
+		z.zoneName AS zoneName,
+		z.parentId AS parentId
+		FROM
+		u_user_action a
+		LEFT JOIN u_action_templet t
+		ON a.actionTempletId = t.id
+		LEFT JOIN t_zone z
+		ON t.zoneId = z.zoneId
+		LEFT JOIN t_users u
+		ON a.userId = u.id
+		WHERE a.type = 3
+		AND a.checkFlag = 0
+		AND t.siteId = #{siteId}
+		ORDER BY a.`occurrenceTime` DESC
+		) tt
+		GROUP BY tt.zoneId
+	</select>
+
+	<!-- 查询区域列表 -->
+
+	<select id="findZoneList" parameterType="java.util.Map"
+        resultType="ZoneBean">
+        SELECT
+            zoneId,
+            parentId,
+            zoneName
+        FROM t_zone
+        WHERE
+        <if test="parentId == null">
+            parentId IS NULL
+        </if>
+        <if test="parentId != null">
+            parentId = #{parentId}
+        </if>
+        AND siteId = #{siteId}
+        ORDER BY zoneId
+    </select>
+
+	<select id="findPeopleInfZoneByZoneId" parameterType="java.util.Map"
+		resultType="ZoneBean">
+            SELECT
+              a.userID AS userId,
+              a.occurrenceTime AS occurrenceTime,
+              u.userName AS userName,
+              z.zoneId AS zoneId,
+              z.zoneName AS zoneName,
+              z.parentId AS parentId
+            FROM
+              u_user_action a,
+              u_action_templet t,
+              t_zone z,
+              t_users u
+            WHERE a.actionTempletId = t.id
+              AND t.zoneId = #{zoneId}
+              AND t.siteId = #{siteId}
+              AND t.zoneId = z.zoneId
+              AND a.userId = u.id
+              AND a.checkFlag = 0
+              AND (a.type = 3
+                OR a.type = 4)
+            ORDER BY occurrenceTime DESC
+	</select>
+</mapper>

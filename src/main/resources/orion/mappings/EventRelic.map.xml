@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.orion.bean">
+	<class name="EventRelic" table="o_event_relic">
+		<id name="id" type="java.lang.Integer">
+			<column name="id" />
+			<generator class="identity" />
+		</id>
+		<many-to-one name="outEvent" class="OutEvent">
+			<column name="eventId" not-null="true">
+				<comment>事件id</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="relic" class="Relic" lazy="false">
+			<column name="relicId">
+				<comment>文物id</comment>
+			</column>
+		</many-to-one>
+		<property name="outDate" type="java.util.Date">
+			<column name="outDate" length="10">
+				<comment>出库时间</comment>
+			</column>
+		</property>
+		<property name="inDate" type="java.util.Date">
+			<column name="inDate" length="10">
+				<comment>入库时间</comment>
+			</column>
+		</property>
+		<property name="state">
+			<column name="state">
+                <comment>确认是否在库 0.不在库 1.在库 2.未确认</comment>
+			</column>
+		</property>
+	</class>
+</hibernate-mapping>

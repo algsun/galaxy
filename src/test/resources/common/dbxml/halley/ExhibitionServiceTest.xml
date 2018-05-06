@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+
+    <t_users id="2" userEmail="962097540@qq.com" logicGroupId="1" userName="爷爷" userPassword="121212" sex="2" isDisable="0" token="token2" isActive="0" />
+    <o_out_event id="1" siteId="1" eventType="1" outBound="1" useFor="wz"
+                 beginDate="2013-01-20 14:42:57.0" endDate="2013-03-22 14:42:57.0" applicant="mw" userId="2" state="1" remark="备注"/>
+    <h_exhibition id="1" beginTime="2013-01-21 14:42:57.0" endTime="2013-03-21 14:42:57.0" outEventId="1"/>
+    <h_exhibition id="2" startTime="2013-01-21 14:42:57.0" endTime="2013-03-21 14:42:57.0" outEventId="1"/>
+    <h_exhibition_state exhibitionId="1" state="1" operator="2"/>
+</dataset>

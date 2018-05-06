@@ -1,0 +1,5 @@
+.fc-page {margin-top: 6px;float:inherit;}
+.fc-page a{ border: 1px solid #ccc; padding: 3px 9px; margin-left: 4px; float: left; display: block; color: #09F; cursor: pointer;}
+.fc-page a:hover{ border: 1px solid #E25211; text-decoration: none; color: #E25211;}
+.fc-page span { padding: 4px; float: left; margin-left: 4px;}
+.fc-page b { padding: 4px; float: left; margin-left: 4px; font-weight: bold; font-size: 13px;}

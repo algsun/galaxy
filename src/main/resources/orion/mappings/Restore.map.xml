@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+     
+<hibernate-mapping package="com.microwise.orion.bean">
+    <class name="Restore" table="o_restore">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="relic" class="Relic">
+            <column name="relicId" />
+        </many-to-one>
+        <property name="restorers" type="java.lang.String">
+            <column name="restorers" length="50" not-null="true">
+                <comment>承制单位/承制人</comment>
+            </column>
+        </property>
+        <property name="restoreDate" type="java.util.Date">
+            <column name="restoreDate" length="10" not-null="true">
+                <comment>修复日期</comment>
+            </column>
+        </property>
+        <property name="restoreInfo" type="java.lang.String">
+            <column name="restoreInfo" length="1000" not-null="true">
+                <comment>修复详情</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

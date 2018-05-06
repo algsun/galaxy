@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blueplanet.mybatis.CommonDao">
+
+	<!-- 添加区域拥有的监测指标 -->
+	<select id="findDataVersion" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		<![CDATA[    
+			SELECT 
+				l.dataVersion 
+			FROM 
+				log_transfer AS l 
+			WHERE l.tableName = #{value}
+		]]>
+	</select>
+
+</mapper>

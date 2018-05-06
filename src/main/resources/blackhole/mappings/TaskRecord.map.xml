@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.blackhole.bean">
+
+    <class name="TaskRecord" table="t_task_record">
+        <id name="id" column="id" length="11" type="java.lang.Integer">
+            <generator class="identity"/>
+        </id>
+        <property name="recordInfo" column="recordInfo" type="java.lang.String"/>
+        <property name="recordDate" column="recordDate" type="java.util.Date"/>
+        <property name="endDate" column="endDate" type="java.util.Date"/>
+        <property name="completeStatus" column="completeStatus" type="java.lang.Integer"/>
+        <property name="state" column="state" type="org.hibernate.type.NumericBooleanType"/>
+        <many-to-one name="replier" column="replier" class="User"/>
+        <many-to-one name="task" column="taskId" class="Task"/>
+    </class>
+
+</hibernate-mapping> 

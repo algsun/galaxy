@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+
+    <u_device id="1" type="3" deviceId="0002" name="电子卡1"
+              sn="12345678"
+              version="1.0.1" enable="1" state="1" createTime="2013-02-25 12:01:01"  siteId="aa"/>
+
+    <u_device id="2" type="3" name="电子卡2"
+              sn="11111111"
+              voltage="2V" enable="1" state="1" createTime="2013-02-25 12:01:01" siteId="aa"/>
+
+    <u_device id="3" type="3" name="电子卡3"
+              sn="22222222"
+              voltage="2.5V" enable="1" state="1" createTime="2013-02-25 12:01:01" siteId="aa"/>
+
+    <t_users id="100" userEmail="415201519@qq.com" logicGroupId="1" userName="大头" userPassword="121212" sex="1" isDisable="0" token="token1" isActive="1" />
+    <t_users id="101" userEmail="962097540@qq.com" logicGroupId="1" userName="爷爷" userPassword="121212" sex="2" isDisable="0" token="token2" isActive="0" />
+	<t_users id="102" userEmail="4152a1519@qq.com" logicGroupId="1" userName="大头" userPassword="121212" sex="1" isDisable="0" token="token1" isActive="1" />
+    <t_users id="103" userEmail="4152c1519@qq.com" logicGroupId="1" userName="大头" userPassword="121212" sex="1" isDisable="0" token="token1" isActive="1" />
+    <t_users id="104" userEmail="9620b7540@qq.com" logicGroupId="1" userName="爷爷" userPassword="121212" sex="2" isDisable="0" token="token2" isActive="0" />
+    <t_users id="105" userEmail="9620d7540@qq.com" logicGroupId="1" userName="爷爷" userPassword="121212" sex="2" isDisable="0" token="token2" isActive="0" />
+	
+    <t_logicgroup id="1" logicGroupName="测试数据2" activeState="3"
+		siteId="aa" logicGroupType="1"  />
+		
+	<u_user_card id="1" userId="100" sn="12345678"/>
+	<u_user_card id="2" userId="101" sn="11111111"/>
+</dataset>

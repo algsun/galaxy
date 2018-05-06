@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+
+    <t_zone zoneId="002" siteId="31010101" zoneName="测试区域2"
+		planImage="区域实景图2" dataVersion="17" />
+	<t_zone zoneId="003" siteId="31010101" zoneName="测试区域3"
+		planImage="区域实景图3" dataVersion="22" />
+
+      <t_logicgroup id="1" logicGroupName="测试站点" activeState="3" logicGroupType="1"/>
+    <t_users id="1" userEmail="no-reply-galaxy@microwise-system.com" logicGroupId="1" userName="大头"
+             userPassword="121212" sex="1" isDisable="0" token="token1" isActive="1"/>
+
+    <t_users id="2" userEmail="guest" userName="访客"
+             userPassword="$2a$11$kW5DVku2SCRxbTirh4xqFexQu//BwpKWy8sYFGiX9pbgYd8BsAkWC" sex="2" isDisable="0" token=""
+             isActive="1"/>
+	<o_historical_relic id="1" totalCode="1230" era="1" level="1"  siteId="31010101" zoneId="002"
+		texture="1" catalogCode="1" typeCode="1" name="12" state="0" hasTag="1" count="2"/>
+	<o_historical_relic id="2" totalCode="1231" era="1" level="1"   siteId="31010101" zoneId="003"
+		texture="1" catalogCode="1" typeCode="1" name="121" state="0" hasTag="1" count="2" />
+
+    <o_out_event id="4101010113530205410" siteId="31010101" eventType="2" outBound="0"  useFor="ck" beginDate="2013-05-20 21:11:02.0"
+                 endDate="2013-05-30 21:11:02.0" applicant="Jackson" userId="1" state="0" remark="0" />
+    <o_event_relic id="1" relicId="1" eventId="4101010113530205410" />
+    <o_event_relic id="2" relicId="2" eventId="4101010113530205410" />
+    
+    <o_event_zone  id="1" eventId="4101010113530205410" zoneId="002"  state="0" userId="1"/>
+	<o_event_zone  id="2" eventId="4101010113530205410" zoneId="003"  state="0"/>
+	
+	<o_user_zone id="1" userId="1" zoneId="003" />
+	<o_user_zone id="2" userId="2" zoneId="003" />
+	
+	<o_event_zone_relic  eventZoneId="1" relicId="1"/>
+	<o_event_zone_relic  eventZoneId="2" relicId="2"/>
+</dataset>

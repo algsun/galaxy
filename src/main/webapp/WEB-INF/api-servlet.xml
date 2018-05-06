@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <mvc:annotation-driven/>
+    <mvc:default-servlet-handler/>
+    <context:component-scan base-package="com.microwise.api" />
+
+    <mvc:resources location="/api/" mapping="/api/**"/>
+    <mvc:resources location="/assets/" mapping="/assets/**"/>
+    <mvc:resources location="/biela/" mapping="/biela/**"/>
+    <mvc:resources location="/blackhole/" mapping="/blackhole/**"/>
+    <mvc:resources location="/blueplanet/" mapping="/blueplanet/**"/>
+    <mvc:resources location="/common/" mapping="/common/**"/>
+    <mvc:resources location="/cybertron/" mapping="/cybertron/**"/>
+    <mvc:resources location="/halley/" mapping="/halley/**"/>
+    <mvc:resources location="/orion/" mapping="/orion/**"/>
+    <mvc:resources location="/phoenix/" mapping="/phoenix/**"/>
+    <mvc:resources location="/proxima/" mapping="/proxima/**"/>
+    <mvc:resources location="/uma/" mapping="/uma/**"/>
+    <mvc:resources location="/saturn/" mapping="/saturn/**"/>
+
+    <!-- Required so swagger-springmvc can access spring's RequestMappingHandlerMapping  -->
+    <bean class="com.mangofactory.swagger.configuration.SpringSwaggerConfig"/>
+
+
+    <!-- freemarker的配置 -->
+    <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPath" value="/"/>
+        <property name="defaultEncoding" value="utf-8"/>
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="template_update_delay">10</prop>
+                <prop key="locale">zh_CN</prop>
+                <prop key="datetime_format">yyyy-MM-dd</prop>
+                <prop key="date_format">yyyy-MM-dd</prop>
+                <prop key="number_format">computer</prop>
+            </props>
+        </property>
+    </bean>
+    <!-- FreeMarker视图解析   如返回student。。在这里配置后缀名ftl和视图解析器。。-->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <property name="viewClass" value="com.microwise.common.sys.freemarker.CustomFreeMarkerView"/>
+        <property name="suffix" value=".ftl"/>
+        <property name="contentType" value="text/html;charset=utf-8"/>
+        <property name="exposeRequestAttributes" value="true"/>
+        <property name="exposeSessionAttributes" value="true"/>
+        <property name="exposeSpringMacroHelpers" value="true"/>
+        <property name="requestContextAttribute" value="request"/>
+    </bean>
+</beans>

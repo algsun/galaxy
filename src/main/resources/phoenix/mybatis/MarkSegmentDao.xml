@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="phoenix.mybatis.MarkSegmentDao">
+
+	<!-- 查询一个站点下所以标记段的信息 -->
+	<select id="findScale" parameterType="java.util.Map" resultType="Proxima:MarkSegmentContrast">
+    <![CDATA[
+         SELECT
+              mark.`id` AS markId,
+              mark.`markName` AS markName,
+              dv.placeName,
+              dv.`imageWidth` AS imageWidth,
+              dv.imageRealWidth AS imageRealWidth,
+              dv.imageRealWidth / dv.`imageWidth` AS scale
+         FROM
+              `t_zone` AS zone
+              INNER JOIN `p_dv_place` AS dv
+                ON zone.`zoneId` = dv.`zoneId`
+              INNER JOIN `p_mark_segment` AS mark
+                ON dv.`id` = mark.`dvPlaceId`
+              INNER JOIN `p_mark_segment_position` AS mp
+                ON mark.`id` = mp.`markId`
+         WHERE zone.siteId = #{siteId}
+              AND mp.`picSaveTime` BETWEEN #{startDate}
+              AND #{endDate}
+         GROUP BY mp.`markId`
+    ]]>
+	</select>
+	
+	<!-- 查询一个标记段的 信息 -->
+	<select id="findOneScale" parameterType="java.lang.String" resultType="Proxima:MarkSegmentContrast">
+    <![CDATA[
+         SELECT
+              mark.`id` AS markId,
+              mark.`markName` AS markName,
+              dv.`imageWidth` AS imageWidth,
+              dv.imageRealWidth AS imageRealWidth,
+              dv.imageRealWidth / dv.`imageWidth` AS scale
+         FROM
+              `p_dv_place` AS dv
+              INNER JOIN `p_mark_segment` AS mark
+                ON dv.`id` = mark.`dvPlaceId`
+         WHERE mark.id = #{markId}
+    ]]>
+	</select>
+
+    <select id="findFirstAndLastMarkLength" parameterType="java.util.Map" resultType="Float">
+    <![CDATA[
+      (SELECT mp.`markLength` AS markLength
+        FROM `p_mark_segment_position` AS mp
+        WHERE mp.`markId`= #{markId}
+        AND mp.`picSaveTime` BETWEEN #{startDate} AND #{endDate}
+        ORDER BY mp.picSaveTime ASC LIMIT 1)
+      UNION ALL
+      (SELECT mp.`markLength` AS markLength
+        FROM `p_mark_segment_position` AS mp
+        WHERE mp.`markId`= #{markId}
+        AND mp.`picSaveTime` BETWEEN #{startDate} AND #{endDate}
+        ORDER BY mp.picSaveTime DESC LIMIT 1)
+    ]]>
+	</select>
+
+   <!-- 查询一个标记段 年统计数据 -->
+	<select id="findScaleYearStat" parameterType="java.util.Map" resultType="java.util.Map">
+		<foreach collection="months" index="index" item="month" separator="UNION ALL" >
+		  <![CDATA[
+  			SELECT 
+		        a.`month` ,
+		        a.lastMarkLength,
+		        b.fistMarkLength
+		        FROM 
+		       (SELECT 
+				  #{month}  `month`,
+				  marklength  lastMarkLength
+				FROM 
+				p_mark_segment_position msp 
+				WHERE msp.markId  = #{markId}
+				AND  YEAR(msp.picSaveTime) = #{year}
+				AND  MONTH(msp.picSaveTime) = #{month}
+				ORDER BY msp.picSaveTime DESC 
+				LIMIT 0,1) a
+			LEFT JOIN 
+		       (SELECT 
+				  #{month}  `month`,
+				  marklength  fistMarkLength
+				FROM 
+				p_mark_segment_position msp 
+				WHERE msp.markId  = #{markId}
+				AND  YEAR(msp.picSaveTime) = #{year}
+				AND  MONTH(msp.picSaveTime) = #{month}
+				ORDER BY msp.picSaveTime 
+				LIMIT 0,1) AS  b	
+			ON a.`month` = b.`month`	
+		   ]]>
+		</foreach>
+	</select>
+	
+	<!-- 查询一个标记段 莫年12月份的最后一条数据-->
+	<select id="findScaleYearLastData" parameterType="java.util.Map" resultType="java.lang.Float">
+		  <![CDATA[
+			SELECT 
+			  marklength 
+			FROM 
+			p_mark_segment_position msp 
+			WHERE msp.markId  = #{markId}
+			AND  YEAR(msp.picSaveTime) = #{year}
+			AND  MONTH(msp.picSaveTime) = 12
+			ORDER BY msp.picSaveTime  DESC 
+			LIMIT 1
+		   ]]>
+	</select>
+	
+	<!-- 查询所以标记段信息-->
+	<select id="findAllMark" parameterType="java.lang.String" resultType="Proxima:MarkSegment">
+		  <![CDATA[
+          SELECT DISTINCT
+              mark.`id` AS markId,
+              mark.`markName` AS markName,
+              dv.`placeName`
+          FROM
+              `t_zone` AS zone
+              INNER JOIN `p_dv_place` AS dv
+                ON zone.`zoneId` = dv.`zoneId`
+              INNER JOIN `p_mark_segment` AS mark
+                ON dv.`id` = mark.`dvPlaceId`
+          WHERE zone.siteId = #{siteId}
+		   ]]>
+	</select>
+</mapper>

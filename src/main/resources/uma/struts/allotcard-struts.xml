@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+        "http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+    <package name="uma:allotcard" extends="uma" namespace="/uma">
+        <action name="haveCardUser" class="uma:queryUserCardAction" method="haveCardUser">
+            <result type="freemarker">/uma/pages/allotcard/list-usercard.ftl</result>
+        </action>
+
+        <action name="noCardUser" class="uma:queryUserCardAction" method="noCardUser">
+            <result type="freemarker">/uma/pages/allotcard/list-usercard.ftl</result>
+        </action>
+        
+        <action name="initCard" class="uma:initCardListAction">
+            <result type="json"/>
+        </action>
+
+        <action name="sendCard" class="uma:cardAction" method="sendCard">
+            <result type="redirect">/uma/haveCardUser.action</result>
+        </action>
+        
+        <action name="changeCard" class="uma:cardAction" method="changeCard">
+            <result type="redirect">/uma/haveCardUser.action</result>
+        </action>
+        
+        <action name="recedeCard" class="uma:cardAction" method="recedeCard">
+            <result type="redirect">/uma/haveCardUser.action</result>
+        </action>
+    </package>
+</struts>

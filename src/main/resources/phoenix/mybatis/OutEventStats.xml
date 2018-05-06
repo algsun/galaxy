@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+@author xu.baoji
+@date 2013-07-10
+@author gaohui
+@date 2013-07-10
+
+@check @gaohui #4468 2013-07-12
+@check @xu.baoji #4500 2013-07-12
+-->
+<mapper namespace="phoenix.mybatis.OutEventStatDao">
+
+	<!-- 查询 年度出库统计数据-->
+    <!-- TODO select year 使用入参 @gaohui 2013-07-12  -->
+	<select id="findOutEventStat" parameterType="java.util.Map" resultType="OutEventStat">
+	<![CDATA[
+		SELECT 
+		 COUNT(a.id) yearCount,
+		 SUM(countNo) yearSum,
+		 `year`
+		FROM(
+			SELECT 
+			  oe.`id`,
+			  COUNT(er.`eventId`) countNo,
+		]]>
+		<if test="isYear">
+		 YEAR(er.outDate)  `year`
+		</if>
+		<if test="!isYear">
+		 MONTH(er.outDate)  `year`
+		</if>
+		<![CDATA[
+			 
+			FROM
+			  o_out_event oe 
+			INNER JOIN o_event_relic er 
+			ON oe.`id` = er.`eventId` 
+			WHERE er.`outDate` >= #{startDate}
+			      AND  er.`outDate`<=#{endDate}
+			      AND  oe.`state` IN (1,2)
+			      AND oe.siteId = #{siteId}
+			GROUP BY oe.`id`
+		) AS a
+	]]>
+	</select>
+	
+	<!-- 出库文物级别统计 -->
+	<select id="findLevelStat" parameterType="java.util.Map" resultType="java.util.Map">
+	<![CDATA[
+  		  SELECT 
+		    l.name  `key`  ,
+		    COUNT(hr.id)  `number`,
+		    ROUND((COUNT(hr.id)/#{eventRelicSum})*100,2) AS `value`
+		  FROM
+		    o_event_relic er 
+		  INNER JOIN 
+		    o_historical_relic hr 
+		  ON  er.relicId = hr.id 
+		  INNER JOIN 
+		     o_level  l 
+		  ON hr.level = l.id
+		  INNER JOIN
+		     o_out_event oe 
+		  ON er.eventId = oe.id
+		  WHERE er.`outDate` >= #{startDate}
+			AND  er.`outDate`<=#{endDate}
+		    AND hr.siteId = #{siteId}
+		    AND  oe.`state` IN (1,2)
+		  GROUP BY hr.level
+		  ORDER BY  `value` DESC ,l.id
+    ]]>
+	</select>
+	
+     <!-- 出库文物年代统计 -->
+	<select id="findEraStat" parameterType="java.util.Map" resultType="java.util.Map">
+	<![CDATA[
+		  SELECT 
+		    e.name  `key` ,
+		    COUNT(hr.id)  `number`,
+		    ROUND((COUNT(hr.id)/#{eventRelicSum})*100,2) AS `value`
+		  FROM
+		    o_event_relic er 
+		  INNER JOIN 
+		    o_historical_relic hr 
+		  ON  er.relicId = hr.id 
+		  INNER JOIN 
+		     o_era e
+		  ON hr.era = e.id
+		  INNER JOIN
+		     o_out_event oe 
+		  ON er.eventId = oe.id
+			WHERE er.`outDate` >= #{startDate}
+			AND  er.`outDate`<=#{endDate}
+		    AND hr.siteId = #{siteId}
+		    AND  oe.`state` IN (1,2)
+		  GROUP BY hr.era
+		  ORDER BY  `value` DESC ,e.id
+    ]]>
+	</select>
+	
+	  <!-- 出库文物质地统计 -->
+	<select id="findTextureStat" parameterType="java.util.Map" resultType="java.util.Map">
+	<![CDATA[
+		  
+  		  SELECT 
+		    t.name `key`  ,
+		    COUNT(hr.id)  `number`,
+		    ROUND((COUNT(hr.id)/#{eventRelicSum})*100,2) AS `value`
+		  FROM
+		    o_event_relic er 
+		  INNER JOIN 
+		    o_historical_relic hr 
+		  ON  er.relicId = hr.id 
+		  INNER JOIN 
+		     o_texture  t
+		  ON hr.texture = t.id
+		  INNER JOIN
+		     o_out_event oe 
+		  ON er.eventId = oe.id		  
+			WHERE er.`outDate` >= #{startDate}
+			AND  er.`outDate`<=#{endDate}
+		    AND hr.siteId = #{siteId}
+		    AND  oe.`state` IN (1,2)
+		  GROUP BY hr.texture
+		  ORDER BY  `value` DESC ,t.id
+    ]]>
+	</select>
+	
+    <!-- 出库文物区域统计 -->
+	<select id="findZoneStat" parameterType="java.util.Map" resultType="java.util.Map">
+	<![CDATA[
+		 SELECT 
+		    z.`zoneName` `key`  ,
+		    COUNT(hr.id)  `number`,
+		    ROUND((COUNT(hr.id)/#{eventRelicSum})*100,2) AS `value`
+		  FROM
+		    o_event_relic er 
+		  INNER JOIN 
+		    o_historical_relic hr 
+		  ON  er.relicId = hr.id 
+		  LEFT JOIN 
+		     t_zone z
+		  ON z.`zoneId` = hr.`zoneId`
+		  INNER JOIN
+		     o_out_event oe 
+		  ON er.eventId = oe.id		  
+			WHERE er.`outDate` >= #{startDate}
+			AND  er.`outDate`<=#{endDate}
+		    AND hr.siteId = #{siteId}
+		    AND  oe.`state` IN (1,2)
+		  GROUP BY hr.`zoneId`
+		  ORDER BY  `value` DESC  ,z.zoneId
+    ]]>
+	</select>
+	
+	<!-- 出库事件记录信息-->
+	<select id="findOutEventInfo" parameterType="java.util.Map" resultType="OutEventInfo">
+	<![CDATA[
+			SELECT 
+			   oe.useFor  as eventName,
+			   oe.beginDate as eventDate,
+			   COUNT(er.`eventId`) as `count`
+			FROM o_out_event oe 
+			INNER JOIN o_event_relic er 
+			ON oe.id = er.eventId
+			WHERE 
+			oe.state IN (1,2)
+			AND  oe.eventType = #{type}
+			AND  er.`outDate` >= #{startDate}
+			AND  er.`outDate`<=#{endDate}
+			AND oe.siteId = #{siteId}
+			GROUP BY oe.`id`
+    ]]>
+	</select>
+
+	<!-- 出库事件记录统计-->
+	<select id="findOutEventStatInfo" parameterType="java.util.Map" resultType="OutEventStatInfo">
+	<![CDATA[
+	 		 SELECT 
+	 		   a.eventType    AS eventType,
+			   COUNT(a.count)  AS typeCount,
+			   SUM(a.count)    AS  typeSum
+			FROM 
+				(SELECT 
+				   oe.eventType ,
+				   oe.useFor  as eventName,
+				   oe.beginDate as eventDate,
+				   COUNT(er.`eventId`) as `count`
+				FROM o_out_event oe 
+				INNER JOIN o_event_relic er 
+				ON oe.id = er.eventId
+				WHERE 
+				oe.state IN (1,2)
+				AND  oe.eventType = #{type}
+				AND er.`outDate` >= #{startDate}
+			    AND  er.`outDate`<=#{endDate}
+				AND oe.siteId = #{siteId}
+				GROUP BY oe.`id`) as a
+    ]]>
+	</select>
+
+    <!-- 返回最老的出库文物时间 -->
+    <select id="findOldestDateOfOutedRelic" parameterType="java.util.Map" resultType="java.util.Date">
+        <![CDATA[
+        SELECT
+             relic.`outDate`  as oldestDate
+        FROM
+            o_out_event  oe
+        INNER JOIN
+            o_event_relic relic ON oe.`id` = relic.`eventId`
+        WHERE
+            oe.state IN (1, 2) AND
+            oe.siteId = #{siteId}
+        ORDER BY relic.outDate
+        LIMIT 0, 1
+        ]]>
+    </select>
+
+    <!-- 文物出库次数排名 -->
+    <select id="findRelicOutRanking" parameterType="java.util.Map" resultType="com.microwise.phoenix.bean.vo.RelicFrequency">
+        <![CDATA[
+        SELECT
+            COUNT(er.relicId) AS `count`,
+            er.relicId AS relicId,
+            relic.totalcode AS relicTotalCode,
+            relic.name AS relicName
+
+        FROM
+            o_out_event oe
+        INNER JOIN
+            o_event_relic er ON oe.id = er.eventId
+        INNER JOIN
+            o_historical_relic relic ON relic.id = er.relicId
+        WHERE
+            oe.state IN (1, 2) AND
+            oe.siteId = #{siteId} AND
+            er.outDate >= #{startDate} AND
+            er.outDate <= #{endDate}
+        GROUP BY er.relicId
+        ORDER BY `count` DESC
+        LIMIT #{start}, #{max}
+        ]]>
+    </select>
+
+</mapper>

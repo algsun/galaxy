@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.cybertron.bean">
+
+    <class name="Record" table="cbt_records">
+        <id name="uuid" length="22">
+            <generator class="assigned"/>
+        </id>
+        <property name="siteId" length="50"/>
+        <property name="recordCode" length="20"/>
+        <property name="name" length="50"/>
+        <property name="stateSecrets" length="1"/>
+        <property name="department" length="50"/>
+        <property name="establishDate" type="java.util.Date"/>
+        <property name="volumeCode" length="11"/>
+        <set name="attachments" lazy="false" cascade="all">
+            <key column="recordUuid"/>
+            <one-to-many class="Attachment"/>
+        </set>
+    </class>
+</hibernate-mapping>

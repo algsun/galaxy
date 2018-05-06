@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="blueplanet-index" extends="blueplanet" namespace="/blueplanet">
+
+        <!-- 子系统入口( name 为空是有意的) url: /blueplanet/ , 默认跳转到站点概览页面-->
+        <!--站点总览功能 summarize-->
+        <action name="">
+            <result type="redirect">summarize</result>
+        </action>
+
+    </package>
+
+    <package name="ajaxblueplanet" extends="json-default" namespace="/blueplanet">
+        <action name="realData" class="com.microwise.blueplanet.action.realdata.RealDataAction">
+            <result type="json">
+                <param name="root">data</param>
+            </result>
+        </action>
+    </package>
+
+
+    <!-- 功能性页面 -->
+    <package name="functional" extends="struts-default">
+        <!-- 实时数据 -->
+        <action name="realtime-data">
+            <result type="freemarker">/blueplanet/pages/functional/realtime-data.ftl</result>
+        </action>
+
+        <!-- 实时图形 -->
+        <action name="realtime-chart">
+            <result type="freemarker">/blueplanet/pages/functional/realtime-chart.ftl</result>
+        </action>
+
+        <!-- 位置呈现 -->
+        <action name="location">
+            <result type="freemarker">/blueplanet/pages/functional/location.ftl</result>
+        </action>
+    </package>
+
+</struts>

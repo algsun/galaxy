@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <package name="blueplanet:file" extends="blueplanet" namespace="/blueplanet">
+
+        <action name="upload" class="blueplanet:fileUploadAction" method="execute">
+            <!-- 动态设置savePath的属性值 -->
+            <param name="savePath">/galaxy-resources/blueplanet/location/relic/</param>
+            <result name="success" type="json">
+                <param name="includeProperties">filePath,imageFileName</param>
+                <param name="contentType">text/html</param>
+            </result>
+            <interceptor-ref name="fileUpload">
+                <!-- 文件大小, 以字节为单位 -->
+            </interceptor-ref>
+            <!-- 默认拦截器必须放在fileUpload之后，否则无效 -->
+            <interceptor-ref name="defaultStack"/>
+        </action>
+
+    </package>
+</struts>

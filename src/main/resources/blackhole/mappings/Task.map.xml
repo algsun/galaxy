@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.blackhole.bean">
+
+    <class name="Task" table="t_task">
+        <id name="id" column="id" length="11" type="java.lang.Integer">
+            <generator class="identity"/>
+        </id>
+        <property name="taskTitle" column="taskTitle" type="java.lang.String"/>
+        <property name="taskInfo" column="taskInfo" type="java.lang.String"/>
+        <property name="releaseDate" column="releaseDate" type="java.util.Date"/>
+        <property name="endDate" column="endDate" type="java.util.Date"/>
+        
+        <many-to-one name="releaser" column="releaser" class="User"/>
+        
+        <property name="completeStatus" column="completeStatus" type="java.lang.Integer"/>
+        <property name="state" column="state" type="org.hibernate.type.NumericBooleanType"/>
+        <property name="logicGroupId" column="logicGroupId" type="java.lang.Integer"/>
+        <set name="taskRecords" order-by="recordDate">
+        	<key column="taskId"/>
+        	<one-to-many class="TaskRecord"/>
+        </set>
+        <set name="designees" table="t_task_designee" >
+        	<key column="taskId"/>
+        	<many-to-many column="designee" class="User"/>
+        </set>
+    </class>
+
+</hibernate-mapping> 

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="halley.mybatis.DeviceDao">
+
+    <!-- 根据外展ID查询摄像机 -->
+    <select id="findOpticsDVByExhibitionId" parameterType="java.lang.String"  resultType="OpticsDVPlacePO">
+        <![CDATA[
+        SELECT
+          dp.id,
+          dp.placeName
+        FROM
+          h_device d,
+          p_dv_place dp
+        WHERE d.deviceId = dp.id
+          AND d.deviceType = 1
+          AND d.carId IN
+          (SELECT
+            c.id
+          FROM
+            h_exhibition e,
+            h_car c
+          WHERE e.id = c.exhibitionId
+            AND c.id = #{exhibitionId})
+        ]]>
+    </select>
+
+</mapper>

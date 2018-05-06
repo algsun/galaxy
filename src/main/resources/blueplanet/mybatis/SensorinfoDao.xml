@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blueplanet.mybatis.SensorinfoDao">
+
+	<!-- 查询系统所有监测指标 -->
+	<select id="findSensorinfo" resultType="SensorinfoVO" parameterType="java.util.HashMap">
+		<![CDATA[
+			SELECT 
+				s.sensorPhysicalid	as sensorPhysicalid,
+				s.en_name			as enName,
+				               ]]>
+            <if test="language=='en_US'">
+                s.en_name AS cnName,
+            </if>
+            <if test="language=='zh_CN'">
+                s.cn_name AS cnName,
+            </if>
+        <![CDATA[
+				s.sensorPrecision	as sensorPrecision,
+				s.units				as units,
+				s.positions			as positions,
+				s.isActive			as isActive,
+				s.showType          AS showType
+			FROM
+				m_sensorinfo AS s
+			ORDER BY 
+				s.positions
+		]]>
+	</select>
+
+	<!-- 根据监测指标标识查询监测指标对象 -->
+	<select id="findByPhysicalid" parameterType="java.lang.Integer"
+		resultType="SensorinfoVO">
+		<![CDATA[
+			SELECT 
+				s.sensorPhysicalid	AS sensorPhysicalid,
+				s.en_name			AS enName,
+				s.cn_name			AS cnName,
+				s.sensorPrecision	AS sensorPrecision,
+				s.units				AS units,
+				s.positions			AS positions,
+				s.isActive			AS isActive,
+				s.showType          AS showType,
+                s.minValue,
+                s.maxValue,
+                s.rangeType
+			FROM 
+				m_sensorinfo AS s
+			WHERE
+				s.sensorPhysicalid = ${value} 
+		]]>
+	</select>
+
+	<select id="findSensorUsedInfo" parameterType="java.util.Map" resultType="SensorUsedDataVO">
+		<![CDATA[
+			SELECT
+		]]>
+			<if test="language=='en_US'">
+              	ms.en_name AS sensorName,
+			</if>
+			<if test="language=='zh_CN'">
+				ms.cn_name AS sensorName,
+			</if>
+		<![CDATA[
+			 	 mc.usedCount AS usedCount
+			FROM
+			  m_sensorinfo ms,
+			  (SELECT
+				ls.sensorPhysicalId AS sensorPhysicalId,
+				COUNT(1) AS usedCount
+			  FROM
+				m_location_sensor ls
+				LEFT JOIN m_location ml
+				  ON ls.locationId = ml.id
+			  WHERE ml.siteId = #{siteId}
+			  GROUP BY ls.sensorPhysicalId) mc
+			WHERE mc.sensorPhysicalId = ms.sensorPhysicalid
+        ]]>
+	</select>
+
+</mapper>

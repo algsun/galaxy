@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.orion.bean">
+    <class name="RepairRecord" table="o_repair_record">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="identity"/>
+        </id>
+        <property name="identifier" length="11"/>
+        <many-to-one name="relic" class="com.microwise.orion.bean.Relic">
+            <column name="relicId"/>
+        </many-to-one>
+        <many-to-one name="repairReason" class="com.microwise.orion.bean.RepairReason">
+            <column name="repairReasonId"/>
+        </many-to-one>
+
+        <property name="extractDate" type="java.util.Date"/>
+        <property name="returnDate" type="java.util.Date"/>
+        <property name="siteId" length="36"/>
+        <property name="state" length="11"/>
+
+        <property name="repairInfo" length="255"/>
+        <many-to-one name="scheme" not-found="ignore" column="schemeId" class="com.microwise.orion.bean.Scheme" lazy="false"/>
+        <many-to-one name="institution" not-found="ignore" column="institutionId" class="com.microwise.orion.bean.Institution"
+                     lazy="false"/>
+        <many-to-one name="mainUser" column="mainUserId" class="com.microwise.blackhole.bean.User" lazy="false"/>
+        <property name="secondaryUserId" length="50"/>
+
+        <list name="drawRegisters" inverse="true" cascade="all">
+            <key column="repairRecordId"/>
+            <index column="id" type="integer"/>
+            <one-to-many class="com.microwise.orion.bean.DrawRegister"/>
+        </list>
+
+        <property name="notByReason" length="100"/>
+
+        <many-to-one name="checkUser" column="checkUserId" class="com.microwise.blackhole.bean.User"/>
+        <property name="checkDate" type="java.util.Date"/>
+    </class>
+</hibernate-mapping>

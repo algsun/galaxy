@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="blackhole:profile" extends="blackhole" namespace="/blackhole">
+        <action name="updateProfile" class="blackhole:updateProfileAction" method="view">
+            <result type="freemarker">/blackhole/pages/profile/update-profile.ftl</result>
+        </action>
+
+        <action name="doUpdateProfile" class="blackhole:updateProfileAction" method="execute">
+            <result type="freemarker">/blackhole/pages/profile/update-profile.ftl</result>
+        </action>
+
+        <action name="changePassword" class="blackhole:changePasswordAction" method="view">
+            <result type="freemarker">/blackhole/pages/profile/change-password.ftl</result>
+        </action>
+
+        <action name="doChangePassword" class="blackhole:changePasswordAction" method="execute">
+            <result type="freemarker">/blackhole/pages/profile/change-password.ftl</result>
+        </action>
+
+        <action name="resetIndividual" class="blackhole:resetIndividualAction" method="execute">
+            <result type="json">
+                <param name="includeProperties">success, message</param>
+            </result>
+        </action>
+        <!-- 我的任务 -->
+        <action name="listTask" class="blackhole:listTaskAction">
+            <result type="freemarker">/blackhole/pages/profile/list-task.ftl</result>
+        </action>
+        <action name="toViewTask" class="blackhole:viewTaskAction" method="view">
+            <result type="freemarker">/blackhole/pages/profile/task-view.ftl</result>
+        </action>
+        <action name="toAddTask" class="blackhole:addTaskAction" method="view">
+            <result type="freemarker">/blackhole/pages/profile/add-task.ftl</result>
+        </action>
+        <action name="addTask" class="blackhole:addTaskAction">
+            <result type="redirect">listTask.action</result>
+        </action>
+        <action name="addTaskRecord" class="blackhole:viewTaskAction">
+            <result type="redirect">toViewTask.action?id=${id}</result>
+        </action>
+    </package>
+
+</struts>

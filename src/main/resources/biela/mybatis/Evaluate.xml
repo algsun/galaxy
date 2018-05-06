@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="biela.Evaluate">
+    <select id="findComplianceRate" resultType="ComplianceRareVO" parameterType="java.util.Map">
+       <![CDATA[
+            SELECT
+                 ROUND(AVG(ma.`complianceRate`),4) AS comValue,
+                ma.sensorPhysicalid AS sensorId
+            FROM
+            m_avgdata AS ma
+            LEFT JOIN m_location AS ml
+            ON ma.`nodeid` = ml.`id`
+            WHERE complianceRate IS NOT NULL
+            AND siteId = #{siteId}
+            AND ma.`sensorPhysicalid` IN (32, 33, 36, 41, 42, 83)
+            AND ma.ms_date = DATE (#{date})
+            GROUP BY ma.`sensorPhysicalid`
+
+        ]]>
+	</select>
+
+
+    <select id="findAvgPeak" resultType="LocationSensorVO" parameterType="java.util.Map">
+       <![CDATA[
+
+            SELECT
+		      ma.sensorPhysicalid AS sensorId,
+              MAX(ma.maxValue) AS maxSensorValue,
+              MIN(ma.minValue) AS minSensorValue,
+              ma.ms_date AS stamp,
+              ms.`units` AS units
+            FROM
+              `m_avgdata` AS ma
+            LEFT JOIN m_location AS ml
+            ON ma.`nodeid` = ml.`id`
+            LEFT JOIN m_sensorinfo AS ms
+            ON ms.`id` = ma.`sensorPhysicalid`
+            WHERE siteId = #{siteId}
+            AND ma.ms_date > #{date}
+            AND ma.sensorPhysicalid = #{sensorId}
+            GROUP BY ma.ms_date
+
+        ]]>
+	</select>
+
+    <select id="findMixture" resultType="MixtureVO" parameterType="java.util.Map">
+       <![CDATA[
+          SELECT
+            ma.`sensorPhysicalid` AS sensorId,
+          AVG(ma.`complianceRate`) AS comRate,
+          AVG(ma.waveValue) AS waveValue,
+          ml.*
+          FROM
+            m_avgdata AS ma
+          LEFT JOIN m_location AS ml
+          ON ma.`nodeid` = ml.`id`
+          WHERE ml.`siteId` = #{siteId}
+          AND ma.`ms_date` > #{date}
+          AND ma.`sensorPhysicalid` IN (32, 33)
+          AND ma.`complianceRate` IS NOT NULL
+          GROUP BY ma.`sensorPhysicalid`
+        ]]>
+	</select>
+
+    <select id="findComRate" resultType="ComplianceRareVO" parameterType="java.util.Map">
+       <![CDATA[
+
+          SELECT
+            m.`sensorPhysicalid` AS sensorId,
+          AVG(m.`waveValue`) AS waveValue
+          FROM
+          m_avgdata AS m
+          WHERE m.nodeid IN
+            (SELECT ml.`id` FROM m_location AS ml
+              LEFT JOIN t_logicgroup AS tl ON ml.`siteId` = tl.`siteId`
+              WHERE tl.`parentLogicGroupId` = #{siteLogicId})
+          AND sensorPhysicalid IN (32, 33)
+          AND m.ms_date =#{date}
+          GROUP BY m.`sensorPhysicalid`
+
+        ]]>
+	</select>
+</mapper>

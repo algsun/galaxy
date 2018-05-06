@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="blackhole:theme" extends="blackhole" namespace="/blackhole">
+
+        <action name="theme" class="blackhole:themeAction" method="execute">
+            <result name="success" type="freemarker">
+                /blackhole/pages/theme/update-theme.ftl
+            </result>
+        </action>
+
+        <action name="changeTheme" class="blackhole:changeThemeAction" method="execute">
+            <result name="success" type="redirectAction">theme</result>
+        </action>
+
+    </package>
+</struts>

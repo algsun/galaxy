@@ -1,0 +1,15 @@
+<div>尊敬的用户，您好！</div>
+<div style="margin-top: 10px;padding-left: 2em;">
+    <div style="margin-top: 10px;">
+        <div> 请点击以下链接进行激活。</div>
+    </div>
+    <div style="margin-top: 20px;"><a href="{0}">{0}</a>
+        <div style="color:#999;margin-top:10px;">如果该链接无法点击，请直接复制以上链接到浏览器(例如IE)地址栏中访问。</div>
+    </div>
+    <div style="margin-top:30px;">此邮件为系统自动发送，无需回复。如果错误地给您发送了邮件，请不要理会。</div>
+</div>
+<div style="margin-top: 10px;padding-top: 20px;border-top: 1px dashed #DDD;color: #999;">
+    <div><span style="display: inline-block;width:100px;">技术支持：</span>西安元智系统技术有限责任公司</div>
+    <div><span style="display: inline-block;width:100px;">电话：</span>029-88246388</div>
+    <div><span style="display: inline-block;width:100px;">公司网址：</span>http://www.microwise-system.com</div>
+</div>

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="phoenix.mybatis.UserStatDao">
+
+	<!-- 查询人员活动频率  -->
+	<select id="findUserFrequencyOfActivitiesStat" parameterType="java.util.Map" resultType="Uma:UserStat">
+	<![CDATA[
+	    SELECT 
+	        u.`userName`,
+	        a.userCount
+	        FROM u_user_card uc 
+	        LEFT JOIN t_users u
+	        ON uc.`userId` = u.`id`
+	        LEFT JOIN (
+				SELECT 
+				  l.`userId`,
+				  COUNT(l.`userId`)  userCount
+				FROM
+				  u_location l 
+				WHERE 
+				    FROM_UNIXTIME(l.`currentTime`/1000,'%Y-%m-%d %h:%i:%s') >=#{startDate}
+				AND FROM_UNIXTIME(l.`currentTime`/1000,'%Y-%m-%d %h:%i:%s') <= #{endDate}
+				GROUP BY l.`userId`
+		              )  a
+	       ON a.userId = uc.`userId`
+	       WHERE u.`logicGroupId` = #{logicGroupId}
+	]]>
+	 <if test="isDesc">
+	    and  userCount >0
+	    ORDER BY  `userCount` DESC,userName
+	 </if>
+	 <if test="!isDesc">
+	 	ORDER BY  `userCount`,userName
+	 </if>
+		LIMIT 0,#{size}
+	</select>
+	
+   <!-- 查询活动次数为 n 的 人员数量-->
+   <select id="findUserCountByActivityCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+	<![CDATA[
+	    SELECT 
+	       COUNT(u.`id`)
+	        FROM u_user_card uc 
+	        LEFT JOIN t_users u
+	        ON uc.`userId` = u.`id`
+	        LEFT JOIN (
+				SELECT 
+				  l.`userId`,
+				  COUNT(l.`userId`)  userCount
+				FROM
+				  u_location l 
+				WHERE 
+				    FROM_UNIXTIME(l.`currentTime`/1000,'%Y-%m-%d %h:%i:%s') >=#{startDate}
+				AND FROM_UNIXTIME(l.`currentTime`/1000,'%Y-%m-%d %h:%i:%s') <= #{endDate}
+				GROUP BY l.`userId`
+		              )  a
+	       ON a.userId = uc.`userId`
+	       WHERE u.`logicGroupId` = #{logicGroupId}
+	 ]]>
+	 <if test="activityCount == 0">
+	 	       AND   a.userCount IS NULL 	
+	 </if>
+	 <if test="activityCount != 0">
+	 	       AND   a.userCount = #{activityCount}	
+	 </if>
+	</select>
+	
+   <!-- 查询一个时间段内是否有数据-->
+   <select id="hasData" parameterType="java.util.Map" resultType="java.lang.Integer">
+	<![CDATA[
+				SELECT 
+				  COUNT(l.`userId`)  userCount
+				FROM
+				  u_location l 
+				INNER JOIN t_users u
+				ON l.userId = u.`id`
+				WHERE 
+				    FROM_UNIXTIME(l.`currentTime`/1000,'%Y-%m-%d %h:%i:%s') >=#{startDate}
+				AND FROM_UNIXTIME(l.`currentTime`/1000,'%Y-%m-%d %h:%i:%s') <= #{endDate}
+				AND u.`logicGroupId` = #{logicGroupId}
+	]]>
+	</select>
+	
+   <!-- 查询人员早晚 时刻统计-->
+   <select id="findUserMorningAndEveningStat" parameterType="java.util.Map" resultType="java.util.Map">
+   <!-- 1、将人员历史数据 按查询时间截取 排序  
+   2、将第一步处理的数据按 day 分组，每组的获得的数据为需要的数据  
+   3、将第二步中数据按人员id 分组 统计数量 并倒序排序 -->
+	<![CDATA[
+			SELECT 
+			    u.userName,
+			    COUNT(b.userId)  number
+			FROM 
+			     (  SELECT 
+				     *
+			        FROM (  
+						    SELECT 
+						       userId ,
+						       lt.`currentTime`
+						    FROM 
+						       u_location lt
+						    WHERE 
+						       lt.`currentTime` >= #{startDate}
+						    AND lt.`currentTime` <= #{endDate}
+			]]>   
+			<if test="isDesc">
+			<![CDATA[
+			               ORDER BY lt.`currentTime`  DESC
+			]]>  
+			</if>
+			<if test="!isDesc">
+			<![CDATA[
+			               ORDER BY lt.`currentTime`  
+			]]>  
+			</if>
+			<![CDATA[
+						      ) AS a
+				  GROUP BY  FROM_UNIXTIME(currentTime/1000,'%Y-%m-%d')
+			       )  AS  b 
+			LEFT JOIN 
+			      t_users  u
+			ON  b.userId = u.id
+			WHERE 
+			    u.logicGroupId = #{logicGroupId}
+			GROUP BY b.userId
+			ORDER BY number DESC,u.`id`
+			LIMIT #{size}
+	]]>
+	</select>
+
+   <!-- 查询人员 最早 来和最晚走的人员-->
+   <select id="findMorningAndEveningUser" parameterType="java.util.Map" resultType="java.util.Map">
+	<![CDATA[
+			SELECT 
+			 u.userName,
+			 `time`
+			FROM 
+			 (
+				SELECT 
+				   userId,
+				   FROM_UNIXTIME(currentTime/1000,'%Y-%m-%d %H:%i:%s')  AS `time`
+				FROM 
+				   u_location lt 
+				WHERE 
+				   lt.`currentTime` >= #{startDate}
+				AND
+				   lt.`currentTime` <= #{endDate}
+  	]]>
+  	<if test="isDesc">
+  					ORDER BY  FROM_UNIXTIME(currentTime/1000,'%H:%i:%s') DESC
+  	</if>
+  	<if test="!isDesc">
+  					ORDER BY  FROM_UNIXTIME(currentTime/1000,'%H:%i:%s') 
+  	</if>
+  	<![CDATA[
+			  ) AS a 
+			LEFT JOIN 
+			   t_users  u
+			ON  a.userId = u.id
+			WHERE 
+			    u.logicGroupId = #{logicGroupId}
+			LIMIT 1
+	]]>
+	</select>	
+	
+	
+</mapper>

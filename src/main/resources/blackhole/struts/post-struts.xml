@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+        "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+
+    <package name="blackhole:post" extends="blackhole">
+
+        <action name="publicPost" class="blackhole:publicAndInternalPostAction">
+            <result name="success" type="json">
+                <param name="root">posts</param>
+            </result>
+        </action>
+        <action name="indexListTasks" class="blackhole:listTaskAction" method="indexListTasks">
+            <result name="success" type="json">
+                <param name="root">tasks</param>
+            </result>
+        </action>
+
+        <action name="listPosts" class="blackhole:listPostAction">
+            <result name="not-login" type="freemarker">/blackhole/pages/post/layout-not-login.ftl</result>
+            <result name="success" type="freemarker">/blackhole/pages/post/layout-login.ftl</result>
+        </action>
+
+        <action name="viewPost" class="blackhole:viewPostAction">
+            <result name="not-login" type="freemarker">/blackhole/pages/post/layout-not-login.ftl</result>
+            <result name="success" type="freemarker">/blackhole/pages/post/layout-login.ftl</result>
+        </action>
+
+
+        <!-- 新闻管理 -->
+
+        <action name="queryPost" class="blackhole:queryPostAction">
+            <result type="freemarker">/blackhole/pages/post/list-post.ftl</result>
+        </action>
+
+        <action name="addPost" class="blackhole:addPostAction" method="toAdd">
+            <result type="freemarker">/blackhole/pages/post/add-post.ftl</result>
+        </action>
+
+        <action name="doAddPost" class="blackhole:addPostAction" method="doAdd">
+            <result type="redirect">/blackhole/queryPost.action</result>
+            <result name="input" type="freemarker">/blackhole/pages/post/add-post.ftl</result>
+        </action>
+
+        <action name="deletePost" class="blackhole:deletePostAction">
+            <result type="redirect">/blackhole/queryPost.action</result>
+        </action>
+
+        <action name="updatePost" class="blackhole:updatePostAction" method="toUpdate">
+            <result type="freemarker">/blackhole/pages/post/update-post.ftl</result>
+        </action>
+
+        <action name="doUpdatePost" class="blackhole:updatePostAction" method="doUpdate">
+            <result type="redirect">/blackhole/queryPost.action</result>
+        </action>
+    </package>
+
+</struts>

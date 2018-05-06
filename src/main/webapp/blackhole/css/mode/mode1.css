@@ -1,0 +1,12 @@
+body {
+    background:url("../../images/mode/mode1/body-bg1.png");
+}
+.mode1_log{
+    background: url("../../images/mode/mode1/login_bg1.png");
+}
+.image_bg{
+    background: url("../../images/mode/mode1/image_bg1.png");
+}
+.input_bg{
+    background: url("../../images/mode/mode1/input_bg1.png");
+}

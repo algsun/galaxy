@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+        "http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+	<!-- 库房管理 -->
+    <package name="orion:storeroom" extends="orion" namespace="/orion">
+        <!-- 库房管理 -->
+		<action name="stockBind" class="orion:stockBindAction" method="stockBind">
+            <result name="success" type="freemarker">/orion/pages/storeroom/user-zone-stock.ftl</result>
+        </action>
+		<action name="userList" class="orion:stockBindAction" method="userList">
+            <result name="success" type="freemarker">/orion/pages/storeroom/user-bind-stock.ftl</result>
+        </action>
+		<action name="userBind" class="orion:stockBindAction" method="userBind">
+            <result name="success" type="json">
+                <param name="includeProperties">success</param>
+            </result>
+        </action>
+		<action name="deleteBind" class="orion:stockBindAction" method="deleteBind">
+            <result name="success" type="redirect">stockBind.action</result>
+        </action>
+    </package>
+</struts>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="phoenix.mybatis.InventoryStatDao">
+
+	<!-- 查询盘点年统计 -->
+	<select id="findInventoryStat" parameterType="java.util.Map" resultType="Uma:InventoryStat">
+		<![CDATA[
+			SELECT  
+			#{year}   `year`,
+			COUNT(id)  `count`,
+			MAX(tagCount)  `sum`,
+			SUM(errorCount) `errorSum`,
+			ROUND(SUM(errorCount)/SUM(tagCount)*100,2) errorProportion
+			FROM 
+			o_inventory oi 
+			WHERE 
+			YEAR(oi.deadline) = #{year}
+			AND 
+			oi.siteId = #{siteId}
+	  ]]>
+	</select>
+
+    <!-- 查询盘点年统计 -->
+    <select id="findStockStat" parameterType="java.lang.String" resultType="Uma:StockStat">
+        <![CDATA[
+			SELECT
+		    YEAR(oi.deadline) `year` ,
+			COUNT(id)  `count`
+			FROM
+			o_inventory oi
+			WHERE
+			oi.siteId = #{siteId}
+			GROUP BY
+			YEAR(oi.deadline)
+	  ]]>
+    </select>
+
+    <!-- 单次盘点识别率 -->
+    <select id="findSingleRecognition" parameterType="java.util.Map" resultType="java.util.Map">
+        <![CDATA[
+		SELECT
+        deadline             AS `date`,
+        scanNumber      AS scanNumber,
+        tagNumber       AS tagNumber
+        FROM o_inventory
+        WHERE tagNumber != 0
+        AND YEAR(deadline) = #{year}
+        AND siteId =#{siteId}
+        GROUP BY deadline
+	  ]]>
+    </select>
+
+</mapper>

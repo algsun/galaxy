@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.orion.bean">
+    <class name="Institution" table="o_institution">
+
+        <id name="id" type="java.lang.Integer">
+            <generator class="identity"/>
+        </id>
+
+        <property name="siteId" length="22"/>
+        <property name="name" length="100"/>
+        <property name="seat" length="100"/>
+        <property name="mailing" length="100"/>
+        <property name="zipcode" length="11"/>
+        <property name="qualification" length="100"/>
+        <property name="code" length="50"/>
+        <property name="institutionType" length="11"/>
+        <property name="createDate" type="java.util.Date"/>
+
+    </class>
+</hibernate-mapping>

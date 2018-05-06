@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+
+	<t_zone zoneId="333" siteId="11010101" zoneName="故宫那个大门"
+		dataVersion="0" />
+	<p_dv_place id="123" dvType="1" placeCode="222" placeName="点位名称"
+		createTime="2013-02-25 12:01:01" imageRealWidth="55" imageWidth="55"
+		imageHeight="30" enable="1" remark="备注" dvIp="192.168.0.211" zoneId="333" />
+	<p_dv_place_optics dvPlaceId="123" dvPort="65535"
+		ioIp="192.168.0.222" ioPort="65534" lightOnTime="1000" lightOffTime="1000"
+		photographTime="500" isIoOn="1" isLightOn="0" />
+
+	<p_dv_place id="124" dvType="1" placeCode="223" placeName="测试重名"
+		createTime="2013-02-25 12:01:01" imageRealWidth="55" imageWidth="55"
+		imageHeight="30" enable="1" remark="备注" dvIp="192.168.0.211" zoneId="333" />
+	<p_dv_place_optics dvPlaceId="124" dvPort="65533"
+		ioIp="192.168.0.222" ioPort="65532" lightOnTime="1000" lightOffTime="1000"
+		photographTime="500" isIoOn="1" isLightOn="0" />
+
+</dataset>

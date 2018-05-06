@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+
+    <session-factory>
+
+        <!-- 数据库方言 -->
+        <!-- SQL dialect -->
+        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+
+        <!-- Enable Hibernate's automatic session context management -->
+        <property name="current_session_context_class">org.springframework.orm.hibernate4.SpringSessionContext
+        </property>
+
+        <!-- 缓存 -->
+        <!-- Disable the second-level cache -->
+        <property name="hibernate.cache.use_second_level_cache">false</property>
+        <property name="hibernate.cache.use_query_cache">false</property>
+        <property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
+
+        <!-- Echo all executed SQL to stdout -->
+        <property name="show_sql">false</property>
+        <property name="format_sql">false</property>
+
+        <!-- Drop and re-create the database schema on startup -->
+        <property name="hbm2ddl.auto">validate</property>
+
+        <!-- blackhole:mapping映射文件 -->
+        <mapping resource="blackhole/mappings/SysLog.map.xml"/>
+        <mapping resource="blackhole/mappings/AreaCodeCN.map.xml"/>
+        <mapping resource="blackhole/mappings/Individuation.map.xml"/>
+        <mapping resource="blackhole/mappings/LogicGroup.map.xml"/>
+        <mapping resource="blackhole/mappings/Role.map.xml"/>
+        <mapping resource="blackhole/mappings/Site.map.xml"/>
+        <mapping resource="blackhole/mappings/Privilege.map.xml"/>
+        <mapping resource="blackhole/mappings/User.map.xml"/>
+        <mapping resource="blackhole/mappings/Subsystem.map.xml"/>
+        <mapping resource="blackhole/mappings/Post.map.xml"/>
+        <mapping resource="blackhole/mappings/Task.map.xml"/>
+        <mapping resource="blackhole/mappings/TaskRecord.map.xml"/>
+        <mapping resource="blackhole/mappings/Subscribe.map.xml"/>
+        <mapping resource="blackhole/mappings/Department.map.xml"/>
+        <mapping resource="blackhole/mappings/LogicGroupSubsystemDisable.map.xml"/>
+        <mapping resource="blackhole/mappings/PrivilegeOperate.map.xml"/>
+
+
+        <!-- proxima -->
+        <mapping resource="proxima/mappings/ColorDictionary.map.xml"/>
+        <mapping resource="proxima/mappings/DVPlace.map.xml"/>
+        <mapping resource="proxima/mappings/DVPlaces.map.xml"/>
+        <mapping resource="proxima/mappings/FTPProfile.map.xml"/>
+        <mapping resource="proxima/mappings/InfraredMarkRegion.map.xml"/>
+        <mapping resource="proxima/mappings/InfraredMarkRegionData.map.xml"/>
+        <mapping resource="proxima/mappings/InfraredPictureData.map.xml"/>
+        <mapping resource="proxima/mappings/MarkSegment.map.xml"/>
+        <mapping resource="proxima/mappings/MarkSegmentPosition.map.xml"/>
+        <mapping resource="proxima/mappings/QRMarkSegment.map.xml"/>
+        <mapping resource="proxima/mappings/QRMarkSegmentPosition.map.xml"/>
+        <mapping resource="proxima/mappings/PhotographSchedule.map.xml"/>
+        <mapping resource="proxima/mappings/Picture.map.xml"/>
+        <mapping resource="proxima/mappings/Zone.map.xml"/>
+
+        <!-- orion 文物管理 -->
+        <mapping resource="orion/mappings/Era.map.xml"/>
+        <mapping resource="orion/mappings/Level.map.xml"/>
+        <mapping resource="orion/mappings/Texture.map.xml"/>
+        <mapping resource="orion/mappings/Accident.map.xml"/>
+        <mapping resource="orion/mappings/Appraisal.map.xml"/>
+        <mapping resource="orion/mappings/Attachment.map.xml"/>
+        <mapping resource="orion/mappings/Inscription.map.xml"/>
+        <mapping resource="orion/mappings/StatusQuo.map.xml"/>
+        <mapping resource="orion/mappings/Photo.map.xml"/>
+        <mapping resource="orion/mappings/Property.map.xml"/>
+        <mapping resource="orion/mappings/RelicProperty.map.xml"/>
+        <mapping resource="orion/mappings/Restore.map.xml"/>
+        <mapping resource="orion/mappings/Rubbing.map.xml"/>
+        <mapping resource="orion/mappings/Relic.map.xml"/>
+        <mapping resource="orion/mappings/Rove.map.xml"/>
+        <mapping resource="orion/mappings/OutEventAttachment.map.xml"/>
+        <mapping resource="orion/mappings/RelicLabel.map.xml"/>
+        <mapping resource="orion/mappings/Institution.map.xml"/>
+        <mapping resource="orion/mappings/InstitutionRoom.map.xml"/>
+        <mapping resource="orion/mappings/RepairRecord.map.xml"/>
+        <mapping resource="orion/mappings/Scheme.map.xml"/>
+        <mapping resource="orion/mappings/RepairReason.map.xml"/>
+        <mapping resource="orion/mappings/RepairPhoto.map.xml"/>
+        <mapping resource="orion/mappings/ImageDatum.map.xml"/>
+        <mapping resource="orion/mappings/DrawRegister.map.xml"/>
+        <mapping resource="orion/mappings/RepairAssessment.map.xml"/>
+        <mapping resource="orion/mappings/RepairReview.map.xml"/>
+        <mapping resource="orion/mappings/situation.map.xml"/>
+        <mapping resource="orion/mappings/repairLog.map.xml"/>
+        <mapping resource="orion/mappings/detectionAnalysis.map.xml"/>
+        <mapping resource="orion/mappings/InventoryTag.map.xml"/>
+        <mapping resource="orion/mappings/EventRelic.map.xml"/>
+        <mapping resource="orion/mappings/Inventory.map.xml"/>
+        <mapping resource="orion/mappings/InventoryError.map.xml"/>
+        <mapping resource="orion/mappings/InventoryOut.map.xml"/>
+        <mapping resource="orion/mappings/OutEvent.map.xml"/>
+        <mapping resource="orion/mappings/InventoryZone.map.xml"/>
+        <mapping resource="orion/mappings/UserZone.map.xml"/>
+        <mapping resource="orion/mappings/EventZone.map.xml"/>
+        <mapping resource="orion/mappings/Comment.map.xml"/>
+        <mapping resource="orion/mappings/HealthEvaluation.map.xml"/>
+
+        <!--档案管理-->
+        <mapping resource="cybertron/mappings/Volume.map.xml"/>
+        <mapping resource="cybertron/mappings/Record.map.xml"/>
+        <mapping resource="cybertron/mappings/Attachment.map.xml"/>
+        <mapping resource="cybertron/mappings/Config.map.xml"/>
+
+
+    </session-factory>
+
+</hibernate-configuration> 

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blueplanet.Notification">
+    <insert id="addNotification" parameterType="NotificationPO">
+        <![CDATA[
+         INSERT INTO m_control_module_notification
+            (
+            id,
+             userId,
+             siteId,
+             subscribeType,
+             triggerEvent,
+             notifyMethod
+             )
+        VALUES (
+            #{id},
+            #{userId},
+            #{siteId},
+            #{subscribeType},
+            #{triggerEvent},
+            #{notifyMethod}
+             );
+        ]]>
+    </insert>
+
+    <insert id="addNotificationDevice" parameterType="NotificationPO">
+        <![CDATA[
+         INSERT INTO m_control_module_notification_device
+            (
+            id,
+            deviceId ,
+            notifyId
+             )
+        VALUES (
+            #{id},
+            #{deviceId} ,
+            #{notifyId}
+             );
+        ]]>
+    </insert>
+
+    <select id="findNotificationByUserId" parameterType="java.util.Map" resultType="NotificationPO">
+        <![CDATA[
+         SELECT
+          id,
+          userId,
+          subscribeType,
+          triggerEvent,
+          notifyMethod
+          FROM
+          m_control_module_notification
+         WHERE
+          userId=#{userId}
+          AND
+          siteId=#{siteId}
+        ]]>
+    </select>
+
+    <delete id="deleteNotificationByUserId" parameterType="java.util.Map">
+        <![CDATA[
+         DELETE FROM
+          m_control_module_notification
+         WHERE
+          userId=#{userId}
+          AND
+          siteId=#{siteId}
+        ]]>
+    </delete>
+
+    <delete id="deleteNotificationDeviceByNotifyId" parameterType="java.lang.String">
+        <![CDATA[
+         DELETE FROM
+          m_control_module_notification_device
+         WHERE
+          notifyId=#{value}
+        ]]>
+    </delete>
+
+    <select id="findNotificationDevice" parameterType="java.lang.String"  resultType="java.lang.String">
+        <![CDATA[
+         SELECT
+          deviceId
+          FROM
+          m_control_module_notification_device
+         WHERE
+          notifyId = #{value}
+        ]]>
+    </select>
+
+</mapper>

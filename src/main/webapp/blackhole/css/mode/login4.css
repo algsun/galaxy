@@ -1,0 +1,78 @@
+body {
+    background-image: url(../../images/mode/mode4/login4.png);
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+}
+
+.form-background {
+    width: 428px;
+    height: 330px;
+    background-image: url(../../images/mode/mode4/login_border.png);
+    margin-top: 150px;
+    margin-right: 50px;
+}
+
+.m-l-70{
+    margin-left: 70px;
+}
+
+.m-l-85{
+    margin-left: 85px;
+}
+
+.index-image {
+    margin: 0 auto;
+    width: 960px;
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.index-title2 {
+    font-size: 45px;
+    color: #ffffff;
+    letter-spacing: 2px;
+    margin-top: 20px;
+}
+
+.div-subsystem {
+    text-align: center;
+}
+
+.subsystem--hexagon-large {
+    background-image: url(../../images/mode/mode3/hexagon-large.png);
+    width: 190px;
+    height: 218px;
+}
+
+.blueplanet-p {
+    color: #0d7bac;
+}
+
+.phoenix-p {
+    color: #005dac;
+}
+
+.proxima-p {
+    color: #00561f;
+}
+
+.font-30 {
+    font-size: 30px;
+}
+
+.font-18 {
+    font-size: 18px;
+}
+
+.subsystem-hexagon-small {
+    background-image: url(../../images/mode/mode3/hexagon-small.png);
+    height: 112px;
+}
+
+.blueplanet-summarize {
+    background-image: url(../../images/mode/mode3/hexagon-small.png);
+    height: 112px;
+}
+

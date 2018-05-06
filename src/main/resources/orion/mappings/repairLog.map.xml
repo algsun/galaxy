@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.orion.bean">
+    <class name="RepairLog" table="o_repair_log">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="repairRecord" class="com.microwise.orion.bean.RepairRecord" lazy="false">
+            <column name="repairRecordId" />
+        </many-to-one>
+
+        <property name="repairPerson" length="50"/>
+
+        <property name="stamp" type="java.util.Date">
+            <column name="stamp" length="19" not-null="true">
+                <comment>时间日期</comment>
+            </column>
+        </property>
+        <property name="log" type="java.lang.String">
+            <column name="log" length="1000" not-null="false">
+                <comment>批准时间</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

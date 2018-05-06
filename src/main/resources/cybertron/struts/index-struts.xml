@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+        "http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+    <package name="cybertron:index" extends="cybertron" namespace="/cybertron">
+        <!-- 子系统入口( name 为空是有意的)-->
+        <action name="">
+            <result type="redirect">/cybertron/volume/1/records</result>
+        </action>
+    </package>
+</struts>

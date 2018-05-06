@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.orion.bean">
+    <class name="Relic" table="o_historical_relic">
+        <id name="id" type="java.lang.Integer" column="id">
+            <generator class="identity"/>
+        </id>
+        <many-to-one name="era" class="Era" lazy="false">
+            <column name="era" not-null="true">
+                <comment>时代</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="level" class="Level" lazy="false">
+            <column name="level" not-null="true">
+                <comment>级别</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="texture" class="Texture" lazy="false">
+            <column name="texture" not-null="true">
+                <comment>文物质地</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="zone" column="zoneId"
+                     class="com.microwise.proxima.bean.Zone"></many-to-one>
+
+        <property name="totalCode" type="java.lang.String" column="totalCode"/>
+
+        <property name="siteId" type="java.lang.String">
+            <column name="siteId" length="50">
+                <comment>站点编号</comment>
+            </column>
+        </property>
+        <property name="catalogCode" type="java.lang.String">
+            <column name="catalogCode" length="20" not-null="true">
+                <comment>编目号</comment>
+            </column>
+        </property>
+        <property name="typeCode" type="java.lang.String">
+            <column name="typeCode" length="20" not-null="true">
+                <comment>分类号</comment>
+            </column>
+        </property>
+        <property name="name" type="java.lang.String">
+            <column name="name" length="50" not-null="true">
+                <comment>名称</comment>
+            </column>
+        </property>
+        <property name="count" type="java.lang.Integer">
+            <column name="count">
+                <comment>件数</comment>
+            </column>
+        </property>
+
+        <property name="state" type="java.lang.Integer">
+            <column name="state" not-null="true">
+                <comment>文物状态：0、在库 ;1、待出库；2、出库</comment>
+            </column>
+        </property>
+        <property name="hasTag" type="org.hibernate.type.NumericBooleanType">
+            <column name="hasTag" not-null="true">
+                <comment>是否有电子标签：0：没有 1： 有</comment>
+            </column>
+        </property>
+
+        <property name="iscanceled" type="org.hibernate.type.NumericBooleanType">
+            <column name="is_canceled" not-null="true"></column>
+        </property>
+
+        <bag name="relicPropertielist" inverse="true">
+            <key column="relicId"/>
+            <one-to-many class="RelicProperty"/>
+        </bag>
+
+        <!--
+                <set name="relicPropertiySet" inverse="true" order-by="id desc">
+                    <key>
+                        <column name="propertyId" />
+                    </key>
+                    <one-to-many class="RelicProperty" />
+                </set>
+                -->
+
+        <set name="restores" inverse="true" order-by="restoreDate desc">
+            <key>
+                <column name="relicId"/>
+            </key>
+            <one-to-many class="Restore"/>
+        </set>
+
+        <set name="appraisals" inverse="true" order-by="appraisalDate desc">
+            <key>
+                <column name="relicId"/>
+            </key>
+            <one-to-many class="Appraisal"/>
+        </set>
+        <set name="statusQuos" inverse="true" order-by="quoDate desc">
+            <key>
+                <column name="relicId"/>
+            </key>
+            <one-to-many class="StatusQuo"/>
+        </set>
+        <set name="healthEvaluations" inverse="true" order-by="evaluationDate desc">
+            <key>
+                <column name="relicId"/>
+            </key>
+            <one-to-many class="HealthEvaluation"/>
+        </set>
+        <set name="photos" inverse="true">
+            <key>
+                <column name="relicId"/>
+            </key>
+            <one-to-many class="Photo"/>
+        </set>
+        <set name="inscriptions" inverse="true">
+            <key>
+                <column name="relicId"/>
+            </key>
+            <one-to-many class="Inscription"/>
+        </set>
+        <set name="accidents" inverse="true" order-by="accidentDate desc">
+            <key>
+                <column name="relicId"/>
+            </key>
+            <one-to-many class="Accident"/>
+        </set>
+        <set name="rubbings" inverse="true">
+            <key>
+                <column name="relicId"/>
+            </key>
+            <one-to-many class="Rubbing"/>
+        </set>
+        <set name="attachments" inverse="true" order-by="attachmentDate desc">
+            <key>
+                <column name="relicId"/>
+            </key>
+            <one-to-many class="Attachment"/>
+        </set>
+        <set name="roves" fetch="select" lazy="false">
+            <key>
+                <column name="relicId"/>
+            </key>
+            <one-to-many class="Rove"/>
+        </set>
+
+        <set name="relicLabels" table="o_relic_label_ref">
+            <key column="relicId"/>
+            <many-to-many column="labelId" unique="true" class="RelicLabel"/>
+        </set>
+    </class>
+</hibernate-mapping>

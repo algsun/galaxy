@@ -1,0 +1,309 @@
+.divImage {
+    width: 35%;
+    float: left;
+    height: 100%;
+    text-align: center;
+    /*box-sizing: border-box;*/
+    /*padding: 10px;*/
+}
+
+.slideImage {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.contentSensor {
+    width: 65%;
+    float: left;
+    height: 100%;
+    overflow: hidden;
+}
+
+.divContent h4{
+    /*width: 100%;*/
+    /*height: 30%;*/
+    font-family: "黑体";
+}
+
+.divLocaltime{
+    height: 5%;
+    padding: 0;
+    margin: 0;
+}
+
+.sensor {
+    display: table;
+    margin: 0 auto;
+    overflow: hidden;
+    width: 100%;
+}
+
+.sensorDiv {
+    width: 12%;
+    height: 12%;
+    /*float: left;*/
+    margin: 3px;
+    border: solid 1px #ccc;
+    border-radius: 10px;
+    background-color: #E0FFFF;
+}
+
+.contentPre {
+    height: 70%;
+    margin: 10px;
+    color: #000000;
+    overflow: hidden;
+    line-height: 20px;
+    border: none;
+    font-family: "黑体";
+    font-size: 14px;
+    background-color: transparent;
+}
+
+.num {
+    font-family: ds-digii;
+}
+
+.sensorValueDiv {
+    width: 100%;
+    height: 40%;
+    text-align: center;
+}
+
+.sensorImageCnNameDiv {
+    width: 100%;
+    height: 60%;
+}
+
+.sensorValue {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: 20px;
+}
+
+.sensorImageDiv {
+    width: 35%;
+    height: 100%;
+    float: left;
+    /*background-color: red;*/
+    /*overflow:hidden;*/
+}
+
+.sensorImage {
+    max-width: 100%;
+    max-height: 100%
+}
+
+.sensorCnNameUnits {
+    width: 60%;
+    height: 100%;
+    float: right;
+    padding: 5px 0;
+}
+
+.sensorCnName {
+    font-size: 17px;
+}
+
+.sensorUnits {
+    font-size: 17px;
+}
+
+/*.div {*/
+/*filter:alpha(opacity=50);*//*IE*/
+/*opacity:0.5;*//*Mozilla*/
+/*}*/
+.lucency {
+    filter: alpha(opacity = 85); /*IE*/
+    opacity: 0.85; /*Mozilla,Chrome*/
+}
+
+.mw_icon_sensor_32 {
+    background-image: url(../images/sensor/sensor-32.png);
+}
+
+.mw_icon_sensor_33 {
+    background-image: url(../images/sensor/sensor-33.png);
+}
+
+.mw_icon_sensor_34 {
+    background-image: url(../images/sensor/sensor-34.png);
+}
+
+.mw_icon_sensor_35 {
+    background-image: url(../images/sensor/sensor-35.png);
+}
+
+.mw_icon_sensor_36 {
+    background-image: url(../images/sensor/sensor-36.png);
+}
+
+.mw_icon_sensor_37 {
+    background-image: url(../images/sensor/sensor-37.png);
+}
+
+.mw_icon_sensor_38 {
+    background-image: url(../images/sensor/sensor-38.png);
+}
+
+.mw_icon_sensor_39 {
+    background-image: url(../images/sensor/sensor-39.png);
+}
+
+.mw_icon_sensor_40 {
+    background-image: url(../images/sensor/sensor-40.png);
+}
+
+.mw_icon_sensor_41 {
+    background-image: url(../images/sensor/sensor-41.png);
+}
+
+.mw_icon_sensor_42 {
+    background-image: url(../images/sensor/sensor-42.png);
+}
+
+.mw_icon_sensor_43 {
+    background-image: url(../images/sensor/sensor-43.png);
+}
+
+.mw_icon_sensor_44 {
+    background-image: url(../images/sensor/sensor-44.png);
+}
+
+.mw_icon_sensor_45 {
+    background-image: url(../images/sensor/sensor-45.png);
+}
+
+.mw_icon_sensor_46 {
+    background-image: url(../images/sensor/sensor-46.png);
+}
+
+.mw_icon_sensor_47 {
+    background-image: url(../images/sensor/sensor-47.png);
+}
+
+.mw_icon_sensor_48 {
+    background-image: url(../images/sensor/sensor-48.png);
+}
+
+.mw_icon_sensor_49 {
+    background-image: url(../images/sensor/sensor-49.png);
+}
+
+.mw_icon_sensor_50 {
+    background-image: url(../images/sensor/sensor-50.png);
+}
+
+.mw_icon_sensor_51 {
+    background-image: url(../images/sensor/sensor-51.png);
+}
+
+.mw_icon_sensor_52 {
+    background-image: url(../images/sensor/sensor-52.png);
+}
+
+.mw_icon_sensor_53 {
+    background-image: url(../images/sensor/sensor-53.png);
+}
+
+.mw_icon_sensor_54 {
+    background-image: url(../images/sensor/sensor-54.png);
+}
+
+.mw_icon_sensor_55 {
+    background-image: url(../images/sensor/sensor-55.png);
+}
+
+.mw_icon_sensor_56 {
+    background-image: url(../images/sensor/sensor-56.png);
+}
+
+.mw_icon_sensor_57 {
+    background-image: url(../images/sensor/sensor-57.png);
+}
+
+.mw_icon_sensor_58 {
+    background-image: url(../images/sensor/sensor-58.png);
+}
+
+.mw_icon_sensor_59 {
+    background-image: url(../images/sensor/sensor-59.png);
+}
+
+.mw_icon_sensor_60 {
+    background-image: url(../images/sensor/sensor-60.png);
+}
+
+.mw_icon_sensor_61 {
+    background-image: url(../images/sensor/sensor-61.png);
+}
+
+.mw_icon_sensor_62 {
+    background-image: url(../images/sensor/sensor-62.png);
+}
+
+.mw_icon_sensor_63 {
+    background-image: url(../images/sensor/sensor-63.png);
+}
+
+.mw_icon_sensor_64 {
+    background-image: url(../images/sensor/sensor-64.png);
+}
+
+.mw_icon_sensor_65 {
+    background-image: url(../images/sensor/sensor-65.png);
+}
+
+.mw_icon_sensor_66 {
+    background-image: url(../images/sensor/sensor-66.png);
+}
+
+.mw_icon_sensor_67 {
+    background-image: url(../images/sensor/sensor-67.png);
+}
+
+.mw_icon_sensor_68 {
+    background-image: url(../images/sensor/sensor-68.png);
+}
+
+.mw_icon_sensor_69 {
+    background-image: url(../images/sensor/sensor-69.png);
+}
+
+.mw_icon_sensor_70 {
+    background-image: url(../images/sensor/sensor-70.png);
+}
+
+.mw_icon_sensor_71 {
+    background-image: url(../images/sensor/sensor-71.png);
+}
+
+.mw_icon_sensor_72 {
+    background-image: url(../images/sensor/sensor-72.png);
+}
+
+.mw_icon_sensor_73 {
+    background-image: url(../images/sensor/sensor-73.png);
+}
+
+.mw_icon_sensor_74 {
+    background-image: url(../images/sensor/sensor-74.png);
+}
+
+.mw_icon_sensor_75 {
+    background-image: url(../images/sensor/sensor-75.png);
+}
+
+.mw_icon_sensor_76 {
+    background-image: url(../images/sensor/sensor-76.png);
+}
+
+.mw_icon_sensor_77 {
+    background-image: url(../images/sensor/sensor-77.png);
+}
+
+.mw_icon_sensor_78 {
+    background-image: url(../images/sensor/sensor-78.png);
+}
+
+

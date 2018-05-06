@@ -1,0 +1,56 @@
+/**
+* ztree 自定义样式
+*
+* @author gaohui
+* @date 2013-03-04
+*/
+
+/* 增加字体大小, 默认为 12px */
+.ztree * {
+    font-size: 14px;
+    box-sizing: content-box;
+}
+
+/* 增大节点的间隔，默认为 0 */
+.ztree li {
+    margin: 3px 0;
+}
+
+/* 取消鼠标悬停下划线 */
+.ztree li a:hover {
+    text-decoration: none;
+}
+
+/* 取消选中，不选中的跳动 */
+.ztree li {
+    line-height: 20px;
+}
+
+.ztree li a {
+    padding: 3px 0;
+}
+
+.ztree li a:hover {
+    background-color: #ddd;
+}
+
+.ztree li a.curSelectedNode {
+    border-width: 0;
+    /*padding-top: 1px;*/
+    padding: 3px 0;
+    height: 17px;
+    background-color: #87ceeb;
+}
+
+/*自定义图标*/
+/* 站点图标 icon for site */
+.ztree li span.site_ico_open, .ztree li span.site_ico_close {
+    background-image: url(../images/icon/house3-16.png);
+    margin-right: 2px;
+}
+
+/* 区域图标 icon for area */
+.ztree li span.area_ico_open, .ztree li span.area_ico_close {
+    background-image: url(../images/icon/house2-16.png);
+    margin-right: 2px;
+}

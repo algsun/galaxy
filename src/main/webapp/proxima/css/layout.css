@@ -1,0 +1,11 @@
+.container-wrapper {
+	
+	background: url(main/images/main_bg.gif);
+	/*background: url(main/images/main_bgz.jpg);*/
+}
+
+#container {
+	height:100%;
+	padding: 0 10px;
+	background-color:white;
+}

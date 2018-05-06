@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="blueplanet.mybatis.FollowerDao">
+    <select id="findFollower" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+        <![CDATA[
+			SELECT
+			  COUNT(1)
+			FROM
+			  m_location_follower
+			WHERE userId = #{userId}
+			  AND locationId = #{locationId}
+		]]>
+    </select>
+
+    <delete id="deleteFollower" parameterType="java.util.HashMap">
+         <![CDATA[
+            DELETE
+            FROM
+              m_location_follower
+            WHERE locationId = #{locationId}
+              AND userId = #{userId}
+        ]]>
+    </delete>
+    <insert id="addFollower" parameterType="java.util.HashMap">
+        <![CDATA[
+            INSERT INTO m_location_follower (locationId, userId)
+            VALUES
+              (#{locationId},#{userId}) ;
+        ]]>
+    </insert>
+</mapper>

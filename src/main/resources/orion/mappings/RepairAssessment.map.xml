@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.orion.bean">
+    <class name="RepairAssessment" table="o_repair_assessment">
+
+        <id name="id" type="java.lang.Integer">
+            <generator class="identity"/>
+        </id>
+        
+        <many-to-one name="repairRecord" column="repairRecordId"></many-to-one>
+
+        <property name="selfAssessment" length="1000"/>
+        <property name="stamp" type="java.util.Date"/>
+
+    </class>
+</hibernate-mapping>

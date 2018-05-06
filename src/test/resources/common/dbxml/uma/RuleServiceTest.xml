@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+
+    <u_device id="1" type="2" deviceId="0002" name="激发器"
+              sn="12345678"
+              version="1.0.1" enable="1" state="1" createTime="2013-02-25 12:01:01" siteId="31010101" />
+
+    <u_device id="2" type="2" name="激发器"
+              sn="11111111"
+              voltage="2V" enable="1" state="1" createTime="2013-02-25 12:01:01" siteId="31010101"/>
+
+    <u_device id="3" type="2" name="激发器2"
+              sn="22222222"
+              voltage="2.5V" enable="1" state="1" createTime="2013-02-25 12:01:01" siteId="31010101"/>
+
+	<u_action_templet id="1"  parentId="0" name="规则1" type="1" enable="1" siteId="aa"/>
+	<u_action_templet id="2"  parentId="0" name="规则2" type="1" enable="1" siteId="aa"/>
+	<u_action_templet id="3"  parentId="0" name="规则3" type="1" enable="1" siteId="aa"/>
+	
+	<u_action_exciter id="1" actionTempletId="1" deviceId="1" sequence="0"/>
+	<u_action_exciter id="2" actionTempletId="1" deviceId="2" sequence="1"/>
+	
+	<u_action_exciter id="3" actionTempletId="2" deviceId="2" sequence="0"/>
+	<u_action_exciter id="4" actionTempletId="2" deviceId="3" sequence="1"/>
+	<u_action_exciter id="5" actionTempletId="3" deviceId="1" sequence="0"/>
+	<u_action_exciter id="6" actionTempletId="3" deviceId="2" sequence="1"/>
+	<u_action_exciter id="7" actionTempletId="3" deviceId="3" sequence="2"/>
+
+	
+</dataset>

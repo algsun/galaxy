@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.blackhole.bean">
+
+    <class name="LogicGroup" table="t_logicgroup">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="logicGroupName" column="logicGroupName" length="20"/>
+        <property name="orgCode" column="orgCode" length="20"/>
+        <property name="orgAddress" column="orgAddress" length="100"/>
+        <property name="orgZipcode" column="orgZipcode" length="10"/>
+        <property name="orgWebsite" column="orgWebsite" length="50"/>
+        <property name="orgTel" column="orgTel" length="20"/>
+        <property name="orgFax" column="orgFax" length="20"/>
+
+        <property name="activeState" column="activeState" />
+        <property name="logicGroupType" column="logicGroupType" />
+        <property name="titleImage" column="titleImage" />
+        <property name="bgImage" column="bgImage" />
+        <property name="useBg" column="useBg" />
+        <property name="useTitle" column="useTitle" />
+        <many-to-one name="parent" column="parentLogicGroupId"/>
+        <many-to-one name="site" column="siteId" unique="true" lazy="false"/>
+        
+        <set name="users" table="t_user_logicgroup" lazy="false">
+            <key column="logicGroupId"/>
+            <many-to-many column="userId" unique="true" class="User" lazy="false"/>
+        </set>
+        
+    </class>
+
+</hibernate-mapping> 

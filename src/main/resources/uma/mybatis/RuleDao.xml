@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="uma.mybatis.RuleDao">
+
+    <!--分页查询行为规则 -->
+    <select id="findRule" resultType="RuleBean" parameterType="java.util.Map">
+        <![CDATA[
+		 SELECT 
+		   a.id   AS id,
+		   a.name AS ruleName,
+		   a.type AS type,
+		   a.enable as enable,
+		   a.zoneId as zoneId,
+		   z.zoneName as zoneName
+		 FROM 
+		    u_action_templet  AS  a
+		    left join
+			t_zone z
+		 on 
+		 	a.zoneId = z.zoneId
+		 WHERE 
+		    a.siteId=#{siteId}
+		 AND 
+		    a.parentId = 0
+		 AND 
+		    a.type in (1,2)
+		]]>
+        <if test="ruleName != null">
+            AND
+            a.name LIKE #{ruleName}
+        </if>
+        <if test="ruleType != null">
+            AND
+            a.type = #{ruleType}
+        </if>
+        <![CDATA[
+		ORDER BY  a.id DESC
+		LIMIT #{start},#{pageSize}
+		]]>
+    </select>
+
+    <!--查询行为规则 相关区域-->
+    <select id="findZoneList" resultType="Zone" parameterType="java.lang.String">
+        <![CDATA[
+
+
+		 SELECT
+		   a.zoneId as id,
+		   z.zoneName as `name` ,
+		   a.isCount as isCount
+		 FROM
+		    u_action_templet  AS  a
+		    left join
+			t_zone z
+		 on
+		 	a.zoneId = z.zoneId
+		 WHERE
+		    a.siteId=#{value}
+		 AND
+		    a.parentId = 0
+		 AND
+		    a.type in (1,2)
+
+
+        ]]>
+    </select>
+
+    <update id="updateRuleIsCount" parameterType="java.util.Map">
+        <![CDATA[
+
+          UPDATE
+          u_action_templet
+          SET
+          isCount =#{isCount}
+          WHERE
+          zoneId = #{zoneId}
+
+        ]]>
+    </update>
+
+    <!--查询行为规则数量 -->
+    <select id="findRuleCount" resultType="java.lang.Integer"
+            parameterType="java.util.Map">
+        <![CDATA[
+		 SELECT 
+		  count(a.id)
+		 FROM 
+		    u_action_templet  AS  a
+		 WHERE 
+		    a.siteId=#{siteId}
+		 AND 
+		    a.type in (1,2)
+		  AND 
+		    a.parentId = 0
+		]]>
+        <if test="ruleName != null">
+            AND
+            a.name LIKE #{ruleName}
+        </if>
+        <if test="ruleType != null">
+            AND
+            a.type = #{ruleType}
+        </if>
+    </select>
+
+    <!-- 通过行为规则名称查询行为规则 -->
+    <select id="findRuleByName" resultType="RuleBean" parameterType="java.util.Map">
+		<![CDATA[
+
+
+		 SELECT 
+		   a.id   AS id,
+		   a.name AS ruleName,
+		   a.type AS type,
+		   a.enable AS enable
+		 FROM 
+		    u_action_templet  AS  a
+		 WHERE 
+		    a.siteId=#{siteId}
+		 AND 
+		    a.name = #{ruleName}
+		 AND 
+		    a.parentId = 0
+
+
+        ]]>
+	</select>
+
+    <!-- 查询 组成行为规则 的设备列表 -->
+    <select id="findRuleDevice" resultType="DeviceBean"
+            parameterType="java.lang.Integer">
+	<![CDATA[
+
+
+		  SELECT 
+			a.id AS id,
+			a.name AS name,
+			a.sn    AS sn 
+		  FROM 
+			 u_device AS a 
+		  LEFT JOIN  
+		         u_action_exciter AS b
+		  ON    
+		         a.id=b.deviceId
+		  WHERE 
+			b.actionTempletId=#{ruleId}
+		  ORDER BY  
+		        b.sequence;
+
+
+        ]]>
+	</select>
+
+    <!-- TODO 添加 parentId @gaohui 2013-04-27 -->
+    <!--deprecated-->
+    <select id="findRuleById" parameterType="java.lang.Integer"
+            resultType="RuleBean">
+		<![CDATA[
+
+
+		 SELECT 
+		   a.id   AS id,
+		   a.name AS ruleName,
+		   a.type AS TYPE
+		 FROM 
+		    u_action_templet  AS  a
+		 WHERE 
+		   a.id=#{ruleId}
+
+
+        ]]>
+	</select>
+
+    <!--添加行为规则 -->
+    <insert id="addRule" parameterType="RuleBean" useGeneratedKeys="true">
+        <selectKey keyProperty="id" resultType="java.lang.Integer"
+                   order="AFTER">
+            select LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO
+        u_action_templet(
+        zoneId,parentId,name,type,enable,siteId)
+        VALUES(
+        #{zoneId},
+        <if test="parentId != null">#{parentId},</if>
+        <if test="parentId == null">0,</if>
+        #{ruleName},#{type},1,#{siteId})
+    </insert>
+
+    <!--添加行为规则 激发器序列 -->
+    <insert id="addRuleSequence" parameterType="java.util.Map">
+	 <![CDATA[
+
+
+	  INSERT INTO 
+	    u_action_exciter(actionTempletId,deviceId,sequence)
+	  VALUES(#{ruleId},#{deviceId},#{sequence})    
+
+
+        ]]>
+	</insert>
+
+    <!--删除 行为规则 激发器序列 -->
+    <delete id="deleteRuleSequence" parameterType="java.lang.Integer">
+	 <![CDATA[
+
+
+	   DELETE FROM u_action_exciter  WHERE  actionTempletId=#{ruleId}
+
+
+        ]]>
+	</delete>
+
+    <!--修改 行为规则 -->
+    <!--deprecated-->
+    <update id="updateRule" parameterType="RuleBean">
+		<![CDATA[
+
+
+			UPDATE 
+				u_action_templet  AS a
+			SET
+				a.type=#{type},
+				a.name=#{ruleName},
+				a.siteId=#{siteId}
+				
+		    WHERE 
+		        a.id=#{id}
+
+
+        ]]>
+	</update>
+
+    <!-- 删除行为规则 （逻辑删除） -->
+    <!--deprecated-->
+    <update id="setRuleEnable" parameterType="java.util.Map">
+		<![CDATA[
+
+
+			UPDATE 
+				u_action_templet  AS a
+			SET
+				a.enable=#{enable}
+		    WHERE 
+		        a.id=#{id}
+
+
+        ]]>
+	</update>
+
+    <!-- 查询父规则 -->
+    <select id="findParentRuleById" parameterType="java.lang.Long"
+            resultType="RuleBean">
+		<![CDATA[
+
+
+		 SELECT 
+		   a.id   AS id,
+		   a.name AS ruleName,
+		   a.type AS TYPE,
+		   a.parentId as parentId,
+		   a.enable as enable,
+		   a.siteId as siteId,
+		   a.zoneId as zoneId,
+		   z.zoneName as zoneName
+		 FROM 
+		    u_action_templet  AS  a
+		 left join
+			t_zone z
+		 on 
+		 	a.zoneId = z.zoneId
+		 WHERE 
+		   a.id=#{ruleId}
+
+
+        ]]>
+	</select>
+
+    <!-- 查询子规则 -->
+    <select id="findSubRulesByParentId" parameterType="java.util.Map"
+            resultType="RuleBean">
+		<![CDATA[
+
+
+		 SELECT 
+		   a.id   AS id,
+		   a.name AS ruleName,
+		   a.type AS TYPE,
+		   a.parentId as parentId,
+		   a.enable as enable,
+		   a.siteId as siteId
+		 FROM 
+		    u_action_templet  AS  a
+		 WHERE 
+		   a.parentId=#{parentId}
+		   and a.type = #{type}
+
+
+        ]]>
+	</select>
+
+    <!-- 修改规则状态 -->
+    <update id="updateRuleEnable" parameterType="java.util.Map">
+		update
+		u_action_templet t
+		set t.enable = #{enable}
+		where t.id = #{ruleId}
+		or
+		t.parentId = #{ruleId}
+	</update>
+
+    <!-- 修改规则信息：name ， zoneId -->
+    <update id="updateRuleInfo" parameterType="RuleBean">
+        update
+        u_action_templet t
+        set t.name = #{ruleName},
+        t.zoneId = #{zoneId},
+        <if test="enable">t.enable = 1</if>
+        <if test="!enable">t.enable = 0</if>
+        where
+        t.id= #{id}
+    </update>
+
+</mapper>

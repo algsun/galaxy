@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="saturn.TaskRecord">
+
+    <!-- insert texture -->
+    <insert id="insert" parameterType="TaskRecordVO">
+		<![CDATA[
+          INSERT INTO `s_task_records` (
+          `id`,
+          `taskId`,
+          `important`,
+          `recordDate`,
+          `recordContent`,
+          `recordUserName`,
+          `updateDate`
+        )
+        VALUES
+          (
+            #{id},
+            #{taskId},
+            #{important},
+            #{recordDate},
+            #{recordContent},
+            #{recordUserName},
+            #{updateDate}
+          ) ;
+        ]]>
+	</insert>
+
+    <select id="findTaskRecords" parameterType="java.lang.String" resultType="TaskRecordVO">
+		<![CDATA[
+          SELECT
+           str.`id`,
+           `taskId`,
+           `important`,
+           `recordDate`,
+           `recordContent`,
+           `recordUserName`,
+           `handleDate`,
+           `handleResult`,
+           `handleUserName`
+           FROM
+          `s_task_records` AS str
+          WHERE str.`taskId` =#{value}
+          ORDER BY str.updateDate DESC
+        ]]>
+	</select>
+
+    <select id="findTaskRecord" parameterType="java.lang.String" resultType="TaskRecordVO">
+		<![CDATA[
+          SELECT
+           str.`id`,
+           `taskId`,
+           `important`,
+           `recordDate`,
+           `recordContent`,
+           `recordUserName`,
+           `handleDate`,
+           `handleResult`,
+            handleUserName
+           FROM
+          `s_task_records` AS str
+          WHERE str.`id` =#{value}
+        ]]>
+	</select>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        <![CDATA[
+          DELETE
+          FROM `s_task_records`
+          WHERE `id` = #{id};
+        ]]>
+    </delete>
+
+    <delete id="deleteByTaskId" parameterType="java.lang.Integer">
+        <![CDATA[
+          DELETE
+          FROM `s_task_records`
+          WHERE `taskId` = #{id};
+        ]]>
+    </delete>
+
+    <update id="updateRecord" parameterType="TaskRecordVO">
+        <![CDATA[
+        UPDATE `s_task_records`
+        SET
+          `important` = #{important},
+          `recordContent` = #{recordContent},
+          `recordUserName` =#{recordUserName},
+          `recordDate` =#{recordDate},
+          `updateDate` = #{updateDate}
+        WHERE `id` = #{id};
+
+        ]]>
+    </update>
+
+    <update id="updateHandle" parameterType="TaskRecordVO">
+        <![CDATA[
+        UPDATE `s_task_records`
+        SET
+          `handleDate` = #{handleDate},
+          `handleUserName` = #{handleUserName},
+          `handleResult` = #{handleResult},
+          `updateDate` = #{updateDate}
+        WHERE `id` = #{id};
+
+        ]]>
+    </update>
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+        "http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+    <!-- 库存盘点 -->
+    <package name="orion:inventory" extends="orion" namespace="/orion">
+        <!-- 库存盘点 -->
+        <action name="inventoryCheck" class="orion:inventoryCheckAction" method="inventoryCheck">
+            <result name="success" type="freemarker">/orion/pages/inventory/inventoryCheck.ftl</result>
+        </action>
+        <action name="inventoryCheckInfo" class="orion:inventoryCheckAction"  method="inventoryCheckInfo">
+            <result name="success" type="freemarker">/orion/pages/inventory/inventoryCheckInfo.ftl</result>
+        </action>
+        <action name="updateRemark" class="orion:inventoryCheckAction"  method="updateRemark">
+            <result name="report" type="redirect">/orion/inventoryCheckInfo.action?id=${id}</result>
+            <result name="realtime" type="redirect">/orion/realtimeInventory.action?id=${id}</result>
+        </action>
+        <action name="realtimeInventory" class="orion:inventoryCheckAction" method="realtimeInventoryCheckInfo">
+            <result name="success" type="freemarker">/orion/pages/inventory/inventoryCheckInfo.ftl</result>
+        </action>
+        <action name="stopInventory" class="orion:inventoryCheckAction"  method="stopInventory">
+            <result type="redirect">/orion/inventoryCheck.action</result>
+        </action>
+        <action name="createInventory" class="orion:inventoryCheckAction"  method="createInventory">
+            <result type="redirect">/orion/inventoryCheck.action?updateRe=${updateRe}</result>
+        </action>
+    </package>
+</struts>

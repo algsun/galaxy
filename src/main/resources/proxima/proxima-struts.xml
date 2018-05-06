@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <package name="proxima" extends="json-default" namespace="/proxima">
+    </package>
+
+    <!-- 公共 -->
+    <include file="proxima/struts/common-struts.xml"></include>
+    <!-- 光学图片 -->
+    <include file="proxima/struts/pictures-struts.xml"></include>
+    <!-- 摄像机点位公共操作 -->
+    <include file="proxima/struts/dvPlace-struts.xml"></include>
+    <!-- 红外热像仪点位信息struts -->
+    <include file="proxima/struts/infraredDVPlace-struts.xml"></include>
+    <!-- 光学摄像机点位 -->
+    <include file="proxima/struts/opticsDVPlace-struts.xml"></include>
+    <!-- 红外图片 -->
+    <include file="proxima/struts/infraredPictures-struts.xml"></include>
+    <!--ftp-->
+    <include file="proxima/struts/ftp-struts.xml"></include>
+</struts>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.orion.bean">
+    <class name="com.microwise.orion.bean.RelicLabel" table="o_relic_label">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="identity"/>
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="labelName" length="50" not-null="true">
+                <comment>文物标签名称</comment>
+            </column>
+        </property>
+        <set name="relics" table="o_relic_label_ref">
+            <key column="labelId"/>
+            <many-to-many column="relicId" unique="true" class="Relic"/>
+        </set>
+    </class>
+</hibernate-mapping>

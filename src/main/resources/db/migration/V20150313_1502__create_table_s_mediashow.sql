@@ -1,0 +1,13 @@
+-- author 王耕
+-- 创建展示类别表
+
+CREATE TABLE s_media_show (
+  id INT(11) NOT NULL AUTO_INCREMENT COMMENT '唯一标识,MediaShowID',
+  title VARCHAR(120) DEFAULT NULL COMMENT '展示标题',
+  remark VARCHAR(760) DEFAULT NULL COMMENT '展示摘要',
+  indexImage VARCHAR(50) DEFAULT NULL COMMENT '图片路径',
+  createOn DATETIME DEFAULT NULL COMMENT '录入时间',
+  createBy VARCHAR(50) DEFAULT NULL COMMENT '录入人',
+  siteCode VARCHAR(50) DEFAULT NULL COMMENT '站点编号',
+  PRIMARY KEY (id)
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT '展示类别表';

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blueplanet.SwitchDao">
+
+    <!-- 查询站点下各个控制模块对应的最后一个状态 -->
+    <select id="findSwitchBySiteId" parameterType="string" resultType="Switches">
+        <include refid="querySwitches"/>
+        <![CDATA[
+          RIGHT JOIN
+            (SELECT
+              node_id,
+              MAX(create_time) AS create_time
+            FROM
+              `m_control_module_status` AS cs
+              INNER JOIN m_nodeinfo AS n
+                ON cs.node_id = n.nodeid
+            WHERE n.siteId = #{siteId}
+            GROUP BY cs.node_id) AS lc
+        ON lc.node_id = c.node_id
+          AND lc.create_time = c.`create_time`
+        GROUP BY c.node_id;
+        ]]>
+    </select>
+
+    <!-- 返回最后一次控制模块的开关状态 -->
+    <select id="findLastSwitchByDeviceId" parameterType="string" resultType="Switches">
+        <include refid="querySwitches"/>
+        <![CDATA[
+        WHERE c.node_id = #{deviceId}
+        ORDER BY c.create_time DESC
+        LIMIT 1
+        ]]>
+    </select>
+
+    <select id="findSwitchesCountByDeviceId" parameterType="string" resultType="int">
+        <![CDATA[
+        SELECT COUNT(0)
+        FROM `m_control_module_status`  AS c
+        WHERE c.node_id = #{deviceId}
+        ]]>
+    </select>
+
+    <!-- 分页查询设备状态 -->
+    <select id="findSwitchesByDeviceId" parameterType="java.util.Map" resultType="Switches">
+        <include refid="querySwitches"/>
+        <![CDATA[
+        WHERE c.node_id = #{deviceId}
+        ORDER BY c.create_time DESC
+        ]]>
+        <if test="start != null and pageSize != null">
+        LIMIT #{start}, #{pageSize}
+        </if>
+    </select>
+
+    <select id="findRecentSwitchChangesByDeviceId" parameterType="java.util.Map" resultType="SwitchChange">
+        <include refid="querySwitchChange"/>
+        <![CDATA[
+        WHERE node_id = #{deviceId}
+        ORDER BY create_time_after DESC
+        LIMIT #{start}, #{pageSize};
+        ]]>
+    </select>
+
+    <select id="findSwitchChangeCountByDeviceId" parameterType="java.util.Map" resultType="int">
+        <![CDATA[
+        SELECT count(0)
+        FROM `m_control_module_switch_change`
+        WHERE node_id = #{deviceId} AND
+        create_time_after >= #{startTime} AND
+        create_time_after <= #{endTime}
+        ]]>
+
+        <if test="route != -1">
+            AND route = #{route}
+        </if>
+        <if test="action != -1">
+            AND `action` = #{action}
+        </if>
+    </select>
+
+    <select id="findSwitchChangeByDeviceId" parameterType="java.util.Map" resultType="SwitchChange">
+        <include refid="querySwitchChange"/>
+        <![CDATA[
+        WHERE node_id = #{deviceId} AND
+        create_time_after >= #{startTime} AND
+        create_time_after <= #{endTime}
+        ]]>
+
+        <if test="route != -1">
+            AND route = #{route}
+        </if>
+        <if test="action != -1">
+            AND `action` = #{action}
+        </if>
+
+        <![CDATA[
+        ORDER BY create_time_after DESC
+        LIMIT #{start}, #{pageSize};
+        ]]>
+    </select>
+    <sql id="querySwitches">
+        <![CDATA[
+        SELECT
+          c.`id` AS id,
+          c.`node_id` AS nodeId,
+          c.`enable`,
+          c.`switch` AS onOff,
+          c.`create_time` AS `timestamp`
+        FROM
+          `m_control_module_status` AS c
+        ]]>
+    </sql>
+
+    <sql id="querySwitchChange">
+        <![CDATA[
+        SELECT
+          `id`,
+          `node_id` AS deviceId,
+          `enable_before` AS enableBefore,
+          `switch_before` AS switchBefore,
+          `create_time_before` AS timestampBefore ,
+          `enable_after` AS enableAfter,
+          `switch_after` AS switchAfter,
+          `create_time_after` AS timestampAfter,
+          `route` AS route,
+          `action` AS `action`,
+          `actionDriver` as `actionDriver`
+        FROM `m_control_module_switch_change` AS sc
+        ]]>
+    </sql>
+
+    <select id="aliasIsExist" parameterType="java.util.Map" resultType="int">
+        <![CDATA[
+                    SELECT
+                    COUNT(*)
+                  FROM m_control_module_switch
+                  WHERE node_id = #{deviceId}
+                      AND route = #{route}
+        ]]>
+    </select>
+    <insert id="insertAlias" parameterType="java.util.Map">
+        <![CDATA[
+          INSERT INTO m_control_module_switch
+           (
+          id,node_id,route,alias
+            )
+          VALUES
+          (#{id},#{deviceId},#{route},#{alias})
+        ]]>
+    </insert>
+
+    <delete id="deleteAlias" parameterType="java.util.Map">
+        <![CDATA[
+           DELETE
+           FROM m_control_module_switch
+          WHERE node_id = #{deviceId}
+           AND route = #{route}
+          ]]>
+    </delete>
+
+    <select id="findAliasBySite" parameterType="java.util.Map" resultType="AliasPO">
+        <![CDATA[
+            SELECT
+            node_id as deviceId,
+            route,
+            alias
+            FROM m_control_module_switch
+            WHERE node_id
+            IN(
+            SELECT
+                   n.nodeid AS nodeId
+                 FROM m_nodeinfo AS n
+                 WHERE n.siteId = #{siteId}
+                     AND n.nodeType = #{nodeType}
+                 ORDER BY n.nodeid)
+        ]]>
+    </select>
+
+    <select id="findAliasByDeviceId" parameterType="java.lang.String" resultType="AliasPO">
+        <![CDATA[
+            SELECT
+            node_id AS deviceId,
+            route,
+            alias
+            FROM m_control_module_switch
+            WHERE node_id =#{value}
+        ]]>
+    </select>
+
+</mapper>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+        "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+    <package name="orion:relic" extends="orion" namespace="/orion">
+        <action name="queryRelic" class="orion:queryRelicAction">
+            <result type="freemarker">/orion/pages/relic/query-relic.ftl</result>
+        </action>
+
+        <action name="relicArchive" class="orion:relicArchiveAction">
+            <result name="success" type="freemarker">/orion/pages/relic/relic-archives.ftl</result>
+            <result name="none" type="freemarker">/orion/pages/relic/view-relic-archive-not-found.ftl</result>
+        </action>
+
+        <action name="relicArchiveRelicId" class="orion:relicArchiveAction" method="relicArchiveRelicId">
+            <result name="success" type="freemarker">/orion/pages/relic/relic-archives.ftl</result>
+            <result name="none" type="freemarker">/orion/pages/relic/view-relic-archive-not-found.ftl</result>
+        </action>
+
+        <action name="relicCard" class="orion:viewRelicCardAction">
+            <result name="success" type="freemarker">/orion/pages/relic/view-relic-card.ftl</result>
+            <result name="none" type="freemarker">/orion/pages/relic/view-relic-card-not-found.ftl</result>
+        </action>
+
+        <action name="relicCardRelicId" class="orion:viewRelicCardAction" method="executeRelicId">
+            <result name="success" type="freemarker">/orion/pages/relic/view-relic-card.ftl</result>
+            <result name="none" type="freemarker">/orion/pages/relic/view-relic-card-not-found.ftl</result>
+        </action>
+
+        <action name="toAddRelic" class="orion:toAddRelicAction">
+            <result type="freemarker">/orion/pages/relic/add-relic.ftl</result>
+        </action>
+        
+        <action name="validateTotalCode" class="orion:validateTotalCodeAction">
+            <result type="json">
+                 <param name="root">dataMap</param>
+            </result>
+        </action>
+
+        <action name="addRelicLabel" class="orion:updateRelicAction" method="addRelicLabel">
+            <result type="json">
+                <param name="root">dataMap</param>
+            </result>
+        </action>
+
+        <action name="deleteRelicLabel" class="orion:updateRelicAction" method="deleteRelicLabel">
+            <result type="json">
+                <param name="root">dataMap</param>
+            </result>
+        </action>
+
+        <action name="toRelicList" class="orion:updateRelicAction" method="toRelicList">
+            <result type="redirect">queryRelic.action?index=${index}&amp;selectedLabelId=${selectedLabelId}</result>
+        </action>
+
+        <action name="toUpdateRelic" class="orion:updateRelicAction" method="view">
+            <result type="freemarker">/orion/pages/relic/update-relic.ftl</result>
+        </action>
+
+        <action name="toSaveBaseInfoRelic" class="orion:updateRelicBaseInfoAction">
+            <result type="redirect">toUpdateRelic.action?index=${index}&amp;relicId=${relicId}</result>
+        </action>
+
+        <action name="logOffRelic" class="orion:logOffRelicAction">
+            <result type="redirect">queryRelic.action?logOff=${logOff}</result>
+        </action>
+
+        <!-- TODO 建议改为 doSaveOrUpdateRelicProperty  @gaohui 2013-06-05 -->
+        <action name="toSavePropertyInfoRelic" class="orion:updateRelicPropertyInfoAction">
+            <result type="redirect">toUpdateRelic.action?index=${index}&amp;relicId=${relicId}#${pageNum}</result>
+        </action>
+        <!-- 记录信息新增action -->
+        <action name="addStatusquoRecordInfo" class="orion:updateRelicRecordInfoAction" method="addStatusquoRecordInfo">
+            <result type="redirect">toUpdateRelic.action?index=${index}&amp;relicId=${relicId}#${pageNum}</result>
+        </action>
+
+        <action name="deleteStatusQuo" class="orion:updateRelicAction" method="deleteStatusQuo">
+            <result type="json">
+                <param name="root">dataMap</param>
+            </result>
+        </action>
+
+        <action name="deleteAppraisal" class="orion:updateRelicAction" method="deleteAppraisal">
+            <result type="json">
+                <param name="root">dataMap</param>
+            </result>
+        </action>
+
+        <action name="addAppraisalRecordInfo" class="orion:updateRelicRecordInfoAction" method="addAppraisalRecordInfo">
+            <result type="redirect">toUpdateRelic.action?index=${index}&amp;relicId=${relicId}#${pageNum}</result>
+        </action>
+        <action name="addRestoreRecordInfo" class="orion:updateRelicRecordInfoAction" method="addRestoreRecordInfo">
+            <result type="redirect">toUpdateRelic.action?index=${index}&amp;relicId=${relicId}#${pageNum}</result>
+        </action>
+        <action name="addAccidentRecordInfo" class="orion:updateRelicRecordInfoAction" method="addAccidentRecordInfo">
+            <result type="redirect">toUpdateRelic.action?index=${index}&amp;relicId=${relicId}#${pageNum}</result>
+        </action>
+        <action name="addRoveInfo" class="orion:updateRelicRecordInfoAction" method="addRoveInfo">
+            <result type="redirect">toUpdateRelic.action?index=${index}&amp;relicId=${relicId}#${pageNum}</result>
+        </action>
+        <!--end-->
+        <!-- 图片上传Action -->
+        <action name="uploadPhoto" class="orion:updateRelicUploadAction" method="uploadPhotoAction">
+            <result type="redirect">toUpdateRelic.action?index=${index}&amp;relicId=${relicId}#${pageNum}</result>
+        </action>
+        <!-- 铭文提拔描述添加 -->
+        <action name="addInscriptionDescription" class="orion:updateRelicUploadAction" method="saveInscriptionDescription">
+            <result type="redirect">toUpdateRelic.action?index=${index}&amp;relicId=${relicId}#${pageNum}</result>
+        </action>
+        <!-- 文件上传Action -->
+        <action name="uploadFile" class="orion:updateRelicUploadAction" method="uploadFileAction">
+            <result type="redirect">toUpdateRelic.action?index=${index}&amp;relicId=${relicId}#${pageNum}</result>
+        </action>
+        <!-- 文件下载Action -->
+        <action name="downloadFile" class="orion:relicArchiveAction" method="downloadFileAction">
+            <result type="redirect">relicArchive.action?index=${index}&amp;relicId=${relicId}</result>
+        </action>
+        <!-- 删除挂接文档 -->
+        <action name="doDeleteFile" class="orion:deleteRelicFileAction">
+            <result type="redirect">toUpdateRelic.action?index=${index}&amp;relicId=${relicId}#${pageNum}</result>
+        </action>
+        <!-- 删除照片photo -->
+        <action name="deletePhoto" class="orion:deleteRelicFileAction" method="deletePhotoById">
+            <result type="redirect">toUpdateRelic.action?index=${index}&amp;relicId=${relicId}#${pageNum}</result>
+        </action>
+        <!-- end -->
+        <action name="addRelic" class="orion:addRelicAction" method="execute">
+            <!-- 动态设置savePath的属性值 -->
+            <param name="savePath">/orion/upload/images/</param>
+            <result type="redirect">/orion/queryRelic.action</result>
+            <!--</result>-->
+            <interceptor-ref name="fileUpload">
+                <!-- 文件过滤 -->
+                <param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg</param>
+                <!-- 文件大小, 以字节为单位 -->
+                <param name="maximumSize">1025956</param>
+            </interceptor-ref>
+            <!-- 默认拦截器必须放在fileUpload之后，否则无效 -->
+            <interceptor-ref name="defaultStack"/>
+
+        </action>
+
+        <!--  藏品数据导出 -->
+        <action name="relic-data-export" class="orion:queryRelicDataExportAction" method="export"/>
+
+
+        <action name="findProperty" class="orion:queryRelicDataExportAction" method="findProperty">
+            <result name="success" type="json">
+                <param name="excludeProperties">id</param>
+            </result>
+        </action>
+
+    </package>
+</struts>

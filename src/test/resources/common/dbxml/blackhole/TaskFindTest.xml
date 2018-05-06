@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <t_logicgroup id="1" logicGroupName="测试站点" activeState="3" logicGroupType="1"/>
+    <t_users id="1" userEmail="no-reply-galaxy@microwise-system.com" logicGroupId="1" userName="大头"
+             userPassword="121212" sex="1" isDisable="0" token="token1" isActive="1"/>
+
+    <t_users id="2" userEmail="guest" userName="访客"
+             userPassword="$2a$11$kW5DVku2SCRxbTirh4xqFexQu//BwpKWy8sYFGiX9pbgYd8BsAkWC" sex="2" isDisable="0" token=""
+             isActive="1"/>
+	<t_task id='1' taskTitle='ccc' releaseDate='2013-01-21 14:42:57.0' releaser='1' state='0' logicGroupId='1'/>
+	<t_task id='2' taskTitle='ccc' releaseDate='2013-01-21 14:42:57.0' releaser='1' state='0' logicGroupId='1'/>
+	<t_task id='3' taskTitle='ccc' releaseDate='2013-01-21 14:42:57.0' releaser='1' state='0' logicGroupId='1'/>
+	<t_task id='4' taskTitle='ccc' releaseDate='2013-01-21 14:42:57.0' releaser='1' state='1' logicGroupId='1'/>
+	<t_task_record id='1' taskId='1' replier='2' recordDate='2013-01-21 14:42:57.0' />
+	<t_task_record id='2' taskId='1' replier='2' recordDate='2013-02-21 14:42:57.0' />
+	<t_task_record id='3' taskId='2' replier='2' recordDate='2013-01-21 14:42:57.0' />
+	<t_task_designee taskId='1' designee='2' />	
+	<t_task_designee taskId='1' designee='1' />	
+</dataset>

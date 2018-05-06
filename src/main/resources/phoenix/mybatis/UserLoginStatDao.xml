@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="phoenix.mybatis.UserLoginStatDao">
+
+		<!-- 查询用户总登录次数 -->
+	<select id="findUserLoginCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+		<![CDATA[
+		SELECT 
+		count(sl.id)  
+		FROM t_sys_logs   sl 
+		WHERE sl.`logContent` = '登录'
+		AND sl.`logTime` >= #{startDate}
+		AND sl.`logTime`<= #{endDate}
+		AND sl.`logicGroupId` = #{logicGroupId}
+	  ]]>
+	</select>
+
+	<!-- 查询用户登录周统计数据 -->
+	<select id="findUserLoginWeekStat" parameterType="java.util.Map" resultType="java.util.Map">
+		<![CDATA[
+		SELECT 
+		ROUND(COUNT(id)/#{loginCount}*100,2 )AS `statData`,
+		WEEKDAY(sl.`logTime`)            AS `key`
+		FROM t_sys_logs   sl 
+		WHERE sl.`logContent` = '登录'
+		AND sl.`logTime` >= #{startDate}
+		AND sl.`logTime`<= #{endDate}
+		AND sl.`logicGroupId` = #{logicGroupId}
+		GROUP BY WEEKDAY(sl.`logTime`)
+		ORDER BY WEEKDAY(sl.`logTime`)
+	  ]]>
+	</select>
+	
+	<!-- 查询用户登录日统计数据 -->
+	<select id="findUserLoginDayStat" parameterType="java.util.Map" resultType="java.util.Map">
+	  <![CDATA[
+	  SELECT * 
+	    FROM(
+			SELECT 
+			ROUND(COUNT(id)/#{loginCount}*100,2) statData,
+			0  AS `key` 
+			FROM 
+			t_sys_logs sl
+			WHERE 
+			sl.`logTime` >= #{startDate}
+			AND sl.`logTime`<= #{endDate}
+			AND sl.`logicGroupId` = #{logicGroupId}
+			AND sl.`logContent` = '登录'
+			AND HOUR(sl.`logTime`)>=0
+			AND HOUR(sl.`logTime`)< 6
+			
+			UNION
+			SELECT 
+			ROUND(COUNT(id)/#{loginCount}*100,2) statData,
+			1  AS `key` 
+			FROM 
+			t_sys_logs sl
+			WHERE 
+			sl.`logTime` >= #{startDate}
+			AND sl.`logTime`<= #{endDate}
+			AND sl.`logicGroupId` = #{logicGroupId}
+			AND sl.`logContent` = '登录'
+			AND HOUR(sl.`logTime`)>=6
+			AND HOUR(sl.`logTime`)< 9
+			
+			UNION
+			SELECT 
+			ROUND(COUNT(id)/#{loginCount}*100,2) statData,
+			2 AS `key` 
+			FROM 
+			t_sys_logs sl
+			WHERE 
+			sl.`logTime` >= #{startDate}
+			AND sl.`logTime`<= #{endDate}
+			AND sl.`logicGroupId` = #{logicGroupId}
+			AND sl.`logContent` = '登录'
+			AND HOUR(sl.`logTime`)>=9
+			AND HOUR(sl.`logTime`)< 12
+			UNION
+			
+			SELECT 
+			ROUND(COUNT(id)/#{loginCount}*100,2) statData,
+			3  AS `key` 
+			FROM 
+			t_sys_logs sl
+			WHERE 
+			sl.`logTime` >= #{startDate}
+			AND sl.`logTime`<= #{endDate}
+			AND sl.`logicGroupId` = #{logicGroupId}
+			AND sl.`logContent` = '登录'
+			AND HOUR(sl.`logTime`)>=12
+			AND HOUR(sl.`logTime`)< 14
+			UNION
+			
+			SELECT 
+			ROUND(COUNT(id)/#{loginCount}*100,2) statData,
+			4  AS `key` 
+			FROM 
+			t_sys_logs sl
+			WHERE 
+			sl.`logTime` >= #{startDate}
+			AND sl.`logTime`<= #{endDate}
+			AND sl.`logicGroupId` = #{logicGroupId}
+			AND sl.`logContent` = '登录'
+			AND HOUR(sl.`logTime`)>=14
+			AND HOUR(sl.`logTime`)< 18
+			UNION
+			
+			SELECT 
+			ROUND(COUNT(id)/#{loginCount}*100,2) statData,
+			5  AS `key` 
+			FROM 
+			t_sys_logs sl
+			WHERE 
+			sl.`logTime` >= #{startDate}
+			AND sl.`logTime`<= #{endDate}
+			AND sl.`logicGroupId` = #{logicGroupId}
+			AND sl.`logContent` = '登录'
+			AND HOUR(sl.`logTime`)>=18
+			AND HOUR(sl.`logTime`)< 24
+			) AS a 
+		WHERE a.`statData` >0
+		ORDER BY a.`key`
+	  ]]>
+	</select>
+	
+	<!-- 查询一站点下的用户列表-->
+	<select id="findUserBySite" parameterType="java.lang.Integer" resultType="Blackhole:UserLogin">
+		<![CDATA[
+			SELECT 
+			  u.`userName`,
+			  u.`userEmail` `email`
+			FROM  
+			  t_users  u
+			WHERE 
+			  u.`logicGroupId` = #{logicGroupId}
+	  ]]>
+	</select>
+	
+	<!-- 查询一个用户在一个时间段内在 指点站点下的登录情况-->
+	<select id="findUserLoginByEmail" parameterType="java.util.Map" resultType="Blackhole:UserLogin">
+		<![CDATA[
+		SELECT 
+		  sl.`userName`  userName,	
+		  sl.`userEmail` email,
+		  sl.`logName`,
+		  sl.`logTime`
+		FROM 
+		  t_sys_logs  sl
+		WHERE 
+		    sl.`userEmail` = #{email}
+		AND sl.`logName` IN ('登录','退出')
+		AND sl.`logContent`  IN ('登录','退出')
+		AND sl.logTime BETWEEN #{startDate} AND #{endDate}
+		And sl.logicGroupId = #{logicGroupId}
+		ORDER BY sl.logTime
+	  ]]>
+	</select>	
+	
+	
+</mapper>

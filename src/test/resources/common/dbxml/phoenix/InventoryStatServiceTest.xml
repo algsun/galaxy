@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+  <o_inventory id='1' siteId='31010101' deadline='2013-07-22 09:57:52' state='1' tagCount='50' errorCount='20' />
+  <o_inventory id='2' siteId='31010101' deadline='2013-07-22 09:50:52' state='1' tagCount='50' errorCount='20' />
+  <o_inventory id='3' siteId='31010101' deadline='2012-07-22 09:50:52' state='1' tagCount='40' errorCount='20' />
+</dataset>

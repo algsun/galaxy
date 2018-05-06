@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="orion:stock" extends="orion" namespace="/orion">
+
+        <action name="queryStockInAndOut" class="orion:queryStockInAndOutAction">
+            <result name="success" type="freemarker">/orion/pages/stock/query-stock-in-and-out.ftl</result>
+        </action>
+
+        <action name="viewStockOut" class="orion:viewStockOutAction">
+            <result name="success" type="freemarker">/orion/pages/stock/view-stock-out.ftl</result>
+        </action>
+
+        <action name="applyStockOut" class="orion:applyStockOutAction" method="view">
+            <result name="success" type="freemarker">/orion/pages/stock/apply-stock-out.ftl</result>
+        </action>
+
+        <action name="doApplyStockOut" class="orion:applyStockOutAction" method="execute">
+            <result name="success" type="redirect">queryStockInAndOut.action</result>
+            <result name="input" type="freemarker">/orion/pages/stock/apply-stock-out.ftl</result>
+        </action>
+
+        <action name="queryRelicByTotalCode" class="orion:queryRelicByTotalCodeAction" method="queryJson">
+            <result type="json">
+                <param name="includeProperties">
+                    count,
+                    relics\[\d+\]\.id,
+                    relics\[\d+\]\.name,
+                    relics\[\d+\]\.totalCode,
+                    relics\[\d+\]\.state,
+                    relics\[\d+\]\.iscanceled
+                </param>
+            </result>
+        </action>
+
+
+        <action name="claimTask" class="orion:claimTaskAction">
+            <result name="success" type="redirect">queryStockInAndOut.action</result>
+        </action>
+
+        <action name="completeTask" class="orion:completeTaskAction">
+            <result name="success" type="redirect">${forward}</result>
+        </action>
+
+        <action name="trackFlowChart" class="orion:trackFlowAction">
+            <result name="success" type="stream">
+                <param name="contentType">image/jpeg</param>
+                <param name="inputName">inputStream</param>
+            </result>
+        </action>
+
+        <action name="queryHandleListAgencyList" class="orion:queryStockInAndOutAction" method="queryHandleListAgency">
+            <result type="json">
+                <param name="root">userStr</param>
+            </result>
+        </action>
+
+        <!-- TODO 改为 checkStockOut @gaohui 2013-05-31 -->
+        <action name="stockOutCheck" class="orion:stockOutCheckAction" method="view">
+            <result name="success" type="freemarker">/orion/pages/stock/check-stock-out.ftl</result>
+        </action>
+        <action name="changeStatus" class="orion:stockOutCheckAction" method="changeStatus">
+            <result name="success" type="redirect">stockOutCheck.action?outEventId=${outEventId}&amp;taskId=${taskId}
+            </result>
+            <result name="input" type="redirect">queryStockInAndOut.action</result>
+        </action>
+
+        <action name="adjustStockOut" class="orion:adjustStockOutAction" method="view">
+            <result name="success" type="freemarker">/orion/pages/stock/adjust-stock-out.ftl</result>
+        </action>
+
+        <action name="doAdjustStockOut" class="orion:adjustStockOutAction" method="execute">
+            <result name="input" type="freemarker">/orion/pages/stock/adjust-stock-out.ftl</result>
+            <result name="success" type="redirect">queryStockInAndOut.action</result>
+        </action>
+
+        <action name="cancelStockOut" class="orion:cancelStockOutAction">
+            <result name="success" type="redirect">queryStockInAndOut.action</result>
+        </action>
+
+        <action name="deleteStockOutTask" class="orion:deleteStockOutTaskAction">
+            <result name="success" type="redirect">queryStockInAndOut.action</result>
+        </action>
+
+        <action name="approveStockOutCheck" class="orion:approveStockOutCheckAction">
+            <result name="success" type="redirect">queryStockInAndOut.action</result>
+        </action>
+
+        <action name="rejectStockOut" class="orion:rejectStockOutAction">
+            <result name="success" type="redirect">queryStockInAndOut.action</result>
+        </action>
+
+        <action name="confirmStockOut" class="orion:confirmStockOutAction" method="view">
+            <result name="success" type="freemarker">/orion/pages/stock/confirm-stock-out.ftl</result>
+        </action>
+
+        <action name="doConfirmStockOut" class="orion:confirmStockOutAction" method="execute">
+            <result name="success" type="redirect">queryStockInAndOut.action</result>
+            <result name="input" type="redirect">confirmStockOut.action?outEventId=${outEventId}</result>
+        </action>
+
+        <action name="updateEventRelicState" class="orion:updateEventRelicStateAction">
+            <result name="success" type="json">
+                <param name="includeProperties">success</param>
+            </result>
+        </action>
+
+        <action name="returnStockOut" class="orion:returnStockOutAction" method="view">
+            <result name="success" type="freemarker">/orion/pages/stock/return-stock-out.ftl</result>
+        </action>
+
+        <action name="doReturnStockOut" class="orion:returnStockOutAction" method="execute">
+            <result name="success" type="redirect">queryStockInAndOut.action</result>
+            <result name="input" type="redirect">returnStockOut.action</result>
+        </action>
+        <!-- 挂接文档相关Action added by Wang.Geng -->
+        <action name="toUploadDoc" class="orion:uploadDocumentAction" method="view">
+            <result name="success" type="freemarker">/orion/pages/stock/upload-stock-document.ftl</result>
+        </action>
+        <action name="deleteDoc" class="orion:uploadDocumentAction" method="deleteDocumentById">
+            <result name="success" type="redirect">toUploadDoc.action?outEventId=${outEventId}</result>
+        </action>
+        <action name="uploadDocFile" class="orion:uploadDocumentAction">
+            <result name="success" type="redirect">toUploadDoc.action?outEventId=${outEventId}</result>
+        </action>
+        <action name="downloadDocFile" class="orion:uploadDocumentAction" method="downloadDocFile">
+            <result name="success" type="redirect">toUploadDoc.action?outEventId=${outEventId}</result>
+        </action>
+        <action name="deleteDocConfirm" class="orion:uploadDocumentAction" method="deleteDocumentById">
+            <result name="success" type="redirect">
+                confirmStockOut.action?outEventId=${outEventId}&amp;taskId=${taskId}
+            </result>
+        </action>
+        <action name="uploadDocFileConfirm" class="orion:uploadDocumentAction">
+            <result name="success" type="redirect">
+                confirmStockOut.action?outEventId=${outEventId}&amp;taskId=${taskId}
+            </result>
+        </action>
+    </package>
+</struts>

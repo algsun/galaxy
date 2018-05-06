@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="phoenix.mybatis.UserStopOverDao">
+
+	<!-- 查询人员在区域活动时长统计 -->
+	<select id="findZoneStat" parameterType="java.util.Map" resultType="Uma:ZoneStat">
+	<![CDATA[
+			SELECT 
+              t.zoneName,
+              SUM(u.stayTimes) as inTime,
+              ROUND(AVG(u.stayTimes), 0) as avgTime
+            FROM
+              `u_user_stay_times` u
+              INNER JOIN t_zone t
+                ON t.zoneId = u.`zoneId`
+            WHERE u.`createTime` BETWEEN #{startDate}
+              AND #{endDate} AND t.siteId = #{siteId}
+            GROUP BY u.`zoneId`
+	]]>
+	</select>
+</mapper>

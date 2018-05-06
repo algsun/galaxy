@@ -1,0 +1,64 @@
+.mytable {
+    width: 100%;
+    max-width: 100%;
+    background-color: transparent;
+    border-collapse: collapse;
+    border-spacing: 0;
+    display: table;
+    border-bottom: 1px;
+    border-style: none none dotted none;
+}
+
+.mytable tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+}
+
+.mytable tr td {
+    padding: 0;
+    margin: 5px;
+    line-height: 25px;
+    border-bottom: 1px;
+    border-style: none none dotted none;
+    border-bottom-color: lightgrey;
+}
+
+.link {
+    color: #08c;
+    text-decoration: none;
+}
+
+.link:hover {
+    background-color: #08c;
+    color: #ffffff;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.selected {
+    text-align: center;
+}
+
+.selected span{
+    font-size: 13px;
+}
+
+.selected .labelspan {
+    margin: 5px;
+}
+
+.allSelected {
+    text-align: center;
+    width: 4%;
+    font-size: 13px;
+}
+
+.labelName {
+    width: 6%;
+    font-weight: bold;
+}
+
+.labelallspan {
+    color: #ffffff;
+}

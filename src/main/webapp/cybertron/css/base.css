@@ -1,0 +1,22 @@
+/**
+* 业务系统内基础样式, 主要包括布局相关样式
+*
+* @author gao.hui 2012-10-18
+*/
+
+body {
+    background: url('../images/body-bg.png') 0 0 repeat;
+}
+
+/*
+工具条 button
+
+在 bootstrap 2.2.1 版本上, btn-group 且 btn-vertical 中的 button large 太大，normal button 的高度太小(默认是4)
+所以我通过加大 padding-top 和 padding-bottom 的方式增高 button.
+@author gaohui
+@date 2012-11-13
+*/
+.toolbar-container .btn {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}

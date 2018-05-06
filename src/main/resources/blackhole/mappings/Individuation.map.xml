@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.microwise.blackhole.bean">
+
+    <class name="Individuation" table="t_individuation">
+        <id name="id">
+            <generator class="identity"/>
+        </id>
+        <property name="key" column="uKey" length="20" />
+        <property name="value" column="uValue" length="500"/>
+        
+        <many-to-one name="user" column="userId"/>
+    </class>
+
+</hibernate-mapping> 

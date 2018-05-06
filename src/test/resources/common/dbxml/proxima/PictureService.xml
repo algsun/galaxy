@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+
+	<t_zone zoneId="333" siteId="11010101" zoneName="故宫那个大门"
+		dataVersion="0" />
+	<p_dv_place id="123" dvType="1" placeCode="222" placeName="点位名称"
+		createTime="2013-02-25 12:01:01" imageRealWidth="55" imageWidth="55"
+		imageHeight="30" enable="1" remark="备注" dvIp="192.168.0.211" zoneId="333" />
+	<p_dv_place_optics dvPlaceId="123" dvPort="65535"
+		ioIp="192.168.0.222" ioPort="65534" lightOnTime="1000" lightOffTime="1000"
+		photographTime="500" isIoOn="1" isLightOn="0" />
+
+	<p_pictures id="001" pictureName="测试图1" picturePath="测试图路径1" picCreateTime="2013-03-27 10:22:21" isAnalyzable="0" dvPlaceId="123" />
+	<p_pictures id="002" pictureName="测试图2" picturePath="测试图路径2" picCreateTime="2013-03-27 10:22:22" isAnalyzable="0" dvPlaceId="123" />
+	<p_pictures id="003" pictureName="测试图3" picturePath="测试图路径3" picCreateTime="2013-03-27 10:22:23" isAnalyzable="0" dvPlaceId="123" />
+	<p_pictures id="004" pictureName="测试图4" picturePath="测试图路径4" picCreateTime="2013-03-27 10:22:24" isAnalyzable="0" dvPlaceId="123" />
+	<p_pictures id="005" pictureName="测试图5" picturePath="测试图路径5" picCreateTime="2013-03-27 10:22:25" isAnalyzable="0" dvPlaceId="123" />
+	<p_pictures id="006" pictureName="测试图6" picturePath="测试图路径6" picCreateTime="2013-03-27 10:22:26" isAnalyzable="0" dvPlaceId="123" />
+
+</dataset>

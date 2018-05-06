@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+        "http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+
+    <!-- 历史数据的一些操作 -->
+    <package name="halley:history" extends="halley" namespace="/halley">
+        <action name="routeHistory" class="com.microwise.halley.action.route.RouteHistoryAction" method="historyData">
+            <result type="freemarker">/halley/pages/index/layout.ftl</result>
+        </action>
+    </package>
+
+</struts>

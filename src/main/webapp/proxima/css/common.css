@@ -1,0 +1,100 @@
+/**
+* TODO 可用 assets/common-css 代替 @gaohui 2013-03-29
+* TODO 此文件无用删除 @gaohui 2013-04-16
+*
+*/
+
+.m-t-3{
+	margin-top:3px;
+}
+
+.m-t-5{
+	margin-top:5px;
+}
+
+.m-t-10 {
+	margin-top: 10px;
+}
+
+.m-t-20 {
+	margin-top: 20px;
+}
+
+.m-t-30 {
+	margin-top: 30px;
+}
+
+.m-b-5{
+	margin-bottom: 5px;
+}
+
+.m-b-10 {
+	margin-bottom: 10px;
+}
+
+.m-b-20 {
+	margin-bottom: 20px;
+}
+
+.m-b-30 {
+	margin-bottom: 30px;
+}
+
+.m-r-10 {
+	margin-right: 10px;
+}
+
+.m-r-20 {
+	margin-right: 20px;
+}
+
+.m-r-30 {
+	margin-right: 30px;
+}
+
+.t-a-r {
+	text-align: right;
+}
+
+.t-a-c {
+	text-align: center;
+}
+
+.f-l {
+	float: left;
+}
+
+.f-r {
+	float: right;
+}
+
+.red {
+	color: red;
+}
+
+.gray{
+	color:gray;
+}
+
+.hide {
+	display: none;
+}
+
+/* icons */
+.mw-icon-ok {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	line-height: 16px;
+	vertical-align: text-top;
+	background: url("../images/ok-16x16.png") no-repeat;
+}
+
+.mw-icon-cancel {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	line-height: 16px;
+	vertical-align: text-top;
+	background: url("../images/cancel-16x16.png") no-repeat;
+}

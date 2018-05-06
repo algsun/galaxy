@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blueplanet.mybatis.ReportDao">
+
+	<!-- 查询日报表 -->
+	<select id="findDayReportInfo" resultType="reportVO"
+		parameterType="java.util.Map">
+	<![CDATA[  
+		SELECT
+		a.sensorPhysicalid AS sensorPhysicalId,
+		b.`cn_name` AS sensorPhysicalName,
+	    b.units     AS units,
+		MAX(a.`maxValue`) AS maValue,
+		MIN(a.`minValue`) AS minValue,
+		(MAX(a.`maxValue`)- MIN(a.`minValue`))
+		AS waveValue
+		FROM
+		m_avgdata a
+		INNER JOIN m_sensorinfo b
+		ON
+		a.sensorPhysicalid = b.sensorPhysicalid
+		INNER JOIN m_nodeinfo c
+		ON
+		a.nodeid = c.nodeid
+		WHERE
+		c.siteId = #{siteId}
+		AND
+		a.ms_date = #{date}
+		GROUP BY a.`sensorPhysicalid`
+		ORDER BY a.`sensorPhysicalid`
+	  ]]>
+	</select>
+
+	<!-- 查询其他类型报表 （年，月，周 组装成时间段查询） -->
+	<select id="findReportInfo" resultType="reportVO"
+		parameterType="java.util.Map">
+	<![CDATA[  
+		SELECT
+		a.sensorPhysicalid AS sensorPhysicalId,
+		b.`cn_name` AS sensorPhysicalName,
+		b.units     AS units,
+		MAX(a.`maxValue`) AS maValue,
+		MIN(a.`minValue`) AS minValue,
+		(MAX(a.`maxValue`)- MIN(a.`minValue`))
+		AS waveValue
+		FROM
+		m_avgdata a
+		INNER JOIN m_sensorinfo b
+		ON
+		a.sensorPhysicalid = b.sensorPhysicalid
+		INNER JOIN m_nodeinfo c
+		ON
+		a.nodeid = c.nodeid
+		WHERE
+		c.siteId = #{siteId}
+		AND
+		a.ms_date >= #{startDate}
+		AND 
+		a.ms_date <= #{endDate}
+		GROUP BY a.`sensorPhysicalid`
+		ORDER BY a.`sensorPhysicalid`
+		]]>
+	</select>
+</mapper>

@@ -1,0 +1,24 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+
+
+	<t_logicgroup id="2" logicGroupName="测试数据2" activeState="3"
+		parentLogicGroupId="1" logicGroupType="1"  />
+	<t_logicgroup id="3" logicGroupName="测试数据3" siteId="11010101"
+		parentLogicGroupId="2" activeState="3" logicGroupType="1" />
+	<t_logicgroup id="4" logicGroupName="测试数据4"
+		parentLogicGroupId="1" activeState="1" logicGroupType="2" />
+	<t_logicgroup id="1" logicGroupName="测试数据1" activeState="3"
+		logicGroupType="1" />
+		
+	<t_users id="1" logicGroupId="1" userPassword="" userName="测试用户1"
+		userEmail="11" isDisable="0" sex="1" isActive="0" />
+	<t_users id="2" logicGroupId="2" userPassword="" userName="测试用户2"
+		userEmail="12" isDisable="0" sex="1" isActive="0" />
+	<t_users id="3" logicGroupId="3" userPassword="" userName="测试用户3"
+		userEmail="13" isDisable="0" sex="1" isActive="0" />
+
+	<t_user_logicgroup id="1" userId="1" logicGroupId="1" />
+	<t_user_logicgroup id="2" userId="1" logicGroupId="2" />
+	<t_user_logicgroup id="3" userId="1" logicGroupId="3" />
+</dataset>

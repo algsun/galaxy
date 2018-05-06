@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset> 
+  <t_logicgroup id="1" logicGroupName="测试站点" activeState="3" logicGroupType="1" />
+  <t_users id="100" userEmail="415201519@qq.com" logicGroupId="1" userName="大头" userPassword="121212" sex="1" isDisable="0" token="token1" isActive="1" />
+  <t_users id="101" userEmail="zp4206366@163.com" logicGroupId="1" userName="爷爷" userPassword="121212" sex="2" isDisable="0" token="token2" isActive="0" />
+  <t_sys_logs id='1' userName='零零七' userEmail='zp4206366@163.com' logicGroupId='1' logicGroupName='上海博物馆' 
+  subsystemId='1' logName='登录' logContent='登录' logTime='2013-02-07 12:08:41' logState='1'/>
+  
+  <t_sys_logs id='2' userName='零零七' userEmail='zp4206366@163.com' logicGroupId='1' logicGroupName='上海博物馆' 
+  subsystemId='1' logName='登录' logContent='登录' logTime='2013-02-07 12:08:41' logState='1'/>
+  <t_sys_logs id='3' userName='零零七' userEmail='zp4206366@163.com' logicGroupId='1' logicGroupName='上海博物馆' 
+  subsystemId='1' logName='退出' logContent='退出' logTime='2013-02-07 13:08:41' logState='1'/>
+
+</dataset>

@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    
+
+	<o_historical_relic id="1" totalCode="1230" era="1" level="1" siteId="31010101"
+		texture="1" catalogCode="1" typeCode="1" name="12" state="0" hasTag="1" count="2"/>
+	
+	<o_property_info  id="1" propertyId="1" relicId="1"  propertyVlaue="12千克"/>
+	<o_property_info  id="2" propertyId="5" relicId="1"  propertyVlaue="xxxx"/>
+
+</dataset>
